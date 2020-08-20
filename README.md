@@ -1,2 +1,1 @@
-# frontend
-Frontend container of MeshHouse service
+# Meshhouse frontend

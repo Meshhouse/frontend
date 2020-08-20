@@ -1,0 +1,6 @@
+.eslintrc.js
+next.config.js
+server.js
+tsconfig.json
+/node_modules
+/.next
