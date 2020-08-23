@@ -2,6 +2,7 @@
 const express = require('express');
 const next = require('next');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const cookieParser = require('cookie-parser');
 
 const devProxy = {
   '/api': {
@@ -27,6 +28,7 @@ app
   .prepare()
   .then(() => {
     server = express();
+    server.use(cookieParser());
 
     // Set up the proxy.
     if (dev && devProxy) {
