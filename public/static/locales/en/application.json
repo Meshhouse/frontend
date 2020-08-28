@@ -10,5 +10,10 @@
   "platformLinux": "Ubuntu 12.04, Fedora 21, Debian 8 and newer",
   "localize": "Localizations:",
   "status": "Currently in development, but you can build application by own:",
-  "link": "Github repo"
+  "link": "Github repo",
+  "download": {
+    "windows": "Download for Windows 7-10 x64 ({{version}})",
+    "mac": "Download for MacOS 10.10 - 10.15 ({{version}})",
+    "linux": "Download for Linux AppImage ({{version}})"
+  }
 }

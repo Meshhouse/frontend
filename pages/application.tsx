@@ -4,12 +4,41 @@ import { withTranslation } from '../i18n';
 import { Jumbotron, Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import withLayout from '../layouts/main';
+import axios from 'axios';
 
 class Application extends PureComponent<any, any> {
   static Layout: ({ children }: { children: any; }) => JSX.Element;
 
   static async getInitialProps(): Promise<any> {
+    const key = process.env.GITHUB_TOKEN || '';
+    const response = (await axios.get('https://api.github.com/repos/longsightedfilms/meshhouse/releases', {
+      auth: {
+        username: 'longsightedfilms',
+        password: key
+      }
+    })).data;
+
+    const lastRelease = response.filter((item: any) => item.draft === false)[0];
+    const releaseVersion = lastRelease.tag_name.substr(1, lastRelease.tag_name.length);
+    const assets = lastRelease.assets.filter((asset: any) => {
+      return asset.size > 7000000;
+    });
+
+    const assetLinux = assets.filter((asset: any) => asset.name.indexOf('.AppImage') !== -1)[0];
+    const assetWindows = assets.filter((asset: any) => asset.name.indexOf('.exe') !== -1)[0];
+    const assetMac = assets.filter((asset: any) => asset.name.indexOf('.dmg') !== -1)[0];
+
+    const release = {
+      version: releaseVersion,
+      assets: {
+        windows: assetWindows.browser_download_url,
+        mac: assetMac.browser_download_url,
+        linux: assetLinux.browser_download_url
+      }
+    };
+
     return {
+      release,
       namespacesRequired: ['application'],
     };
   }
@@ -20,9 +49,66 @@ class Application extends PureComponent<any, any> {
         <Head>
           <title>{this.props.t('title')} - Meshhouse</title>
         </Head>
-        <Jumbotron className="text-center" fluid>
-          <h1>{this.props.t('title')}</h1>
-        </Jumbotron>
+        <header className="application__jumbotron">
+          <Container>
+            <Row>
+              <Col
+                xl={6}
+                col={12}
+              >
+                <div className="left">
+                  <h1>Handle your models with ease</h1>
+                  <p>with our cross-platform open-sourced application</p>
+                  <div className="application__jumbotron-links">
+                    <a
+                      className="btn btn-primary"
+                      href={this.props.release.assets.windows}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FontAwesomeIcon icon={['fab', 'windows']} size="1x" />
+                      {this.props.t('download.windows', { version: this.props.release.version })}
+                    </a>
+                    <a
+                      className="btn btn-primary"
+                      href={this.props.release.assets.mac}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FontAwesomeIcon icon={['fab', 'apple']} size="1x" />
+                      {this.props.t('download.mac', { version: this.props.release.version })}
+                    </a>
+                    <a
+                      className="btn btn-primary"
+                      href={this.props.release.assets.linux}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FontAwesomeIcon icon={['fab', 'linux']} size="1x" />
+                      {this.props.t('download.linux', { version: this.props.release.version })}
+                    </a>
+                  </div>
+                  <a
+                    className="href"
+                    href='https://www.freepik.com/vectors/design'
+                  >
+                    Design vector created by stories - www.freepik.com
+                  </a>
+                </div>
+              </Col>
+              <Col
+                xl={6}
+                col={12}
+              >
+                <img
+                  className="application__jumbotron-image"
+                  src="/static/images/application/jumbotron-image.svg"
+                  alt="MeshHouse"
+                />
+              </Col>
+            </Row>
+          </Container>
+        </header>
         <Container>
           <Row>
             <Col>
@@ -32,22 +118,6 @@ class Application extends PureComponent<any, any> {
               <hr />
               <ul dangerouslySetInnerHTML={{ __html: this.props.t('featureList') }} />
               <p>{this.props.t('note')}</p>
-              <h3>{this.props.t('platforms')}</h3>
-              <hr />
-              <ul className="list-unstyled">
-                <li className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={['fab', 'windows']} size="3x" />
-                  <p className="mb-0 ml-2 h5">{this.props.t('platformWin')}</p>
-                </li>
-                <li className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={['fab', 'apple']} size="3x" />
-                  <p className="mb-0 ml-2 h5">{this.props.t('platformMac')}</p>
-                </li>
-                <li className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={['fab', 'linux']} size="3x" />
-                  <p className="mb-0 ml-2 h5">{this.props.t('platformLinux')}</p>
-                </li>
-              </ul>
               <hr />
               <h3>{this.props.t('localize')}</h3>
               <hr />

@@ -1,5 +1,6 @@
 import NextI18Next from 'next-i18next';
 import path from 'path';
+import config from '../next.config';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 
@@ -7,9 +8,20 @@ const i18n = new NextI18Next({
   defaultNS: 'common',
   defaultLanguage: 'en',
   otherLanguages: ['ru'],
-  localeSubpaths: {},
+  localeSubpaths: config.publicRuntimeConfig.localeSubpaths,
   localePath: path.resolve('./public/static/locales')
 });
+
+export const languages: Language[] = [
+  {
+    code: 'en',
+    text: 'English'
+  },
+  {
+    code: 'ru',
+    text: 'Русский'
+  }
+];
 
 interface IncomingMessageWithI18n extends IncomingMessage {
   language?: string;

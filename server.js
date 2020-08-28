@@ -37,6 +37,9 @@ app
       });
     }
 
+    server.all(/\.(js|json|png|svg|jpg|ico|gltf)$/i, (req, res) => {
+      return handle(req, res)
+    })
     // Default catch-all handler to allow Next.js to handle all other routes
     server.all('*', (req, res) => handle(req, res));
 

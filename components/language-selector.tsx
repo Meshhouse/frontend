@@ -1,26 +1,35 @@
-import React from 'react'
-import { Translate, withLocalize } from "react-localize-redux"
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { languages, withTranslation } from '../i18n';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const LanguageToggle = ({ languages, activeLanguage, setActiveLanguage} : { languages:any, activeLanguage:any, setActiveLanguage:any }) => (
-  <UncontrolledDropdown>
-    <DropdownToggle tag="a" className="nav-link nav-link__dropdown" caret>
-      <FontAwesomeIcon icon="language" />
+const LanguageToggle = ({ t, i18n }: { t: any, i18n: any }): JSX.Element => {
+  const currentLanguage = i18n.language;
+
+  return (
+    <UncontrolledDropdown>
+      <DropdownToggle tag="a" className="nav-link nav-link__dropdown" caret>
+        <FontAwesomeIcon icon="language" />
       </DropdownToggle>
-    <DropdownMenu>
-      <DropdownItem header><Translate id="language" /></DropdownItem>
-      {languages.map((lang: any) => (
-        <DropdownItem
-          key={lang.code}
-          onClick={() => setActiveLanguage(lang.code)}
-          active={activeLanguage.code === lang.code}
-        >
-          {lang.name}
-        </DropdownItem>
-      ))}
-    </DropdownMenu>
-  </UncontrolledDropdown>
-)
+      <DropdownMenu>
+        <DropdownItem header>{ t('language') }</DropdownItem>
+        {languages.map((item: Language, idx: number) => (
+          <DropdownItem
+            key={ idx }
+            onClick={ () => i18n.changeLanguage(item.code) }
+            active={ currentLanguage === item.code }
+          >
+            { item.text }
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  );
+};
 
-export default withLocalize(LanguageToggle)
+export async function getInitialProps(): Promise <any> {
+  return {
+    namespacesRequired: ['common'],
+  };
+}
+
+export default withTranslation('common')(LanguageToggle);

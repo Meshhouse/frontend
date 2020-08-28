@@ -1,55 +1,40 @@
-import React from 'react';
 import Head from 'next/head';
 import withLayout from '../layouts/main';
+import { withTranslation } from '../i18n';
 
-const Home = (): JSX.Element => (
-  <div className="container">
+const Home = ({ t }: { t: any }): JSX.Element => (
+  <div>
     <Head>
       <title>Meshhouse</title>
     </Head>
-
-    <main>
-      <h1 className="title">
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
-
-      <p className="description">
-        Get started by editing <code>pages/index.js</code>
-      </p>
-
-      <div className="grid">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
-
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with Vercel.
-          </p>
-        </a>
+    <div className="index-jumbotron">
+      <img
+        className="index-jumbotron__background"
+        src="/static/images/landscape-4480996_1920.jpg"
+        alt=""
+      />
+      <div className="index-jumbotron__content">
+        <h1 className="title">
+          { t('title') }
+        </h1>
+        <p className="description">
+          { t('description') }
+        </p>
+        <p
+          className="courtesy"
+          dangerouslySetInnerHTML={{ __html: t('link') }}
+        />
       </div>
-    </main>
+    </div>
   </div>
 );
 
 Home.Layout = withLayout;
 
-export default Home;
+export async function getInitialProps(): Promise<any> {
+  return {
+    namespacesRequired: ['pages-index'],
+  };
+}
+
+export default withTranslation('pages-index')(Home);

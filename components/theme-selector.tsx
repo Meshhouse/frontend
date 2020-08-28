@@ -1,39 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import { useContext } from 'react';
+import nookies from 'nookies';
 import { CustomInput } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useObserver } from 'mobx-react';
+import { storeContext } from '../store/context';
 
-function ThemeSelector (props: any): JSX.Element {
-  const [darkThemeSelected, setThemeState] = useState(localStorage.getItem('theme') === 'dark');
+const ThemeSelector = (): JSX.Element => {
+  const store = useContext(storeContext);
 
-  function handleSwitcher(event: any): void {
-    setThemeState(!darkThemeSelected);
-    localStorage.setItem('theme', !darkThemeSelected === true ? 'dark' : 'light');
+  const cookies = nookies.get({});
+
+  if (Object.hasOwnProperty.call(cookies, 'theme')) {
+    store?.setTheme(cookies.theme as any);
   }
 
-  useEffect(() => {
-    if (localStorage.getItem('theme') === null) {
-      localStorage.setItem('theme', 'light');
-    }
-  });
+  function handleSwitcher(): void {
+    const theme = store?.theme;
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    store?.setTheme(newTheme);
+    nookies.set({}, 'theme', newTheme, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+      sameSite: 'Lax'
+    });
+    (document.querySelector('body') as Element).className = '';
+    (document.querySelector('body') as Element).classList.add(`theme-${newTheme}`);
+  }
 
-  return (
+  return useObserver(() => (
     <>
-      <Helmet>
-        <body className={darkThemeSelected ? 'theme-dark' : 'theme-light'} />
-      </Helmet>
       <div className='theme-selector'>
         <FontAwesomeIcon icon='sun' />
         <CustomInput
           id='theme-selector'
           type='switch'
           onChange={handleSwitcher}
-          checked={darkThemeSelected}
+          checked={store?.theme === 'dark'}
         />
         <FontAwesomeIcon icon='moon' />
       </div>
     </>
-  );
-}
+  ));
+};
 
 export default ThemeSelector;
