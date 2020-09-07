@@ -7,7 +7,7 @@ import { useLocalStore, useObserver } from 'mobx-react';
 import LanguageSelector from './language-selector';
 import ThemeSelector from './theme-selector';
 
-const Header = ({ t } : { t: any }): JSX.Element => {
+const Header = (props: any): JSX.Element => {
   const store = useContext(storeContext);
   const router = useRouter();
 
@@ -25,10 +25,9 @@ const Header = ({ t } : { t: any }): JSX.Element => {
   return useObserver(() => (
     <>
       <Navbar
-        dark
-        color="dark"
         expand="lg"
-        fixed="top"
+        fixed={!props.isStatic ? 'top' : undefined}
+        className={props.isStatic ? 'navbar-static' : ''}
       >
         <Link href="/" passHref>
           <a
@@ -47,35 +46,21 @@ const Header = ({ t } : { t: any }): JSX.Element => {
             <NavItem>
               <Link href="/" passHref>
                 <NavLink active={isRouteActive('/')}>
-                  {t('navigation:home')}
+                  {props.t('navigation:home')}
                 </NavLink>
               </Link>
             </NavItem>
             <NavItem>
               <Link href="/models/[category]" as="/models/all" passHref>
                 <NavLink active={isRouteActive('/models/all')}>
-                  {t('navigation:models')}
-                </NavLink>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/how-to-use-models" passHref>
-                <NavLink active={isRouteActive('/how-to-use-models')}>
-                  {t('navigation:howto')}
-                </NavLink>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/terms-of-use" passHref>
-                <NavLink active={isRouteActive('/terms-of-use')}>
-                  {t('navigation:tos')}
+                  {props.t('navigation:models')}
                 </NavLink>
               </Link>
             </NavItem>
             <NavItem>
               <Link href="/application" passHref>
                 <NavLink active={isRouteActive('/application')}>
-                  {t('navigation:application')}
+                  {props.t('navigation:application')}
                 </NavLink>
               </Link>
             </NavItem>
@@ -90,14 +75,14 @@ const Header = ({ t } : { t: any }): JSX.Element => {
       </Navbar>
       {store?.error.visible === true &&
         <Alert className="navbar-error" color="danger">
-          {t('errors.placeholder')} {t(store.error.message)}
+          {props.t('errors.placeholder')} {props.t(store.error.message)}
         </Alert>
       }
     </>
   ));
 };
 
-export async function getInitialProps(): Promise < any > {
+export async function getInitialProps(): Promise <any> {
   return {
     namespacesRequired: ['common', 'navigation'],
   };

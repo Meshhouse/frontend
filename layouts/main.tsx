@@ -4,7 +4,7 @@ import Footer from '../components/footer';
 export default function withLayout({ children }: { children: any }): JSX.Element {
   return (
     <>
-      <Header />
+      <Header isStatic={false} />
       <main className='view-margin'>
         {children}
       </main>

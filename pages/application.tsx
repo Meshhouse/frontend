@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { withTranslation } from '../i18n';
 import { Jumbotron, Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import withLayout from '../layouts/main';
+import withLayout from '../layouts/main-static';
 import axios from 'axios';
 
 class Application extends PureComponent<any, any> {

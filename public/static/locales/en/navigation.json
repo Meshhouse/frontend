@@ -1,7 +1,10 @@
 {
   "home": "Home",
   "models": "Models",
-  "howto": "How to use",
-  "tos": "Terms of use",
-  "application": "Application"
+  "howto": "How to use models",
+  "tos": "Terms of service",
+  "dmca": "DMCA policy",
+  "privacyPolicy": "Privacy policy",
+  "application": "Application",
+  "contactUs": "Contact info"
 }

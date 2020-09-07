@@ -1,8 +1,8 @@
-@import '../node_modules/bootstrap/scss/bootstrap'
-@import '../node_modules/nprogress/nprogress.css'
-
 @import 'variables'
 @import 'fonts'
+
+@import '../node_modules/bootstrap/scss/bootstrap'
+@import '../node_modules/nprogress/nprogress.css'
 
 @import 'themes/dark'
 @import 'themes/light'
@@ -13,7 +13,7 @@ body
 #__next
   min-height: 100vh
   display: grid
-  grid-template-rows: 1fr auto
+  grid-template-rows: auto 1fr auto
 
 .view
   min-height: 17px
@@ -36,34 +36,6 @@ body
 
 .view-margin
   margin-top: 4.5rem
-
-.navbar
-  padding: 0 1rem
-  .nav-item
-    display: flex
-    align-items: center
-    &:last-child
-      .nav-link
-        border-right: 1px solid #666666
-  .nav-link
-    border-left: 1px solid #666666
-    padding: 1.5rem !important
-    &.active
-      background-color: #4a525a
-      border-color: #4a525a
-    &__dropdown
-      cursor: pointer
-
-.navbar-nav
-  align-items: center
-
-.navbar-brand
-  padding: 0.5rem 1rem
-  margin: 0
-  display: flex
-  align-items: center
-  img
-    height: 1.375rem
 
 .jumbotron
   border-radius: 0
@@ -98,8 +70,6 @@ body
       object-position: 50%
       filter: blur(20px) brightness(0.5)
 
-.navbar-error
-  z-index: 1000 !important
 .dropdown-menu
   z-index: 1030
 
@@ -151,10 +121,9 @@ body
 @import 'button'
 @import 'icon'
 
-@import 'footer'
-
 @import 'sidebar'
 @import 'navbar'
+@import 'footer'
 
 @import 'pages/index'
 @import 'pages/models'

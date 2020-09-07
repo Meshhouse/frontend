@@ -1,6 +1,6 @@
 .index
   &-jumbotron
-    height: 800px
+    height: 100vh
     position: relative
     overflow: hidden
     &__background
@@ -25,3 +25,40 @@
         position: absolute
         left: 1rem
         bottom: 0
+  &-features
+    margin-top: 3rem
+    &__block
+      margin-bottom: 3rem
+      font-size: 1.125rem
+      img
+        display: block
+        width: 100%
+        height: 300px
+        object-fit: contain
+        object-position: 50%
+        margin-bottom: 1rem
+      h2
+        font-size: 2.125rem
+  &-programs
+    h2, i
+      display: block
+      text-align: center
+    i
+      margin-bottom: 1rem
+    &__block
+      padding: 0.5rem
+      height: calc(100% - 3rem)
+      margin-bottom: 3rem
+      background-color: var(--block-color)
+      border: 0.25rem solid var(--block-color-alt)
+      img
+        display: block
+        width: 100%
+        height: 190px
+        object-fit: contain
+        object-position: 50%
+        margin-bottom: 1rem
+        &.padded
+          padding: 0.5rem
+      p
+        text-align: center

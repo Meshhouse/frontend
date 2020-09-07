@@ -14,6 +14,12 @@
     "build": "next build",
     "start": "cross-env NODE_ENV=production PORT=3000 node server.js"
   },
+  "browserslist": [
+    ">0.3%",
+    "not ie 11",
+    "not dead",
+    "not op_mini all"
+  ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",

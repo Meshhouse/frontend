@@ -1,5 +1,12 @@
 .navbar
+  background: var(--gray-dark)
+  color: var(--light)
+  padding: 0 1rem
   &-brand
+    padding: 0.5rem 1rem
+    margin: 0
+    display: flex
+    align-items: center
     img
       height: 3rem
     p
@@ -10,12 +17,26 @@
       letter-spacing: -4px
       text-transform: uppercase
   .nav-item
+    display: flex
+    align-items: center
     .nav-link
-      border: none !important
+      padding: 1.5rem
+      border: none
       display: flex
       align-items: center
+      color: var(--light)
       svg
         width: 2rem
+      &.active, &:hover
+        background-color: #4a525a
+        border-color: #4a525a
+      &__dropdown
+        cursor: pointer
+    &:last-child
+      .nav-link
+        border-right: 1px solid #666666
+  &-nav
+    align-items: stretch
   &-error
     margin: 0
     border-radius: 0
@@ -25,3 +46,17 @@
     width: 100%
     left: 0
     z-index: 1030
+  &-static
+    background: none
+    position: relative
+    z-index: 1
+    width: 100%
+    margin: 0 auto -7rem
+    .navbar-brand
+      padding: 0
+    .nav-item
+      .nav-link
+        color: #cccccc
+        &.active, &:hover
+          background: none
+          color: var(--light)
