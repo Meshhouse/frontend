@@ -1,3 +1,33 @@
+@media (min-width: $breakpoint-modern-desktop)
+  .header__container, .navbar__container
+    max-width: $container-max-width-modern-desktop
+  .slide__container
+    max-width: $container-max-width-modern-desktop
+  .featured-categories
+    max-width: $container-max-width-modern-desktop
+    min-height: ($container-max-width-modern-desktop - 8px) / 2
+  .slide__content
+    .title
+      font-size: 4.5rem
+
+@media (min-width: $breakpoint-huge-desktop) and (max-width: $breakpoint-modern-desktop - 1px)
+  .header__container, .navbar__container
+    max-width: $container-max-width-huge-desktop
+  .slide__container
+    max-width: $container-max-width-huge-desktop
+  .featured-categories
+    max-width: $container-max-width-huge-desktop
+    min-height: ($container-max-width-huge-desktop - 8px) / 2
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .header__container, .navbar__container
+    max-width: $container-max-width-large-desktop
+  .slide__container
+    max-width: $container-max-width-large-desktop
+  .featured-categories
+    max-width: $container-max-width-large-desktop
+    min-height: ($container-max-width-large-desktop - 8px) / 2
+
 @media (min-width: 1400px)
   .navbar
     &-static

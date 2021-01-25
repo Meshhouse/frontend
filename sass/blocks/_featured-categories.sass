@@ -1,0 +1,64 @@
+.featured-categories
+  margin: 0 auto 3rem
+  display: grid
+  grid-gap: $grid-gap-large
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-rows: 1fr
+  min-height: 500px
+  &--aside
+    display: grid
+    grid-template-columns: 1fr
+    grid-template-rows: repeat(2, 1fr)
+    grid-area: 1 / 2 / 2 / 3
+    grid-gap: $grid-gap-large
+  &--sub
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    grid-template-rows: 1fr
+    grid-area: 2 / 1 / 3 / 2
+    grid-gap: $grid-gap-large
+
+.featured-category
+  display: block
+  position: relative
+  border-radius: $border-radius-large
+  overflow: hidden
+  &__background
+    position: absolute
+    top: 0
+    left: 0
+    display: block
+    width: 100%
+    height: 100%
+    object-fit: cover
+    object-position: 50%
+    border-radius: $border-radius-large
+    transition: all 0.3s ease
+    source
+      width: 100%
+      height: 100%
+  &__content
+    position: relative
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    align-items: flex-start
+    height: 100%
+    padding: 1rem
+    color: var(--light)
+    .title
+      margin: 0
+      text-transform: uppercase
+      font-size: 2.5rem
+      line-height: 1.1
+      font-weight: 900
+      span
+        display: inline
+        background: var(--primary)
+        box-shadow: 1rem 0 0 var(--primary), -1rem 0 0 var(--primary)
+        box-decoration-break: clone
+  &:hover
+    text-decoration: none
+    .featured-category
+      &__background
+        transform: scale(1.1)

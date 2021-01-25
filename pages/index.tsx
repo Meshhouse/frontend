@@ -1,11 +1,13 @@
 import Head from 'next/head';
-import withLayout from '../layouts/main-static';
+import withLayout from '../layouts/main';
+import FeaturedCategories from '../components/featured-categories';
+import Carousel from 'nuka-carousel';
 import { withTranslation } from '../i18n';
 
 const Home = ({ t }: { t: any }): JSX.Element => (
   <>
     <Head>
-      <title>Meshhouse</title>
+      <title>{ t('meta.title') }</title>
     </Head>
     <div className="index-jumbotron">
       <picture className="index-jumbotron__background">
@@ -70,6 +72,7 @@ const Home = ({ t }: { t: any }): JSX.Element => (
         </div>
       </div>
     </div>
+    <FeaturedCategories />
     <div className="container index-programs">
       <div className="row">
         <div className="col-12">

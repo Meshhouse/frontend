@@ -1,6 +1,21 @@
 {
-  "title": "3d models catalog, free for commercial use",
-  "description": "Alpha test (with demo database)",
+  "meta": {
+    "title": "Meshhouse - free 3D models for commercial use"
+  },
+  "slider": {
+    "slide-1": {
+      "title": "Free 3D models",
+      "description": "Also for commercial use, with fair restrictions. We provide models in several formats."
+    },
+    "slide-2": {
+      "title": "PBR-Ready materials",
+      "description": "Each model has materials, based on PBR principals. This models are compatible with models game engines and offline-renders (Vray, Arnold, Redshift, Renderman)."
+    },
+    "slide-3": {
+      "title": "4K+ PBR-Ready textures",
+      "description": "By using modern pipeline, we provide PBR-Ready textures, average at 4K resolution. In some cases we using UDIM-unwrapping."
+    }
+  },
   "features": {
     "readytouse": {
       "title": "Ready to use models",
