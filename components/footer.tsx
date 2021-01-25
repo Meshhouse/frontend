@@ -33,7 +33,7 @@ class Footer extends PureComponent<any, any> {
             <div className="col-lg-3">
               <ul className="list-unstyled">
                 <li>
-                  <Link href="/models/[category]" as="/models/all" passHref>
+                  <Link href="/models/all" passHref>
                     <a href="/models/all">
                       {this.props.t('navigation:models')}
                     </a>

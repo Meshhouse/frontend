@@ -9,31 +9,99 @@ const Home = ({ t }: { t: any }): JSX.Element => (
     <Head>
       <title>{ t('meta.title') }</title>
     </Head>
-    <div className="index-jumbotron">
-      <picture className="index-jumbotron__background">
-        <source srcSet="/static/images/index_heading.avif" type="image/avif" />
-        <source srcSet="/static/images/index_heading.webp" type="image/webp" />
-        <source srcSet="/static/images/index_heading.jpg" type="image/jpeg" />
-        <img
-          className="index-jumbotron__background"
-          src="/static/images/index_heading.jpg"
-          alt=""
-        />
-      </picture>
-      <div className="index-jumbotron__content">
-        <h1 className="title">
-          { t('title') }
-        </h1>
-        <p className="description">
-          { t('description') }
-        </p>
-        <p
-          className="courtesy"
-        >
-          Ancient Greek bedroom by Maxim Makarov
-        </p>
+    <Carousel
+      className='slider--jumbotron'
+      autoplay={true}
+      autoplayInterval={5000}
+      dragging={false}
+      initialSlideHeight={600}
+      pauseOnHover={false}
+      swiping={false}
+      withoutControls={true}
+      wrapAround={true}
+    >
+      <div className='slider__slide'>
+        <picture className="slide__background">
+          <source srcSet="/static/images/index_heading.avif" type="image/avif" />
+          <source srcSet="/static/images/index_heading.webp" type="image/webp" />
+          <source srcSet="/static/images/index_heading.jpg" type="image/jpeg" />
+          <img
+            className="slide__background"
+            src="/static/images/index_heading.jpg"
+            alt=""
+          />
+        </picture>
+        <div className="slide__container">
+          <div className="slide__content slide__content--left">
+            <h1 className="title">
+              <span>{ t('slider.slide-1.title') }</span>
+            </h1>
+            <p className="description">
+              { t('slider.slide-1.description') }
+            </p>
+            <p
+              className="courtesy"
+            >
+              Ancient Greek bedroom by Maxim Makarov
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+      <div className='slider__slide'>
+        <picture className="slide__background">
+          <source srcSet="/static/images/index_heading.avif" type="image/avif" />
+          <source srcSet="/static/images/index_heading.webp" type="image/webp" />
+          <source srcSet="/static/images/index_heading.jpg" type="image/jpeg" />
+          <img
+            className="slide__background"
+            src="/static/images/index_heading.jpg"
+            alt=""
+          />
+        </picture>
+        <div className="slide__container">
+          <div className="slide__content slide__content--right">
+            <h1 className="title">
+              <span>{ t('slider.slide-2.title') }</span>
+            </h1>
+            <p className="description">
+              { t('slider.slide-2.description') }
+            </p>
+            <p
+              className="courtesy"
+            >
+              Ancient Greek bedroom by Maxim Makarov
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className='slider__slide'>
+        <picture className="slide__background">
+          <source srcSet="/static/images/index_heading.avif" type="image/avif" />
+          <source srcSet="/static/images/index_heading.webp" type="image/webp" />
+          <source srcSet="/static/images/index_heading.jpg" type="image/jpeg" />
+          <img
+            className="slide__background"
+            src="/static/images/index_heading.jpg"
+            alt=""
+          />
+        </picture>
+        <div className="slide__container">
+          <div className="slide__content slide__content--left">
+            <h1 className="title">
+              <span>{ t('slider.slide-3.title') }</span>
+            </h1>
+            <p className="description">
+              { t('slider.slide-3.description') }
+            </p>
+            <p
+              className="courtesy"
+            >
+              Ancient Greek bedroom by Maxim Makarov
+            </p>
+          </div>
+        </div>
+      </div>
+    </Carousel>
     <div className="container index-features">
       <div className="row">
         <div className="col-xxl-5 col-lg-6 index-features__block">
@@ -160,4 +228,4 @@ export async function getInitialProps(): Promise<any> {
   };
 }
 
-export default withTranslation('pages-index')(Home);
+export default withTranslation(['pages-index'])(Home);

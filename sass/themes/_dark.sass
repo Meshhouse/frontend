@@ -7,3 +7,12 @@ body.theme-dark
   --block-color-lighter: #{$darkGrayLighter}
   --theme-color: #{$lightThemeColor}
   --theme-color-alt: #{$lightThemeColorAlt}
+  --primary: #19b5fe
+  --light: #f8f9fa
+  --header-text-color: #f8f9fa
+  .search-box
+    &__input
+      border-color: var(--light)
+      background: $darkGrayAlt
+      &:focus
+        border-color: var(--primary)

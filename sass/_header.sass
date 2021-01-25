@@ -1,0 +1,87 @@
+.header
+  background: var(--primary)
+  color: var(--header-text-color)
+  &__container
+    margin: 0 auto
+    display: flex
+    align-items: center
+    list-style: none
+  .nav-item
+    .nav-link
+      color: var(--light)
+
+.header__navbar
+  color: var(--dark)
+  padding: 1rem 0
+  border-bottom: 0.125rem solid var(--primary)
+
+.navbar
+  &__container
+    margin: 0 auto
+    display: flex
+    align-items: center
+    list-style: none
+    .search-box
+      flex: 0 1 500px
+  &__brand
+    padding: 0.5rem 1rem
+    padding-left: 0.5rem
+    margin: 0
+    display: flex
+    align-items: center
+    &:hover
+      text-decoration: none
+  &__links
+    display: flex
+    align-items: center
+    margin-left: auto
+    .nav-item
+      .nav-link
+        &:before
+          content: ''
+          display: block
+          width: 100%
+          height: 0.125rem
+          position: absolute
+          bottom: 0
+          left: 0
+          background: var(--primary)
+          transform: scaleX(0)
+          transition: transform 0.3s ease
+        &.active, &:hover
+          &:before
+            transform: scaleX(1)
+
+.nav-item
+  margin-right: 1rem
+  .nav-link
+    position: relative
+    padding: 0.5rem
+    border: none
+    display: flex
+    align-items: center
+    color: var(--header-text-color)
+    &:hover
+      text-decoration: none
+    &--dropdown
+      cursor: pointer
+      &:hover
+        &:before
+          display: none
+  &:last-child
+    margin-right: 0
+  svg
+    width: 1rem
+    path
+      fill: var(--light)
+
+.brand
+  &__image
+    height: 3rem
+  &__title
+    color: var(--header-text-color)
+    margin: 0 0 0 1rem
+    font-size: 3rem
+    line-height: 1
+    letter-spacing: -4px
+    text-transform: uppercase

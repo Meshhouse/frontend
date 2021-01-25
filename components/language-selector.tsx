@@ -7,8 +7,8 @@ const LanguageToggle = ({ t, i18n }: { t: any, i18n: any }): JSX.Element => {
 
   return (
     <UncontrolledDropdown>
-      <DropdownToggle tag="a" className="nav-link nav-link__dropdown" caret>
-        <FontAwesomeIcon icon="language" />
+      <DropdownToggle tag="a" className="nav-link nav-link--dropdown" caret>
+        { t('language') }
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>{ t('language') }</DropdownItem>
