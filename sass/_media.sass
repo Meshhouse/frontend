@@ -1,32 +1,50 @@
 @media (min-width: $breakpoint-modern-desktop)
-  .header__container, .navbar__container
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
     max-width: $container-max-width-modern-desktop
-  .slide__container
-    max-width: $container-max-width-modern-desktop
+    margin: 0 auto
   .featured-categories
     max-width: $container-max-width-modern-desktop
-    min-height: ($container-max-width-modern-desktop - 8px) / 2
+    min-height: ($container-max-width-modern-desktop - 8px) / 2 !important
   .slide__content
     .title
       font-size: 4.5rem
+  .categories__container
+    grid-template-columns: repeat(6, 1fr)
 
 @media (min-width: $breakpoint-huge-desktop) and (max-width: $breakpoint-modern-desktop - 1px)
-  .header__container, .navbar__container
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
     max-width: $container-max-width-huge-desktop
-  .slide__container
-    max-width: $container-max-width-huge-desktop
+    margin: 0 auto
   .featured-categories
     max-width: $container-max-width-huge-desktop
-    min-height: ($container-max-width-huge-desktop - 8px) / 2
+    min-height: ($container-max-width-huge-desktop - 8px) / 2 !important
+  .categories__container
+    grid-template-columns: repeat(5, 1fr)
 
 @media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
-  .header__container, .navbar__container
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
     max-width: $container-max-width-large-desktop
-  .slide__container
-    max-width: $container-max-width-large-desktop
+    margin: 0 auto
   .featured-categories
     max-width: $container-max-width-large-desktop
-    min-height: ($container-max-width-large-desktop - 8px) / 2
+    min-height: ($container-max-width-large-desktop - 8px) / 2 !important
+  .categories__container
+    grid-template-columns: repeat(4, 1fr)
 
 @media (min-width: 1400px)
   .navbar

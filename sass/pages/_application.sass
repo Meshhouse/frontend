@@ -1,28 +1,42 @@
 .application__jumbotron
   margin: 0 auto 1rem
   overflow: hidden
-  padding: 8rem 0 3rem
+  padding: 3rem 0
+  height: 500px
   color: $white
   background: linear-gradient(to right, $lightThemeColor, darken($lightThemeColor, 20%))
   &-links
     margin-top: auto
     display: flex
-    flex-direction: column
-    .btn
+    .button
       display: flex
       align-items: center
-      margin-bottom: 0.5rem
+      margin-right: 0.5rem
       svg
         width: 2rem
         height: 2rem
+        margin-left: 0
         margin-right: 0.5rem
-  .left
-    display: flex
-    flex-direction: column
-    height: 100%
-  .href
-    color: $white
   &-image
     display: block
-    width: 800px
+    height: 600px
+    width: calc(100% + 20rem)
+    max-width: none
+    object-fit: contain
+    margin: -5rem -20rem -10rem 5rem
+
+.application
+  &__description
+    font-size: 1.25rem
+
+.grid-container--application-header
+  display: grid
+  grid-template-columns: repeat(2, 50%)
+  grid-gap: 1rem
+  .column
+    display: flex
+    flex-direction: column
+
+.jumbotron
+  &__header
     margin-right: -5rem

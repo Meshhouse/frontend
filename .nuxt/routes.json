@@ -1,0 +1,30 @@
+[
+  {
+    "name": "application___en",
+    "path": "/application",
+    "component": "/usr/src/app/pages/application.vue",
+    "chunkName": "pages/application",
+    "_name": "_27018aa0"
+  },
+  {
+    "name": "index___ru",
+    "path": "/ru",
+    "component": "/usr/src/app/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_e542f99c"
+  },
+  {
+    "name": "application___ru",
+    "path": "/ru/application",
+    "component": "/usr/src/app/pages/application.vue",
+    "chunkName": "pages/application",
+    "_name": "_27018aa0"
+  },
+  {
+    "name": "index___en",
+    "path": "/",
+    "component": "/usr/src/app/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_e542f99c"
+  }
+]

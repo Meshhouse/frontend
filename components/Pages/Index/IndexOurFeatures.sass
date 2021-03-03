@@ -1,0 +1,21 @@
+.grid-container--our-features
+  margin: 5rem auto
+  .row
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    grid-gap: 3rem
+    margin-bottom: 3rem
+
+.our-features
+  &__block
+    margin-bottom: 3rem
+    font-size: 1.125rem
+    &--right
+      text-align: right
+  &__image
+    display: block
+    width: 100%
+    height: 300px
+    object-fit: contain
+    object-position: 50%
+    margin-bottom: 1rem

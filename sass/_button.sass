@@ -1,7 +1,18 @@
-.btn
-  &-lg, .btn-group-lg > .btn
-    border-radius: 2rem
-    .icon
-      width: 1.875rem
-      height: 1.875rem
-      filter: saturate(0) invert(1) contrast(1.5)
+.button
+  border: none
+  display: flex
+  align-items: center
+  color: var(--light)
+  min-height: 3rem
+  padding: 0.5rem 1rem
+  border-radius: $border-radius
+  cursor: pointer
+  transition: all 0.3s ease
+  &:focus
+    outline: none
+  .svg-inline--fa
+    margin-left: 0.5rem
+  &--primary
+    background-color: var(--primary)
+    &:hover
+      background-color: darken(#19b5fe, 10%)
