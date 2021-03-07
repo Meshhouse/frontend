@@ -10,6 +10,7 @@
     ],
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "allowJs": true,

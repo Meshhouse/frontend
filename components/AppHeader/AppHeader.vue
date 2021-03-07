@@ -22,12 +22,9 @@
         <nuxt-link class="navbar__brand" :to="localePath('/')">
           <img
             class="brand__image"
-            src="/icons/logo-icon.svg"
+            src="/icons/logo-full.svg"
             alt="Meshhouse"
           >
-          <p class="brand__title">
-            <b>Mesh</b>house
-          </p>
         </nuxt-link>
         <header-categories />
         <search-box />

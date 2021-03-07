@@ -50,23 +50,98 @@
         </div>
       </div>
     </header>
+    <div class="grid-container grid-container--application">
+      <div class="column column--application">
+        <h2 class="display-text display-text--h2">
+          <span>
+            Все модели в одном месте
+          </span>
+        </h2>
+        <p>Наше абсолютно бесплатное приложение с открытым исходным кодом позволяет удобно организовывать, сортировать и каталогизировать библиотеку моделей. На данный момент приложение поддерживает распространенные форматы файлов DCC, а также 3DCoat и Substance Painter</p>
+        <p class="note">
+          DCC - программа создания цифрового контента. В их число входят 3dsMax, Maya, Blender, Cinema4D и т.д
+        </p>
+      </div>
+      <div class="column column--application">
+        <img
+          class="application__thumbnail"
+          src="/images/application/catalog.webp"
+        >
+      </div>
+      <div class="column column--application">
+        <img
+          class="application__thumbnail application__thumbnail--tall"
+          src="/images/application/integrations.webp"
+        >
+      </div>
+      <div class="column column--application">
+        <h2 class="display-text display-text--h2">
+          <span>
+            Неограниченное число каталогов и категорий
+          </span>
+        </h2>
+        <p>
+          Хотите сделать каталог на каждую папку, что у вас есть? Не проблема! Вам хватает нескольких каталогов, но нужно точнее организовывать? Создайте в каталоге категорию ! Хотите категорию в категории? Это тоже можно!
+        </p>
+        <p class="note">
+          Несмотря на то, что не рекомендуется делать отдельный каталог на папку внутри родительского каталога, это можно сделать.
+        </p>
+      </div>
+      <div class="column column--application">
+        <h2 class="display-text display-text--h2">
+          <span>
+            Устанавливайте любые модели
+          </span>
+        </h2>
+        <p>Благодаря интеграциям со сторонними сайтами, у вас есть возможность установки сторонних моделей с интернета. Перед установкой вы можете посмотреть скриншоты, прочитать комментарии и общую информацию о модели.*</p>
+        <p class="note">
+          * - может быть недоступно для выбранной интеграции
+        </p>
+      </div>
+      <div class="column column--application">
+        <img
+          class="application__thumbnail"
+          src="/images/application/model_info.webp"
+        >
+      </div>
+    </div>
     <div class="grid-container">
       <h2 class="display-text display-text--h2">
         <span>
           {{ $t('application.integrations') }}
         </span>
       </h2>
+      <div class="integrations__heading">
+        <img
+          class="integration__preview"
+          src="/images/application/open3dlab.webp"
+        >
+        <img
+          class="integration__preview"
+          src="/images/application/sfmlab.webp"
+        >
+        <img
+          class="integration__preview"
+          src="/images/application/smutbase.webp"
+        >
+      </div>
       <div class="integrations__container">
         <div
           v-for="integration in data.integrations"
           :key="`integration-${integration.title}`"
-          class="integration"
         >
-          <img
-            class="integration__logo"
-            :src="getImageUrl(integration.logo)"
-            :alt="integration.title"
+          <a
+            class="integration"
+            :href="integration.url"
+            target="_blank"
           >
+            <img
+              class="integration__logo"
+              :src="getImageUrl(integration.logo)"
+              :alt="integration.title"
+              :title="integration.title"
+            >
+          </a>
         </div>
       </div>
       <div class="table-container">
@@ -155,7 +230,7 @@
     "application": {
       "title": "Приложение Meshhouse",
       "jumbotron": {
-        "title": "Управляйте вашей библитекой моделей с легкостью",
+        "title": "Управляйте вашей библиотекой моделей с легкостью",
         "text": "с нашей программой с открытым исходным кодом."
       },
       "lead": "Meshhouse - галерея 3D моделей с открытым исходным кодом, сделанный на Electron. <b>100% опционально</b>",

@@ -1,4 +1,4 @@
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { mixin as clickaway } from 'vue-clickaway'
 
 @Component({
@@ -8,6 +8,11 @@ import { mixin as clickaway } from 'vue-clickaway'
 })
 
 export default class DropdownButton extends Vue {
+  @Prop({ type: Boolean, default: false }) readonly noCaret!: boolean
+  @Prop({ type: String, default: null }) readonly appendIcon!: string | null
+  @Prop({ type: String, default: null }) readonly prependIcon!: string | null
+  @Prop({ type: Number, default: null }) readonly width!: number | null
+
   toggled = false
 
   toggle (): void {

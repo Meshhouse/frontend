@@ -11,8 +11,29 @@
   &:focus
     outline: none
   .svg-inline--fa
+    max-height: 1rem
     margin-left: 0.5rem
   &--primary
     background-color: var(--primary)
     &:hover
       background-color: darken(#19b5fe, 10%)
+  &--dropdown
+    .svg-inline--fa
+      margin: 0
+    .dropdown
+      &__prepend-icon
+        margin-right: 0.5rem
+      &__append-icon, &__caret
+        margin-left: 0.5rem
+    &-active
+      .dropdown
+         &__caret
+           transform: rotate(180deg)
+
+.button-group
+  display: flex
+  align-items: center
+  > .button, > .dropdown
+    margin-right: $grid-gap-large
+    &:last-child
+      margin-right: 0

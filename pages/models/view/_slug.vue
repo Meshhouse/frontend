@@ -1,0 +1,362 @@
+<template>
+  <div>
+    <model-slider :model="model" />
+    <header class="grid-container grid-container--model-header">
+      <h1 class="display-text display-text--h3">
+        <span>{{ model[`title_${$i18n.locale}`] }}</span>
+      </h1>
+      <div class="button-group">
+        <dropdown-button
+          prepend-icon="cloud-download-alt"
+          :width="300"
+        >
+          {{ $t('pages.model-single.buttons.model') }}
+          <template slot="content">
+            <p class="dropdown__header">
+              {{ $t('pages.model-single.buttons.textures_title') }}
+            </p>
+            <a
+              class="dropdown__item"
+              :href="model.textures_link"
+              :disabled="model.textures_link === null"
+            >
+              {{ $t('pages.model-single.buttons.textures') }}
+            </a>
+            <p class="dropdown__header">
+              {{ $t('pages.model-single.buttons.model_title') }}
+            </p>
+            <a
+              v-for="(link, idx) in model.model_links"
+              :key="`model-${idx}`"
+              class="dropdown__item"
+              :href="link.url"
+            >
+              {{ getDccName(link.program) }} {{ link.program_version }} - {{ getRendererName(link.renderer) }} {{ link.renderer_version }}
+            </a>
+          </template>
+        </dropdown-button>
+        <a
+          class="button button--primary"
+          :href="`meshhouse://install/meshhouse/MSH-${model.id}`"
+        >
+          {{ $t('pages.model-single.buttons.install') }}
+        </a>
+        <dropdown-button
+          prepend-icon="donate"
+          :width="300"
+        >
+          {{ $t('pages.model-single.buttons.donate') }}
+          <template slot="content">
+            <a href="https://commerce.coinbase.com/checkout/99ac55b7-2eb1-445a-90af-90359332b7ad" class="dropdown__item">
+              {{ $t('pages.model-single.buttons.donate_content.coinbase') }}
+            </a>
+          </template>
+        </dropdown-button>
+      </div>
+    </header>
+    <main class="grid-container grid-container--model-description">
+      <div class="description">
+        <vue-alert
+          v-if="model.brands.length > 0"
+          type="warning"
+          :title="$t('pages.model-single.alerts.legal_notice.title')"
+        >
+          {{ $t('pages.model-single.alerts.legal_notice.text', { brand: getStringedArray(model.brands) }) }}
+        </vue-alert>
+        <vue-alert
+          v-if="model.is_mature_content"
+          type="onlyfans"
+          :title="$t('pages.model-single.alerts.mature_content.title')"
+        >
+          {{ $t('pages.model-single.alerts.mature_content.text') }}
+        </vue-alert>
+        <div v-if="model[`description_${$i18n.locale}`] !== ''">
+          <h4 class="display-text display-text--h4">
+            <span>
+              {{ $t('pages.model-single.information.description') }}
+            </span>
+          </h4>
+          <div style="margin-bottom: 1rem;" v-html="model[`description_${$i18n.locale}`]" />
+        </div>
+        <div v-if="model.tags.length > 0">
+          <h4 class="display-text display-text--h4">
+            <span>
+              {{ $t('pages.model-single.information.tags') }}
+            </span>
+          </h4>
+          <div class="tag-group">
+            <vue-tag
+              v-for="(tag, idx) in model.tags"
+              :key="`tag-${idx}`"
+              :tag="tag"
+            />
+          </div>
+        </div>
+      </div>
+      <aside>
+        <div class="table-container" style="margin-top: 1rem;">
+          <table class="table table--large">
+            <tbody>
+              <tr>
+                <th>{{ $t('pages.model-single.information.id') }}</th>
+                <td>MSH-{{ model.id }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.date') }}</th>
+                <td>{{ format(new Date(model.created_at), 'dd.MM.yyyy') }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.polys') }}</th>
+                <td>{{ model.information.polys }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.verts') }}</th>
+                <td>{{ model.information.verts }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.hairFur.title') }}</th>
+                <td>{{ $t(`pages.model-single.hairFur.${model.information.hairFur}`) }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.morpher.title') }}</th>
+                <td>{{ $t(`pages.model-single.morpher.${model.information.morpher}`) }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.skinning.title') }}</th>
+                <td>{{ $t(`pages.model-single.skinning.${model.information.skinning}`) }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.buttons.textures_title') }}</th>
+                <td>{{ $t(`pages.model-single.textures.${model.information.textures}`) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </main>
+  </div>
+</template>
+
+<i18n>
+{
+  "en": {
+    "pages": {
+      "model-single": {
+        "information": {
+          "title": "Model information",
+          "id": "Product id",
+          "description": "Description",
+          "tags": "Tags",
+          "related_items": "Related models",
+          "similar_items": "Simiral models"
+        },
+        "buttons": {
+          "install": "Install via Meshhouse",
+          "donate": "Donate",
+          "donate_content": {
+            "coinbase": "Donate via Coinbase"
+          },
+          "textures": "Download textures",
+          "textures_title": "Textures:",
+          "model_title": "Models:",
+          "model": "Download model"
+        },
+        "date": "Upload date:",
+        "polys": "Polys:",
+        "verts": "Verts:",
+        "hairFur": {
+          "title": "Hair & fur:",
+          "none": "None"
+        },
+        "morpher": {
+          "title": "Morpher / blendshapes:",
+          "true": "Exists",
+          "false": "Not exists"
+        },
+        "skinning": {
+          "title": "Rigging:",
+          "cat": "Autodesk CAT",
+          "bones": {
+            "title": "Bones",
+            "system": {
+              "custom": "Custom",
+              "unity": "Compatible with Unity",
+              "ue4": "Compatible with Unreal Engine 4"
+            }
+          },
+          "none": "None"
+        },
+        "textures": {
+          "included": "Included",
+          "procedural": "Procedural"
+        },
+        "alerts": {
+          "legal_notice": {
+            "title": "Legal notice",
+            "text": "The intellectual property depicted in this model, including the brand {brand}, is not affiliated with or endorsed by the original rights holders."
+          },
+          "mature_content": {
+            "title": "Mature content",
+            "text": "Images of the model, description, as well as the model itself may contain content that is not suitable for persons under the age of 18."
+          }
+        }
+      }
+    }
+  },
+  "ru": {
+    "pages": {
+      "model-single": {
+        "information": {
+          "title": "Информация о модели",
+          "id": "Артикул модели",
+          "description": "Описание",
+          "tags": "Теги",
+          "related_items": "Связанные модели",
+          "similar_items": "Похожие модели"
+        },
+        "buttons": {
+          "install": "Установить через Meshhouse",
+          "donate": "Пожертвовать",
+          "donate_content": {
+            "coinbase": "Пожертвовать через Coinbase"
+          },
+          "textures": "Скачать текстуры",
+          "textures_title": "Текстуры:",
+          "model_title": "Модели:",
+          "model": "Скачать модель"
+        },
+        "date": "Дата загрузки:",
+        "polys": "Полигонов:",
+        "verts": "Вершин:",
+        "hairFur": {
+          "title": "Система волос/меха:",
+          "none": "Отсутствует"
+        },
+        "morpher": {
+          "title": "Morpher / blendshapes:",
+          "true": "Присутствует",
+          "false": "Отсутствует"
+        },
+        "skinning": {
+          "title": "Риггинг / Система костей:",
+          "cat": "Autodesk CAT",
+          "bones": {
+            "title": "Кости",
+            "system": {
+              "custom": "Своя система",
+              "unity": "Совместимая с Unity",
+              "ue4": "Совместимая с Unreal Engine 4"
+            }
+          },
+          "none": "Отсутствует"
+        },
+        "textures": {
+          "included": "Присутствуют",
+          "procedural": "Процедурные"
+        },
+        "alerts": {
+          "legal_notice": {
+            "title": "Информация о правообладателях",
+            "text": "Интеллектуальная собственность, изображенная в этой модели, включая торговую марку {brand}, не связана с первоначальными правообладателями и не одобрена ими."
+          },
+          "mature_content": {
+            "title": "Контент для взрослых",
+            "text": "Изображения модели, описание, а также сама модель может содержать контент, не подходящий лицам, не достигшим 18 лет."
+          }
+        }
+      }
+    }
+  }
+}
+</i18n>
+
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator'
+import LazyHydrate from 'vue-lazy-hydration'
+import DropdownButton from '@/components/Button/DropdownButton.vue'
+import VueTag from '@/components/Tag/Tag.vue'
+import ModelSlider from '@/components/ModelSlider/ModelSlider.vue'
+import VueAlert from '@/components/Alert/Alert.vue'
+import type { StrapiModel } from '@/types'
+import { format } from 'date-fns'
+import { getDccName, getRendererName, getStringedArray } from '@/functions/helpers'
+
+@Component({
+  components: {
+    DropdownButton,
+    LazyHydrate,
+    ModelSlider,
+    VueAlert,
+    VueTag
+  },
+  head () {
+    return {
+      title: (this as any).model[`title_${this.$i18n.locale}`]
+    }
+  },
+  methods: {
+    format,
+    getDccName,
+    getRendererName,
+    getStringedArray
+  }
+})
+
+export default class ModelSinglePage extends Vue {
+  model: StrapiModel = {
+    id: -1,
+    title_en: 'string',
+    title_ru: 'string',
+    slug: 'string',
+    category: {
+      slug: 'string',
+      title_en: 'string',
+      title_ru: 'string'
+    },
+    description_en: 'string',
+    description_ru: 'string',
+    textures_link: null,
+    is_mature_content: false,
+    information: {
+      hairFur: 'string',
+      morpher: false,
+      polys: 0,
+      skinning: 'string',
+      textures: 'string',
+      verts: 0
+    },
+    created_at: '0',
+    updated_at: '0',
+    model_links: [],
+    tags: [],
+    brands: [],
+    thumbnail: null,
+    images: [],
+    preview: null
+  }
+
+  async asyncData ({ app, route }: { app: any, route: any }): Promise<any> {
+    try {
+      const data: StrapiModel[] = (await app.$strapi({
+        method: 'GET',
+        url: '/models',
+        params: {
+          slug: route.params.slug
+        }
+      })).data
+
+      return {
+        model: data[0]
+      }
+    } catch (err) {
+      console.log(err)
+      return {}
+    }
+  }
+
+  getImageUrl (thumbnail: string | null): string {
+    const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
+    return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
+  }
+}
+</script>

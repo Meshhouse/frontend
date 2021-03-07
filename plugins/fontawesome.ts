@@ -7,8 +7,16 @@ import {
   faMoon,
   faCalendarAlt,
   faSearch,
+  faCheck,
   faCheckCircle,
-  faTimesCircle
+  faTimes,
+  faTimesCircle,
+  faInfo,
+  faExclamation,
+  faVenus,
+  faDonate,
+  faCaretDown,
+  faCloudDownloadAlt
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -25,8 +33,16 @@ library.add(
   faMoon,
   faCalendarAlt,
   faSearch,
+  faCheck,
   faCheckCircle,
+  faTimes,
   faTimesCircle,
+  faInfo,
+  faExclamation,
+  faVenus,
+  faDonate,
+  faCaretDown,
+  faCloudDownloadAlt,
   faApple,
   faLinux,
   faWindows

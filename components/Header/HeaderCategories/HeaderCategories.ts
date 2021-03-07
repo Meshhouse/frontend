@@ -5,9 +5,15 @@ import { Vue, Component } from 'nuxt-property-decorator'
 export default class HeaderCategories extends Vue {
   toggled = false
 
+  active: string | null = null
+
   toggle (): void {
     this.toggled = !this.toggled
     this.$store.commit('setModalVisibility', !this.$store.state.modalVisible)
+  }
+
+  setActiveTab (slug: string): void {
+    this.active = slug
   }
 
   get categories (): any[] {

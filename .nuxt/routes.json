@@ -3,28 +3,36 @@
     "name": "application___en",
     "path": "/application",
     "component": "/usr/src/app/pages/application.vue",
-    "chunkName": "pages/application",
-    "_name": "_27018aa0"
+    "chunkName": "pages/application"
   },
   {
     "name": "index___ru",
     "path": "/ru",
     "component": "/usr/src/app/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_e542f99c"
+    "chunkName": "pages/index"
   },
   {
     "name": "application___ru",
     "path": "/ru/application",
     "component": "/usr/src/app/pages/application.vue",
-    "chunkName": "pages/application",
-    "_name": "_27018aa0"
+    "chunkName": "pages/application"
+  },
+  {
+    "name": "models-view-slug___ru",
+    "path": "/ru/models/view/:slug?",
+    "component": "/usr/src/app/pages/models/view/_slug.vue",
+    "chunkName": "pages/models/view/_slug"
+  },
+  {
+    "name": "models-view-slug___en",
+    "path": "/models/view/:slug?",
+    "component": "/usr/src/app/pages/models/view/_slug.vue",
+    "chunkName": "pages/models/view/_slug"
   },
   {
     "name": "index___en",
     "path": "/",
     "component": "/usr/src/app/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_e542f99c"
+    "chunkName": "pages/index"
   }
 ]

@@ -15,6 +15,9 @@
     z-index: 1
     &--active
       display: flex
+  &__header
+    padding: 0.25rem 0.5rem
+    font-weight: 700
   &__item
     display: flex
     align-items: center
@@ -31,3 +34,9 @@
         display: block
         width: 1rem
         margin-right: 0.25rem
+    &[disabled="disabled"]
+      background-color: var(--block-color-alt)
+      cursor: not-allowed
+      &:hover
+        background-color: var(--block-color-alt)
+        color: var(--text-color)

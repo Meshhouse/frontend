@@ -30,6 +30,9 @@ import AppFooter from '@/components/AppFooter/AppFooter.vue'
 })
 
 export default class DefaultLayout extends Vue {
+  mounted (): void {
+    document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px')
+  }
 }
 </script>
 

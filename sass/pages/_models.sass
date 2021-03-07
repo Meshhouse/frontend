@@ -27,150 +27,6 @@
       width: auto
       &:first-child
         margin-left: 0
-  &-card
-    perspective: 800px
-    &__image
-      width: 100%
-      height: 100%
-      display: block
-      object-fit: cover
-      transition: all 0.3s ease
-    &__inner
-      position: relative
-      border: 3px solid rgba(0,0,0,0)
-      transition: all 0.3s ease
-    &__info
-      position: absolute
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      transition: all 0.3s ease
-      background-color: transparentize(darken($lightThemeColor, 10%), 0.3)
-      opacity: 0
-      color: #fff
-      &-title
-        font-size: 2rem
-      &-time
-        display: flex
-        align-items: center
-        font-size: 1rem
-        margin: 0
-        svg
-          width: 1rem
-          margin-right: 0.5rem
-      &-dccs
-        position: absolute
-        bottom: 0.5rem
-        right: 0.5rem
-        padding: 0.25rem
-        img
-          display: block
-          width: 2rem
-          height: 2rem
-          object-fit: contain
-          margin-right: 0.5rem
-          &:last-child
-            margin-right: 0
-    &:hover
-      .models-card
-        &__image
-          filter: blur(10px)
-        &__inner
-          border: 3px solid var(--theme-color-alt)
-          transform: rotateX(5deg) rotateY(0deg) translateY(10px)
-          box-shadow: 0px 0px 40px rgba(0,0,0,0.25)
-        &__info
-          opacity: 1
-  &-slider
-    height: 960px !important
-    div[aria-live]
-      @extend .badge
-      top: 1rem !important
-      left: auto !important
-      right: 1rem
-      height: auto !important
-      width: auto !important
-      z-index: 1
-      font-size: 1rem
-      padding: 0.25rem 1rem
-    .slider-slide
-      position: relative
-      img
-        display: block
-        height: 960px
-        width: 100%
-        object-fit: contain
-        object-position: 50%
-      model-viewer
-        height: 960px
-        img
-          width: 64px
-          height: auto
-  &-header
-    display: flex
-    align-items: center
-    padding: 1rem 10vw
-    background-color: var(--block-color-lighter)
-    .buttons
-      display: flex
-      align-items: center
-      margin-left: auto
-      .btn
-        display: flex
-        align-items: center
-        margin-left: 1rem
-        &.disabled
-          color: var(--block-color)
-      .dropdown-item
-        display: flex
-        align-items: center
-        .icon
-          margin-right: 0.5rem
-  &-description
-    display: grid
-    grid-template-columns: 1fr 0.5fr
-    grid-gap: 1rem
-    background-color: var(--block-color)
-    width: calc(80vw + 4rem)
-    padding: 2rem
-    margin: 0 auto
-    .tags-container
-      display: flex
-      align-items: center
-      flex-wrap: wrap
-      .badge
-        font-size: 1rem
-        padding: 0.25rem 1rem
-        margin-right: 1rem
-    .description
-      .header
-        position: relative
-        text-transform: uppercase
-        font-size: 1.5rem
-        font-weight: 700
-        letter-spacing: 0.25rem
-        text-align: center
-        span
-          position: relative
-          background-color: var(--block-color)
-          z-index: 1
-          padding-left: 1rem
-          padding-right: 0.75rem
-        &:before
-          content: ''
-          display: block
-          width: 100%
-          height: 0.125rem
-          position: absolute
-          left: 0
-          top: 50%
-          transform: translateY(-50%)
-          background-color: var(--theme-color)
   &-info-card
     background-color: var(--block-color-alt)
     padding: 1rem
@@ -188,3 +44,21 @@
       .table
         margin: 0
         color: var(--text-color)
+
+.grid-container
+  &--model-header
+    display: flex
+    align-items: center
+    padding-top: 1rem
+    .display-text
+      margin-bottom: 0
+    .button-group
+      margin-left: auto
+  &--model-description
+    display: grid
+    grid-template-columns: 1fr 350px
+    grid-gap: 1rem
+    .tags-container
+      display: flex
+      align-items: center
+      flex-wrap: wrap

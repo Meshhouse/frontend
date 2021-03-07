@@ -29,6 +29,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "@meshhouse/model-viewer": "^1.0.1",
     "@nuxtjs/axios": "^5.13.1",
+    "@skatejs/ssr": "^0.19.11",
     "cookie-universal-nuxt": "^2.1.4",
     "date-fns": "^2.15.0",
     "nuxt": "^2.15.1",
