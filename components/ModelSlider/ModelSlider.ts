@@ -1,22 +1,33 @@
-import { Vue, Component } from 'nuxt-property-decorator'
-import '@meshhouse/model-viewer'
-
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import FsLightbox from 'fslightbox-vue'
+import { hydrateWhenVisible } from 'vue-lazy-hydration'
+import type { StrapiModel } from '@/types'
 @Component({
-  props: {
-    model: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {
-          images: [],
-          preview: null
-        }
-      }
-    }
+  components: {
+    FsLightbox,
+    VueModelViewer: hydrateWhenVisible(
+      () => import('@/components/ModelViewer/ModelViewer.vue'),
+      { observerOptions: { rootMargin: '100px' } }
+    )
   }
 })
 
 export default class ModelSlider extends Vue {
+  @Prop({
+    type: Object,
+    required: true,
+    default: () => {
+      return {
+        images: [],
+        preview: null
+      }
+    }
+  }) readonly model!: StrapiModel
+
+  viewerVisible = false
+  toggleLightBox = false
+  lightboxSlide = 1
+
   swiperOption = {
     slidesPerView: 1,
     grabCursor: true,
@@ -41,6 +52,15 @@ export default class ModelSlider extends Vue {
     return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
   }
 
+  openLightboxOnSlide (slide: number): void {
+    this.lightboxSlide = slide
+    this.toggleLightBox = !this.toggleLightBox
+  }
+
+  get lightboxSources (): string[] {
+    return this.model.images.map((image: any) => this.getImageUrl(image))
+  }
+
   mounted (): void {
     this.$nextTick(() => {
       if (this.$refs.swiperTop !== undefined && this.$refs.swiperThumbs !== undefined) {
@@ -48,6 +68,12 @@ export default class ModelSlider extends Vue {
         const swiperThumbs = (this.$refs.swiperThumbs as any).$swiper
         swiperTop.controller.control = swiperThumbs
         swiperThumbs.controller.control = swiperTop
+
+        swiperTop.on('slideChange', () => {
+          if (swiperTop.activeIndex === this.model.images.length) {
+            this.viewerVisible = true
+          }
+        })
       }
     })
   }

@@ -33,7 +33,7 @@
         width: 100%
         padding-top: (9 / 16) * 100%
     &__image
-      filter: brightness(0.3)
+      filter: brightness(0.8) saturate(0.1)
       position: absolute
       top: 0
       right: 0
@@ -44,5 +44,7 @@
     .slide
       &__image
         filter: none
-.swiper-container--thumbnails
-  margin: 1rem auto
+
+.container-slider-thumbnails
+  background-color: var(--block-color)
+  padding: 1rem 0

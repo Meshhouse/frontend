@@ -6,10 +6,11 @@
         :options="swiperOption"
         class="swiper-container--top"
       >
-        <div
+        <a
           v-for="(slide, idx) in model.images"
           :key="`slide-${idx}`"
           class="swiper-slide swiper-slide--model-slide"
+          @click="openLightboxOnSlide(idx + 1)"
         >
           <img
             class="slide__background"
@@ -19,28 +20,18 @@
             class="slide__image"
             :src="getImageUrl(slide)"
           >
-        </div>
+        </a>
         <div
           v-if="model.preview !== null"
           class="swiper-slide swiper-slide--model-slide swiper-no-swiping"
         >
-          <model-viewer
+          <vue-model-viewer
+            v-if="viewerVisible"
             class="model-viewer"
             :model="getImageUrl(model.preview)"
-            hdri="/images/hdri/colorful_studio_1k.hdr"
-            :modeltitle="model[`title_${$i18n.locale}`]"
-            author="MeshHouse Team"
-            authorlink="https://longsightedfilms.com"
-            :autohide="true"
+            :title="model[`title_${$i18n.locale}`]"
             :thumbnail="getImageUrl(model.thumbnail)"
-          >
-            <span slot="loader">
-              <img src="/icons/logo-icon.svg" alt="Meshhouse">
-            </span>
-            <span slot="logo">
-              <img src="/icons/logo-full.svg" alt="Meshhouse" style="width: 300px">
-            </span>
-          </model-viewer>
+          />
         </div>
         <div slot="button-prev" class="swiper-button-prev" />
         <div slot="button-next" class="swiper-button-next" />
@@ -59,39 +50,51 @@
         </div>
       </template>
     </client-only>
-    <div class="grid-container">
-      <client-only>
-        <swiper
-          ref="swiperThumbs"
-          :options="swiperGallery"
-          class="swiper-container--thumbnails"
-        >
-          <div
-            v-for="(slide, idx) in model.images"
-            :key="`slide-${idx}`"
-            class="swiper-slide swiper-slide--model-thumbnail"
+    <div class="container-slider-thumbnails">
+      <div class="grid-container">
+        <client-only>
+          <swiper
+            ref="swiperThumbs"
+            :options="swiperGallery"
+            class="swiper-container--thumbnails"
           >
-            <div class="slide__outer">
-              <img
-                class="slide__image"
-                :src="getImageUrl(slide)"
-              >
+            <div
+              v-for="(slide, idx) in model.images"
+              :key="`slide-${idx}`"
+              class="swiper-slide swiper-slide--model-thumbnail"
+            >
+              <div class="slide__outer">
+                <img
+                  class="slide__image"
+                  :src="getImageUrl(slide)"
+                >
+              </div>
             </div>
-          </div>
-          <div
-            v-if="model.preview !== null"
-            class="swiper-slide swiper-slide--model-thumbnail"
-          >
-            <div class="slide__outer">
-              <img
-                class="slide__image"
-                src="/icons/logo-icon.svg"
-              >
+            <div
+              v-if="model.preview !== null"
+              class="swiper-slide swiper-slide--model-thumbnail"
+            >
+              <div class="slide__outer">
+                <img
+                  class="slide__image"
+                  src="/icons/logo-icon.svg"
+                >
+              </div>
             </div>
-          </div>
-        </swiper>
-      </client-only>
+          </swiper>
+        </client-only>
+      </div>
     </div>
+    <client-only>
+      <FsLightbox
+        type="image"
+        :toggler="toggleLightBox"
+        :slide="lightboxSlide"
+        :sources="lightboxSources"
+        :disable-local-storage="true"
+        :show-thumbs-on-mount="true"
+      />
+    </client-only>
   </div>
 </template>
 
