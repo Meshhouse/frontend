@@ -27,13 +27,17 @@ export type StrapiModel = {
   description_ru: string;
   textures_link: string | null;
   is_mature_content: boolean;
-  information: {
-    hairFur: string;
-    morpher: boolean;
-    polys: number;
-    skinning: string;
-    textures: string;
-    verts: number;
+  model_information: {
+    polygons: string;
+    vertices: string;
+    blendshapes: boolean;
+    rigged: false;
+    hair_system: false;
+    textures_type: string;
+    hair_system_type: string;
+    uv_maps: boolean;
+    uv_maps_type: string;
+    rig_type: string;
   }
   created_at: string;
   updated_at: string;

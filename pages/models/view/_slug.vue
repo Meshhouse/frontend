@@ -107,31 +107,61 @@
               </tr>
               <tr>
                 <th>{{ $t('pages.model-single.polys') }}</th>
-                <td>{{ model.information.polys }}</td>
+                <td>{{ model.model_information.polygons }}</td>
               </tr>
               <tr>
                 <th>{{ $t('pages.model-single.verts') }}</th>
-                <td>{{ model.information.verts }}</td>
+                <td>{{ model.model_information.vertices }}</td>
               </tr>
               <tr>
-                <th>{{ $t('pages.model-single.hairFur.title') }}</th>
-                <td>{{ $t(`pages.model-single.hairFur.${model.information.hairFur}`) }}</td>
+                <th>{{ $t('pages.model-single.hair_system') }}</th>
+                <td><font-awesome-icon :icon="model.model_information.hair_system ? 'check-circle' : 'times-circle'" /></td>
+              </tr>
+              <tr v-if="model.model_information.hair_system">
+                <th>{{ $t('pages.model-single.hair_system_type') }}</th>
+                <td>{{ model.model_information.hair_system_type }}</td>
               </tr>
               <tr>
-                <th>{{ $t('pages.model-single.morpher.title') }}</th>
-                <td>{{ $t(`pages.model-single.morpher.${model.information.morpher}`) }}</td>
+                <th>{{ $t('pages.model-single.blendshapes') }}</th>
+                <td><font-awesome-icon :icon="model.model_information.blendshapes ? 'check-circle' : 'times-circle'" /></td>
               </tr>
               <tr>
-                <th>{{ $t('pages.model-single.skinning.title') }}</th>
-                <td>{{ $t(`pages.model-single.skinning.${model.information.skinning}`) }}</td>
+                <th>{{ $t('pages.model-single.rigging') }}</th>
+                <td><font-awesome-icon :icon="model.model_information.rigged ? 'check-circle' : 'times-circle'" /></td>
+              </tr>
+              <tr v-if="model.model_information.rigged">
+                <th>{{ $t('pages.model-single.rig_type') }}</th>
+                <td>{{ model.model_information.rig_type }}</td>
               </tr>
               <tr>
-                <th>{{ $t('pages.model-single.buttons.textures_title') }}</th>
-                <td>{{ $t(`pages.model-single.textures.${model.information.textures}`) }}</td>
+                <th>{{ $t('pages.model-single.textures_type') }}</th>
+                <td>{{ model.model_information.textures_type }}</td>
+              </tr>
+              <tr>
+                <th>{{ $t('pages.model-single.uv_maps') }}</th>
+                <td><font-awesome-icon :icon="model.model_information.uv_maps ? 'check-circle' : 'times-circle'" /></td>
+              </tr>
+              <tr v-if="model.model_information.uv_maps">
+                <th>{{ $t('pages.model-single.uv_maps_type') }}</th>
+                <td>{{ model.model_information.uv_maps_type }}</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <h4
+          v-if="model.related_models.length > 0"
+          class="display-text display-text--h4"
+          style="margin-top: 1rem"
+        >
+          <span>{{ $t('pages.model-single.information.related_items') }}</span>
+        </h4>
+        <model-card
+          v-for="relatedModel in model.related_models"
+          :key="relatedModel.id"
+          class="model-card--related"
+          :item="relatedModel"
+          row
+        />
       </aside>
     </main>
   </div>
@@ -148,7 +178,7 @@
           "description": "Description",
           "tags": "Tags",
           "related_items": "Related models",
-          "similar_items": "Simiral models"
+          "similar_items": "Similar models"
         },
         "buttons": {
           "install": "Install via Meshhouse",
@@ -164,28 +194,14 @@
         "date": "Upload date:",
         "polys": "Polys:",
         "verts": "Verts:",
-        "hairFur": {
-          "title": "Hair & fur:",
-          "none": "None"
-        },
-        "morpher": {
-          "title": "Morpher / blendshapes:",
-          "true": "Exists",
-          "false": "Not exists"
-        },
-        "skinning": {
-          "title": "Rigging:",
-          "cat": "Autodesk CAT",
-          "bones": {
-            "title": "Bones",
-            "system": {
-              "custom": "Custom",
-              "unity": "Compatible with Unity",
-              "ue4": "Compatible with Unreal Engine 4"
-            }
-          },
-          "none": "None"
-        },
+        "hair_system": "Hair system",
+        "hair_system_type": "Hair plugin",
+        "blendshapes": "Morpher / blendshapes:",
+        "rigging": "Skeleton rigged",
+        "rig_type": "Rig type",
+        "textures_type": "Textures type",
+        "uv_maps": "Unwrapped",
+        "uv_maps_type": "Unwrap type",
         "textures": {
           "included": "Included",
           "procedural": "Procedural"
@@ -228,28 +244,14 @@
         "date": "Дата загрузки:",
         "polys": "Полигонов:",
         "verts": "Вершин:",
-        "hairFur": {
-          "title": "Система волос/меха:",
-          "none": "Отсутствует"
-        },
-        "morpher": {
-          "title": "Morpher / blendshapes:",
-          "true": "Присутствует",
-          "false": "Отсутствует"
-        },
-        "skinning": {
-          "title": "Риггинг / Система костей:",
-          "cat": "Autodesk CAT",
-          "bones": {
-            "title": "Кости",
-            "system": {
-              "custom": "Своя система",
-              "unity": "Совместимая с Unity",
-              "ue4": "Совместимая с Unreal Engine 4"
-            }
-          },
-          "none": "Отсутствует"
-        },
+        "hair_system": "Система волос",
+        "hair_system_type": "Плагин для волос",
+        "blendshapes": "Морфер / блендшейпы:",
+        "rigging": "Привязка к скелету",
+        "rig_type": "Система скелета",
+        "textures_type": "Тип текстур",
+        "uv_maps": "Развертка",
+        "uv_maps_type": "Тип развертки",
         "textures": {
           "included": "Присутствуют",
           "procedural": "Процедурные"
@@ -274,6 +276,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import LazyHydrate from 'vue-lazy-hydration'
 import DropdownButton from '@/components/Button/DropdownButton.vue'
+import ModelCard from '@/components/ModelCard/ModelCard.vue'
 import VueTag from '@/components/Tag/Tag.vue'
 import ModelSlider from '@/components/ModelSlider/ModelSlider.vue'
 import VueAlert from '@/components/Alert/Alert.vue'
@@ -285,6 +288,7 @@ import { getDccName, getRendererName, getStringedArray } from '@/functions/helpe
   components: {
     DropdownButton,
     LazyHydrate,
+    ModelCard,
     ModelSlider,
     VueAlert,
     VueTag
@@ -317,13 +321,17 @@ export default class ModelSinglePage extends Vue {
     description_ru: 'string',
     textures_link: null,
     is_mature_content: false,
-    information: {
-      hairFur: 'string',
-      morpher: false,
-      polys: 0,
-      skinning: 'string',
-      textures: 'string',
-      verts: 0
+    model_information: {
+      polygons: '5000',
+      vertices: '25000',
+      blendshapes: false,
+      rigged: false,
+      hair_system: false,
+      textures_type: 'procedural',
+      hair_system_type: 'standard',
+      uv_maps: false,
+      uv_maps_type: 'generated',
+      rig_type: 'bones'
     },
     created_at: '0',
     updated_at: '0',
