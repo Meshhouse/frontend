@@ -3,7 +3,7 @@
     <div class="footer__container">
       <div class="column">
         <nuxt-link
-          class="footer-brand"
+          class="brand brand--footer"
           :to="localePath('/')"
         >
           <img
@@ -12,7 +12,7 @@
             alt="Meshhouse"
           >
           <p class="brand__title">
-            <b>Mesh</b>house
+            <b>esh</b>house
           </p>
         </nuxt-link>
         <p>

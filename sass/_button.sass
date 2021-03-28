@@ -13,10 +13,18 @@
   .svg-inline--fa
     max-height: 1rem
     margin-left: 0.5rem
+  &[disabled="disabled"]
+    cursor: not-allowed
+  &--icon
+    .svg-inline--fa
+      margin: 0
   &--primary
     background-color: var(--primary)
     &:hover
-      background-color: darken(#19b5fe, 10%)
+      background-color: darken($primary, 10%)
+    &[disabled="disabled"]
+      background-color: var(--block-color)
+      color: var(--text-color)
   &--dropdown
     .svg-inline--fa
       margin: 0

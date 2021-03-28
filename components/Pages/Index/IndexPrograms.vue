@@ -10,6 +10,9 @@
     </i>
     <div class="index-programs__container">
       <div class="program program--autodesk">
+        <p class="program__count">
+          {{ stats.max }}
+        </p>
         <img
           class="program__icon"
           src="/icons/programs/3dsmax.svg"
@@ -23,6 +26,9 @@
         </ul>
       </div>
       <div class="program program--autodesk">
+        <p class="program__count">
+          {{ stats.maya }}
+        </p>
         <img
           class="program__icon"
           src="/icons/programs/maya.svg"
@@ -36,6 +42,9 @@
         </ul>
       </div>
       <div class="program program--blender">
+        <p class="program__count">
+          {{ stats.blender }}
+        </p>
         <img
           class="program__icon"
           src="/icons/programs/blender.svg"
@@ -49,6 +58,9 @@
         </ul>
       </div>
       <div class="program program--cinema4d">
+        <p class="program__count">
+          {{ stats.c4d }}
+        </p>
         <img
           class="program__icon padded"
           src="/icons/programs/cinema4d.svg"
@@ -62,6 +74,9 @@
         </ul>
       </div>
       <div class="program program--unity">
+        <p class="program__count">
+          {{ stats.unity }}
+        </p>
         <img
           class="program__icon padded"
           src="/icons/programs/unity.svg"
@@ -72,6 +87,9 @@
         </p>
       </div>
       <div class="program program--unreal">
+        <p class="program__count">
+          {{ stats.unreal }}
+        </p>
         <img
           class="program__icon"
           src="/icons/programs/unrealengine.svg"

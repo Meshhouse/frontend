@@ -28,6 +28,13 @@
     min-height: ($container-max-width-huge-desktop - 8px) / 2 !important
 
 @media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  body
+    font-size: 0.875rem
+  h1
+    font-size: 2.25rem
+  h3
+    font-size: 1.5rem
+
   .top-block__container,
   .navbar__container,
   .slide__container,
@@ -40,226 +47,68 @@
     max-width: $container-max-width-large-desktop
     min-height: ($container-max-width-large-desktop - 8px) / 2 !important
 
-@media (min-width: 1400px)
-  .navbar
-    &-static
-      max-width: 1320px
-@media (min-width: 1200px) and (max-width: 1399px)
-  .navbar
-    &-static
-      max-width: 1140px
-@media (min-width: 992px) and (max-width: 1199px)
-  .navbar
-    &-static
-      max-width: 960px
-@media (min-width: 768px) and (max-width: 991px)
-  .navbar
-    &-static
-      max-width: 720px
-@media (min-width: 576px) and (max-width: 767px)
-  .navbar
-    &-static
-      max-width: 540px
-@media (min-width: 1200px) and (max-width: 1400px)
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
   body
     font-size: 0.875rem
   h1
     font-size: 2.25rem
   h3
     font-size: 1.5rem
-  #nprogress
-    .bar
-      top: 38px
-    .spinner
-      top: 60px
-  .App
-    &__footer
-      padding: 0.5rem 15px
-  .navbar
-    &-error
-      top: 38px
-    &__left, &__center, &__right
-      .nav-item
-        .nav-link
-          padding: 0.5rem 1rem !important
-  .view-margin
-    margin-top: 2.375rem
-  .jumbotron-home
-    margin: -2.375rem 0
-@media (min-width: 992px) and (max-width: 1199px)
-  #nprogress
-    .bar
-      top: 38px
-  .navbar
-    white-space: nowrap
-    .nav-item
-      .nav-link
-        font-size: 0.875rem
-        padding: 0.5rem !important
-    &__left
-      order: 1
-      width: auto
-      margin-left: 1rem
-      .nav-item
-        &:last-child
-          .nav-link
-            border-right: none
-    &__center
-      order: 0
-      justify-content: flex-start
-      flex: 0 0 auto
-      .nav-item
-        .nav-link
-          padding: 0.5rem 0 !important
-    &__right
-      order: 2
-  .view-margin
-    margin-top: 2.375rem
-  .jumbotron-home
-    margin: -2.375rem 0
-  .models
-    &-grid
-      grid-template-columns: repeat(auto-fill, 314px)
-      .card
-        .card-img-top
-          height: 314px
 
-@media (min-width: 768px) and (max-width: 991px)
-  .navbar-brand
-    margin-right: 0
-    padding: 1.25rem 0
-    img
-      height: 1.5rem
-  .navbar
-    .nav-item
-      align-items: stretch
-      .nav-link
-        border: none !important
-        padding: 0.5rem !important
-    &__center
-      display: none
-  .models
-    &-grid
-      grid-column-start: 1
-      grid-column-end: 3
-      grid-template-columns: repeat(auto-fill, calc(50vw - 1.5rem))
-      .card
-        .card-img-top
-          height: auto
-    &-categories
-      grid-row-start: 1
-      grid-row-end: 1
-      grid-column-start: 1
-      grid-column-end: 3
-      .list-unstyled
-        display: flex
-        flex-wrap: wrap
-        li
-          margin-right: 0.5rem
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
+    max-width: $container-max-width-desktop
+    margin: 0 auto
+  .featured-categories
+    max-width: $container-max-width-desktop
+    min-height: ($container-max-width-desktop - 8px) / 2 !important
 
-@media (min-width: 576px) and (max-width: 767px)
-  .navbar-brand
-    margin-right: 0
-    padding: 1.25rem 0
-    img
-      height: 1.1rem
-  .navbar
-    .nav-item
-      align-items: stretch
-      .nav-link
-        border: none !important
-        padding: 0.5rem !important
-    &__center
-      display: none
-  .jumbotron
-    &-home
-      padding: 0 1rem
-      h1
-        font-size: 2rem
-  .models
-    &-grid
-      grid-column-start: 1
-      grid-column-end: 3
-      grid-template-columns: repeat(auto-fill, calc(50vw - 1.5rem))
-      .card
-        .card-img-top
-          height: auto
-    &-categories
-      grid-row-start: 1
-      grid-row-end: 1
-      grid-column-start: 1
-      grid-column-end: 3
-      .list-unstyled
-        display: flex
-        flex-wrap: wrap
-        li
-          margin-right: 0.5rem
-  .model
-    &-view__nav-link
-      font-size: 0.875rem
-      padding: 0.5rem
-      img
-        width: 1.5rem
-        height: 1.5rem
-        margin-right: 0.25rem
-
-@media (max-width: 575px)
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  body
+    font-size: 0.875rem
   h1
-    font-size: 1.6rem
-  h2
-    font-size: 1.5rem
+    font-size: 2.25rem
   h3
-    font-size: 1.4rem
-  h5, .h5
-    font-size: 1rem
-  .navbar-brand
-    margin-right: 0
-    padding: 1.25rem 0
-    img
-      height: 1.1rem
-  .navbar
-    .nav-item
-      align-items: stretch
-      .nav-link
-        border: none !important
-        padding: 0.5rem !important
-    &__center
-      display: none
-  .jumbotron
-    &-home
-      padding: 0 1rem
-      h1
-        font-size: 1.5rem
-      .lead
-        font-size: 1rem
-    &-courtesy
-      position: static
-      text-align: center
-  .models
-    &-container
-      padding: 0 0.5rem
-      grid-gap: 1rem 0rem
-    &-grid
-      grid-column-start: 1
-      grid-column-end: 3
-      grid-template-columns: repeat(auto-fill, calc(100vw - 1rem))
-      .card
-        .card-img-top
-          height: auto
-    &-categories
-      grid-row-start: 1
-      grid-row-end: 1
-      grid-column-start: 1
-      grid-column-end: 3
-      .list-unstyled
-        display: flex
-        flex-direction: column
-  .model
-    &-view__nav-link
-      letter-spacing: 0
-      font-size: 0.75rem
-      padding: 0.5rem
-      img
-        width: 1rem
-        height: 1rem
-        margin-right: 0.25rem
+    font-size: 1.5rem
+
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
+    max-width: $container-max-width-tablet
+    margin: 0 auto
+  .categories__container
+    max-width: 100%
+    margin: 0 auto
+  .featured-categories
+    max-width: $container-max-width-tablet
+    min-height: ($container-max-width-tablet - 8px) / 2 !important
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  body
+    font-size: 0.875rem
+  h1
+    font-size: 2.25rem
+  h3
+    font-size: 1.5rem
+
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .grid-container,
+  .footer__container,
+  .categories__container
+    padding: 0 $padding-mobile
+    margin: 0 auto
+  .categories__container
+    padding: 0
+    max-width: 100%
+    margin: 0 auto
+  .featured-categories
+    min-height: ($container-max-width-phone - 8px) / 2 !important

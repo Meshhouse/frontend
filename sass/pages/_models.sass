@@ -45,20 +45,16 @@
         margin: 0
         color: var(--text-color)
 
-.grid-container
-  &--model-header
+.models
+  &-header
+    margin-top: 2rem
     display: flex
     align-items: center
-    padding-top: 1rem
-    .display-text
-      margin-bottom: 0
-    .button-group
-      margin-left: auto
-  &--model-description
-    display: grid
-    grid-template-columns: 1fr 350px
-    grid-gap: 1rem
-    .tags-container
-      display: flex
-      align-items: center
-      flex-wrap: wrap
+    justify-content: space-between
+
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .models
+    &-header
+      margin: 1rem auto
+      flex-direction: column

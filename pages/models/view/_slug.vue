@@ -7,6 +7,26 @@
       </h1>
       <div class="button-group">
         <dropdown-button
+          prepend-icon="share-alt"
+          :width="300"
+        >
+          {{ $t('pages.model-single.buttons.share') }}
+          <template slot="content">
+            <p class="dropdown__header">
+              {{ $t('pages.model-single.buttons.share_content.link') }}
+            </p>
+            <p class="dropdown__item">
+              <input class="input" type="text" :value="embedLink" readonly>
+            </p>
+            <p class="dropdown__header">
+              {{ $t('pages.model-single.buttons.share_content.iframe') }}
+            </p>
+            <p class="dropdown__item">
+              <textarea class="input" type="text" :value="embedCode" readonly />
+            </p>
+          </template>
+        </dropdown-button>
+        <dropdown-button
           prepend-icon="cloud-download-alt"
           :width="300"
         >
@@ -18,7 +38,7 @@
             <a
               class="dropdown__item"
               :href="model.textures_link"
-              :disabled="model.textures_link === null"
+              :disabled="model.textures_link === null || model.textures_link === ''"
             >
               {{ $t('pages.model-single.buttons.textures') }}
             </a>
@@ -182,6 +202,11 @@
         },
         "buttons": {
           "install": "Install via Meshhouse",
+          "share": "Share",
+          "share_content": {
+            "link": "Embed link",
+            "iframe": "Embed card"
+          },
           "donate": "Donate",
           "donate_content": {
             "coinbase": "Donate via Coinbase"
@@ -232,6 +257,11 @@
         },
         "buttons": {
           "install": "Установить через Meshhouse",
+          "share": "Поделиться",
+          "share_content": {
+            "link": "Встроить ссылку",
+            "iframe": "Встроить карточку"
+          },
           "donate": "Пожертвовать",
           "donate_content": {
             "coinbase": "Пожертвовать через Coinbase"
@@ -284,7 +314,7 @@ import type { StrapiModel } from '@/types'
 import { format } from 'date-fns'
 import { getDccName, getRendererName, getStringedArray } from '@/functions/helpers'
 
-@Component({
+@Component<ModelSinglePage>({
   components: {
     DropdownButton,
     LazyHydrate,
@@ -295,7 +325,7 @@ import { getDccName, getRendererName, getStringedArray } from '@/functions/helpe
   },
   head () {
     return {
-      title: (this as any).model[`title_${this.$i18n.locale}`]
+      title: this.model[`title_${this.$i18n.locale}`]
     }
   },
   methods: {
@@ -338,28 +368,35 @@ export default class ModelSinglePage extends Vue {
     model_links: [],
     tags: [],
     brands: [],
+    related_models: [],
     thumbnail: null,
     images: [],
-    preview: null
+    preview: null,
+    available_formats: []
   }
 
   async asyncData ({ app, route }: { app: any, route: any }): Promise<any> {
     try {
-      const data: StrapiModel[] = (await app.$strapi({
+      const data: StrapiModel = (await app.$strapi({
         method: 'GET',
-        url: '/models',
-        params: {
-          slug: route.params.slug
-        }
+        url: `/models/${route.params.slug}`
       })).data
 
       return {
-        model: data[0]
+        model: data
       }
     } catch (err) {
       console.log(err)
-      return {}
     }
+  }
+
+  get embedLink (): string {
+    const base = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://meshhouse.art'
+    return `${base}/embed/card/${this.model.slug}`
+  }
+
+  get embedCode (): string {
+    return `<iframe src="${this.embedLink}" name="meshhouse-embed" height="360px" width="100%" sandbox="allow-popups allow-scripts" loading="lazy" style="border: none;"></iframe>`
   }
 
   getImageUrl (thumbnail: string | null): string {

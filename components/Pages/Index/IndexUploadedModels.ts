@@ -1,18 +1,13 @@
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import ModelCard from '@/components/ModelCard/ModelCard.vue'
+import type { StrapiSimpleModel } from '@/types'
 
 @Component({
   components: {
     ModelCard
-  },
-  props: {
-    models: {
-      type: Array,
-      required: true,
-      default: () => []
-    }
   }
 })
 
 export default class IndexUploadedModels extends Vue {
+  @Prop({ type: Array, required: true, default: () => [] }) readonly models!: StrapiSimpleModel[]
 }

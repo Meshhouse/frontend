@@ -1,10 +1,10 @@
 <template>
-  <div
+  <nuxt-link
     class="tag"
-    @click="onClick"
+    :to="localePath('/models/all?tag=' + tag[`title_${$i18n.locale}`])"
   >
     {{ tag[`title_${$i18n.locale}`] }}
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts" src="./Tag.ts" />

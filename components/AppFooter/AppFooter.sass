@@ -27,3 +27,27 @@
     color: var(--text-color)
     &:hover
       text-decoration: none
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .footer
+    padding: 2rem 0
+    .brand
+      &__image
+        height: 2rem
+      &__title
+        display: inline
+        margin-bottom: -0.125rem
+        font-size: 2.825rem
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .footer
+    padding: 2rem 0
+    .brand
+      &__image
+        height: 2rem
+      &__title
+        display: inline
+        margin-bottom: -0.125rem
+        font-size: 2.825rem
+    &__container
+      grid-template-columns: repeat(1, 1fr)

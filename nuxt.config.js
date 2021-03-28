@@ -2,14 +2,11 @@ module.exports = {
   env: {
     isDev: process.env.NODE_ENV === 'development'
   },
-  privateRuntimeConfig: {
-    githubToken: process.env.GITHUB_TOKEN
-  },
   server: {
     port: process.env.PORT || 3000,
     host: '0.0.0.0'
   },
-  modern: 'client',
+  // modern: 'client',
   watchers: {
     webpack: {
       ignored: [/\.nuxt\//, /node_modules/]
@@ -42,7 +39,7 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: '~/components/Loader/Loader.vue',
   /*
   ** Build configuration
   */
@@ -132,11 +129,6 @@ module.exports = {
       vueI18n: '~/plugins/i18n.ts'
     }]
   ],
-  axios: {
-    proxy: false
-  },
-  proxy: {
-  },
   router: {
     prefetchLinks: false
   }

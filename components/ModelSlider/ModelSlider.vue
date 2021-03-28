@@ -13,13 +13,14 @@
           @click="openLightboxOnSlide(idx + 1)"
         >
           <img
-            class="slide__background"
-            :src="getImageUrl(slide)"
+            class="swiper-lazy slide__background"
+            :data-src="getImageUrl(slide)"
           >
           <img
-            class="slide__image"
-            :src="getImageUrl(slide)"
+            class="swiper-lazy slide__image"
+            :data-src="getImageUrl(slide)"
           >
+          <loader-slider />
         </a>
         <div
           v-if="model.preview !== null"
@@ -27,26 +28,34 @@
         >
           <vue-model-viewer
             v-if="viewerVisible"
-            class="model-viewer"
+            class="swiper-lazy model-viewer"
             :model="getImageUrl(model.preview)"
             :title="model[`title_${$i18n.locale}`]"
             :thumbnail="getImageUrl(model.thumbnail)"
           />
+          <loader-slider />
         </div>
-        <div slot="button-prev" class="swiper-button-prev" />
-        <div slot="button-next" class="swiper-button-next" />
+        <div slot="button-prev" class="swiper-button-prev">
+          <font-awesome-icon icon="angle-left" size="2x" />
+        </div>
+        <div slot="button-next" class="swiper-button-next">
+          <font-awesome-icon icon="angle-right" size="2x" />
+        </div>
         <div slot="pagination" class="swiper-pagination" />
       </swiper>
       <template slot="placeholder">
-        <div
-          v-for="(slide, idx) in model.images"
-          :key="`slide-${idx}`"
-          class="swiper-slide swiper-slide--model-slide"
-        >
-          <img
-            class="slide__image"
-            :src="getImageUrl(slide)"
+        <div class="swiper-container--top">
+          <div
+            v-for="(slide, idx) in model.images"
+            :key="`slide-${idx}`"
+            class="swiper-slide swiper-slide--model-slide"
           >
+            <img
+              class="slide__image"
+              :src="getImageUrl(slide)"
+              loading="lazy"
+            >
+          </div>
         </div>
       </template>
     </client-only>
@@ -59,7 +68,7 @@
             class="swiper-container--thumbnails"
           >
             <div
-              v-for="(slide, idx) in model.images"
+              v-for="(slide, idx) in model.thumbnail_images"
               :key="`slide-${idx}`"
               class="swiper-slide swiper-slide--model-thumbnail"
             >
@@ -67,6 +76,7 @@
                 <img
                   class="slide__image"
                   :src="getImageUrl(slide)"
+                  loading="lazy"
                 >
               </div>
             </div>
@@ -74,11 +84,8 @@
               v-if="model.preview !== null"
               class="swiper-slide swiper-slide--model-thumbnail"
             >
-              <div class="slide__outer">
-                <img
-                  class="slide__image"
-                  src="/icons/logo-icon.svg"
-                >
+              <div class="slide__icon-container">
+                <font-awesome-icon icon="cube" />
               </div>
             </div>
           </swiper>

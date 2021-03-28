@@ -74,6 +74,7 @@
     .category__icon
       display: block
       width: 3rem
+      height: 3rem
       margin-right: 0.5rem
     .category__description
       position: absolute
@@ -83,7 +84,7 @@
   &--root
     background: var(--primary)
     padding: 0.25rem 1rem
-    font-weight: 700
+    font-weight: 400
     text-transform: uppercase
     color: #fff
     .svg-inline--fa
@@ -92,3 +93,100 @@
     &:hover
       .svg-inline--fa
         opacity: 1
+
+@media (min-width: $breakpoint-modern-desktop)
+  .categories
+    &__container
+      grid-template-columns: 400px 1fr
+
+@media (min-width: $breakpoint-huge-desktop) and (max-width: $breakpoint-modern-desktop - 1px)
+  .categories
+    &__container
+      grid-template-columns: 350px 1fr
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .header__categories
+    .button
+      min-height: 2.8125rem
+      span
+        display: none
+      .svg-inline--fa
+        margin-left: 0
+  .categories
+    top: 8rem
+    height: calc(100vh - 8rem)
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .header__categories
+    .button
+      min-height: 2.8125rem
+      span
+        display: none
+      .svg-inline--fa
+        margin-left: 0
+  .categories
+    top: 8rem
+    height: calc(100vh - 8rem)
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .header__categories
+    .button
+      min-height: 2.8125rem
+      span
+        display: none
+      .svg-inline--fa
+        margin-left: 0
+  .categories
+    top: 8rem
+    height: calc(100vh - 8rem)
+    &__tabs
+      max-height: none
+    &__container
+      max-height: calc(100vh - 8rem)
+  .category
+    &__tab
+      grid-template-columns: none
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .header__categories
+    .button
+      min-height: 2.8125rem
+      span
+        display: none
+      .svg-inline--fa
+        margin-left: 0
+  .categories
+    top: 9rem
+    height: calc(100vh - 9rem)
+    &__nav
+      padding: 0.5rem
+      overflow: hidden
+      overflow-x: auto
+      max-height: none
+      max-width: 100%
+      display: flex
+      align-items: center
+    &__tabs
+      max-height: none
+    &__container
+      grid-template-columns: none
+      grid-template-rows: 3rem 1fr
+      max-height: calc(100vh - 9rem)
+  .category
+    &__tab
+      grid-template-columns: none
+    &--root
+      margin: 0
+      margin-right: 0.5rem
+      flex: 0 0 auto
+      font-size: 0.875rem
+    &--nested
+      margin-bottom: 0.5rem
+      .category
+        &__description
+          top: 100%
+          left: 0
+          font-size: 0.7rem
+        &__icon
+          width: 2rem
+          height: 2rem

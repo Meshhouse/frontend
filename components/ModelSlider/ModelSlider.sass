@@ -39,12 +39,87 @@
       right: 0
       bottom: 0
       left: 0
+      width: 100%
+    &__icon-container
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 4.45rem
+      max-height: 100%
+      .svg-inline--fa
+        width: 3rem
+        height: 3rem
   &.swiper-slide-active
     border-color: $primary
     .slide
       &__image
         filter: none
+      &__icon-container
+        .svg-inline--fa
+          path
+            fill: $primary
 
 .container-slider-thumbnails
   background-color: var(--block-color)
   padding: 1rem 0
+
+.swiper-container--top
+  max-height: 720px
+  overflow-y: hidden
+
+.grid-container
+  &--slider-full-width
+    max-width: calc(100vw - var(--scrollbar-width)) !important
+    overflow: hidden
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .swiper-slide--model-slide
+    height: 620px
+    .model-viewer
+      height: 620px
+  .swiper-container--top
+    max-height: 620px
+  .swiper-slide
+    &--model-thumbnail
+      .slide
+        &__icon-container
+          height: 3.125rem
+          .svg-inline--fa
+            width: 2rem
+            height: 2rem
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .swiper-slide--model-slide
+    height: 520px
+    .model-viewer
+      height: 520px
+  .swiper-container--top
+    max-height: 520px
+  .swiper-slide
+    &--model-thumbnail
+      .slide
+        &__icon-container
+          height: 2.375rem
+          .svg-inline--fa
+            width: 1.75rem
+            height: 1.75rem
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .swiper-slide--model-slide
+    height: 520px
+    .model-viewer
+      height: 520px
+  .swiper-container--top
+    max-height: 520px
+  .container-slider-thumbnails
+    display: none
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .swiper-slide--model-slide
+    height: 240px
+    .model-viewer
+      height: 240px
+  .swiper-container--top
+    max-height: 240px
+  .container-slider-thumbnails
+    display: none

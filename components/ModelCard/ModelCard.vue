@@ -1,7 +1,7 @@
 <template>
   <article
     v-if="!row"
-    class="model-card"
+    class="model-card model-card--lite"
   >
     <nuxt-link
       class="image__outer"
@@ -24,7 +24,7 @@
       </p>
       <div class="model-card__programs">
         <div
-          v-for="(program, idx) in getUniquePrograms(item.model_links)"
+          v-for="(program, idx) in item.available_formats"
           :key="`program-${idx}`"
         >
           <img
@@ -33,13 +33,6 @@
             :title="getProgramIcon(program)"
           >
         </div>
-      </div>
-      <div class="model-card__tags">
-        <vue-tag
-          v-for="(tag, idx) in item.tags"
-          :key="`tag-${idx}`"
-          :tag="tag"
-        />
       </div>
     </div>
   </article>
@@ -66,7 +59,7 @@
       </p>
       <div class="model-card__programs">
         <div
-          v-for="(program, idx) in getUniquePrograms(item.model_links)"
+          v-for="(program, idx) in item.available_formats"
           :key="`program-${idx}`"
         >
           <img

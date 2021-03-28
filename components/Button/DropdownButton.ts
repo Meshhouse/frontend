@@ -12,6 +12,7 @@ export default class DropdownButton extends Vue {
   @Prop({ type: String, default: null }) readonly appendIcon!: string | null
   @Prop({ type: String, default: null }) readonly prependIcon!: string | null
   @Prop({ type: Number, default: null }) readonly width!: number | null
+  @Prop({ type: Boolean, default: false }) readonly noClickaway!: boolean
 
   toggled = false
 
@@ -20,6 +21,8 @@ export default class DropdownButton extends Vue {
   }
 
   away (): void {
-    this.toggled = false
+    if (!this.noClickaway) {
+      this.toggled = false
+    }
   }
 }

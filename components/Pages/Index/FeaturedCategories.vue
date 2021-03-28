@@ -10,10 +10,10 @@
         <img
           class="featured-category__background"
           :src="getImageUrl(categories[0].thumbnail)"
-          alt=""
+          loading="lazy"
         >
         <div class="featured-category__content">
-          <h4 class="title">
+          <h4 class="display-text display-text--h3">
             <span>{{ categories[0][`title_${$i18n.locale}`] }}</span>
           </h4>
         </div>
@@ -23,10 +23,10 @@
           <img
             class="featured-category__background"
             :src="getImageUrl(categories[1].thumbnail)"
-            alt=""
+            loading="lazy"
           >
           <div class="featured-category__content">
-            <h4 class="title">
+            <h4 class="display-text display-text--h3">
               <span>{{ categories[1][`title_${$i18n.locale}`] }}</span>
             </h4>
           </div>
@@ -36,10 +36,10 @@
             <img
               class="featured-category__background"
               :src="getImageUrl(categories[2].thumbnail)"
-              alt=""
+              loading="lazy"
             >
             <div class="featured-category__content">
-              <h4 class="title">
+              <h4 class="display-text display-text--h3">
                 <span>{{ categories[2][`title_${$i18n.locale}`] }}</span>
               </h4>
             </div>
@@ -48,10 +48,10 @@
             <img
               class="featured-category__background"
               :src="getImageUrl(categories[3].thumbnail)"
-              alt=""
+              loading="lazy"
             >
             <div class="featured-category__content">
-              <h4 class="title">
+              <h4 class="display-text display-text--h3">
                 <span>{{ categories[3][`title_${$i18n.locale}`] }}</span>
               </h4>
             </div>

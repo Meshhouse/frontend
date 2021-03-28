@@ -4,16 +4,17 @@
     grid-template-columns: repeat(6, 1fr)
     grid-gap: $grid-gap-large
     margin-top: 1rem
+    margin-bottom: 3rem
   &__heading, &__description
     display: block
     text-align: center
 .program
+  position: relative
   padding: 0.5rem
-  height: calc(100% - 3rem)
-  margin-bottom: 3rem
   background-color: var(--block-color)
   border: 0.125rem solid var(--primary)
   border-radius: $border-radius-large
+  overflow: hidden
   &--autodesk
     background-color: #60b4bf
     border-color: #60b4bf
@@ -34,6 +35,17 @@
     background-color: #14303c
     border-color: #14303c
     color: $white
+  &__count
+    position: absolute
+    display: flex
+    align-items: center
+    right: -1.5rem
+    bottom: 0
+    font-size: 10rem
+    font-weight: 900
+    line-height: 6rem
+    opacity: 0.1
+    pointer-events: none
   &__icon
     display: block
     width: 100%
@@ -45,3 +57,27 @@
       padding: 0.5rem
   &__title
     text-align: center
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .index-programs
+    &__container
+      grid-template-columns: repeat(3, 1fr)
+  .program
+    &__icon
+      height: 100px
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .index-programs
+    &__container
+      grid-template-columns: repeat(2, 1fr)
+  .program
+    &__icon
+      height: 100px
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .index-programs
+    &__container
+      grid-template-columns: repeat(1, 1fr)
+  .program
+    &__icon
+      height: 100px

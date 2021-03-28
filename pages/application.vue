@@ -3,7 +3,7 @@
     <header class="application__jumbotron">
       <div class="grid-container grid-container--application-header">
         <div class="column">
-          <h1 class="display-text display-text--h1 jumbotron__header">
+          <h1 class="display-text display-text--h2 jumbotron__header">
             <span>
               {{ $t('application.jumbotron.title') }}
             </span>
@@ -54,12 +54,12 @@
       <div class="column column--application">
         <h2 class="display-text display-text--h2">
           <span>
-            Все модели в одном месте
+            {{ $t('application.blocks.1.title') }}
           </span>
         </h2>
-        <p>Наше абсолютно бесплатное приложение с открытым исходным кодом позволяет удобно организовывать, сортировать и каталогизировать библиотеку моделей. На данный момент приложение поддерживает распространенные форматы файлов DCC, а также 3DCoat и Substance Painter</p>
+        <p>{{ $t('application.blocks.1.text') }}</p>
         <p class="note">
-          DCC - программа создания цифрового контента. В их число входят 3dsMax, Maya, Blender, Cinema4D и т.д
+          {{ $t('application.blocks.1.note') }}
         </p>
       </div>
       <div class="column column--application">
@@ -77,25 +77,25 @@
       <div class="column column--application">
         <h2 class="display-text display-text--h2">
           <span>
-            Неограниченное число каталогов и категорий
+            {{ $t('application.blocks.2.title') }}
           </span>
         </h2>
         <p>
-          Хотите сделать каталог на каждую папку, что у вас есть? Не проблема! Вам хватает нескольких каталогов, но нужно точнее организовывать? Создайте в каталоге категорию ! Хотите категорию в категории? Это тоже можно!
+          {{ $t('application.blocks.2.text') }}
         </p>
         <p class="note">
-          Несмотря на то, что не рекомендуется делать отдельный каталог на папку внутри родительского каталога, это можно сделать.
+          {{ $t('application.blocks.2.note') }}
         </p>
       </div>
       <div class="column column--application">
         <h2 class="display-text display-text--h2">
           <span>
-            Устанавливайте любые модели
+            {{ $t('application.blocks.3.title') }}
           </span>
         </h2>
-        <p>Благодаря интеграциям со сторонними сайтами, у вас есть возможность установки сторонних моделей с интернета. Перед установкой вы можете посмотреть скриншоты, прочитать комментарии и общую информацию о модели.*</p>
+        <p>{{ $t('application.blocks.3.text') }}</p>
         <p class="note">
-          * - может быть недоступно для выбранной интеграции
+          {{ $t('application.blocks.3.note') }}
         </p>
       </div>
       <div class="column column--application">
@@ -200,21 +200,27 @@
         "title": "Handle your model library with ease",
         "text": "with our cross-platform open-sourced application."
       },
-      "lead": "Meshhouse - open-source 3D catalogizer program, built with Electron. <b>100% optional</b>",
-      "featureTitle": "Features:",
-      "featureList": "<li><p class='mb-0'>Meshhouse integration*</p></li><li><p class='mb-0'>Adding custom catalogs (grid and table view)</p></li><li><p class='mb-0'>Filter through your models collection</p></li><li><p class='mb-0'>Localization support</p></li>",
-      "note": "* - currently not implemented.",
-      "platforms": "Supported platforms:",
-      "platformWin": "Windows 7-10 (x64 only)",
-      "platformMac": "MacOS 10.10 Yosemite and newer",
-      "platformLinux": "Ubuntu 12.04, Fedora 21, Debian 8 and newer",
-      "localize": "Localizations:",
-      "status": "Currently in development, but you can build application by own:",
-      "link": "Github repo",
       "download": {
         "windows": "Download for Windows 7-10 x64 ({version})",
         "mac": "Download for MacOS 10.10 - 10.15 ({version})",
         "linux": "Download for Linux AppImage ({version})"
+      },
+      "blocks": {
+        "1": {
+          "title": "All models in one place",
+          "text": "Our completely free and open source application allows you to conveniently organize, sort and catalog your model library. The application currently supports common DCC file formats as well as 3DCoat and Substance Painter",
+          "note": "DCC is a digital content creation program. These include 3dsMax, Maya, Blender, Cinema4D, etc."
+        },
+        "2": {
+          "title": "Unlimited catalogs and categories",
+          "text": "Want to make a directory for every folder you have? No problem! Multiple directories are enough for you, but need to be more organized? Create a category in the catalog! Want a category in a category? This is also possible!",
+          "note": "Although it is not recommended to make a separate directory per folder within the parent directory, it can be done."
+        },
+        "3": {
+          "title": "Install any model",
+          "text": "Thanks to integrations with third-party sites, you have the ability to install third-party models from the Internet. Before installing, you can view screenshots, read comments and general information about the model.*",
+          "note": "* - may not be available for the selected integration"
+        }
       },
       "integrations": "Available integrations",
       "integrations__table": {
@@ -233,21 +239,27 @@
         "title": "Управляйте вашей библиотекой моделей с легкостью",
         "text": "с нашей программой с открытым исходным кодом."
       },
-      "lead": "Meshhouse - галерея 3D моделей с открытым исходным кодом, сделанный на Electron. <b>100% опционально</b>",
-      "featureTitle": "Возможности:",
-      "featureList": "<li><p class='mb-0'>Интеграция с сервисом Meshhouse*</p></li><li><p class='mb-0'>Добавление своих каталогов моделей (вид сеткой и таблицей)</p></li><li><p class='mb-0'>Сортируйте модели в вашей коллекции</p></li><li><p class='mb-0'>Поддержка локализации</p></li>",
-      "note": "* - пока не реализовано.",
-      "platforms": "Поддерживаемые платформы:",
-      "platformWin": "Windows 7-10 (только x64)",
-      "platformMac": "MacOS 10.10 Yosemite и новее",
-      "platformLinux": "Ubuntu 12.04, Fedora 21, Debian 8 и новее",
-      "localize": "Локализации:",
-      "status": "На данный момент программа в разработке, но вы можете собрать приложение самому:",
-      "link": "Репозиторий Github",
       "download": {
         "windows": "Скачать для Windows 7-10 x64 ({version})",
         "mac": "Скачать для MacOS 10.10 - 10.15 ({version})",
         "linux": "Скачать для Linux AppImage ({version})"
+      },
+      "blocks": {
+        "1": {
+          "title": "Все модели в одном месте",
+          "text": "Наше абсолютно бесплатное приложение с открытым исходным кодом позволяет удобно организовывать, сортировать и каталогизировать библиотеку моделей. На данный момент приложение поддерживает распространенные форматы файлов DCC, а также 3DCoat и Substance Painter",
+          "note": "DCC - программа создания цифрового контента. В их число входят 3dsMax, Maya, Blender, Cinema4D и т.д"
+        },
+        "2": {
+          "title": "Неограниченное число каталогов и категорий",
+          "text": "Хотите сделать каталог на каждую папку, что у вас есть? Не проблема! Вам хватает нескольких каталогов, но нужно точнее организовывать? Создайте в каталоге категорию! Хотите категорию в категории? Это тоже можно!",
+          "note": "Несмотря на то, что не рекомендуется делать отдельный каталог на папку внутри родительского каталога, это можно сделать."
+        },
+        "3": {
+          "title": "Устанавливайте любые модели",
+          "text": "Благодаря интеграциям со сторонними сайтами, у вас есть возможность установки сторонних моделей с интернета. Перед установкой вы можете посмотреть скриншоты, прочитать комментарии и общую информацию о модели.*",
+          "note": "* - может быть недоступно для выбранной интеграции"
+        }
       },
       "integrations": "Доступные интеграции",
       "integrations__table": {
@@ -265,6 +277,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import LazyHydrate from 'vue-lazy-hydration'
+import type { StrapiApplicationPC } from '@/types'
 
 @Component({
   components: {
@@ -278,9 +291,21 @@ import LazyHydrate from 'vue-lazy-hydration'
 })
 
 export default class IndexPage extends Vue {
-  async asyncData ({ app }: { app: any }): Promise<any> {
+  data: StrapiApplicationPC = {
+    integrations: [],
+    release: {
+      version: 'N/A',
+      assets: {
+        windows: '',
+        mac: '',
+        linux: ''
+      }
+    }
+  }
+
+  async asyncData ({ app }: { app: any }): Promise<{ data: StrapiApplicationPC }> {
     try {
-      const data = (await app.$strapi({
+      const data: StrapiApplicationPC = (await app.$strapi({
         method: 'GET',
         url: '/application-pc'
       })).data
@@ -312,25 +337,3 @@ export default class IndexPage extends Vue {
   }
 }
 </script>
-
-<style lang="sass">
-.integrations
-  &__container
-    display: grid
-    grid-template-columns: repeat(5, 1fr)
-    grid-auto-rows: 1fr
-    grid-gap: 1rem
-    margin: 2rem auto
-
-.integration
-  display: flex
-  align-items: center
-  padding: 1rem
-  background-color: var(--block-color)
-  border-radius: $border-radius-large
-  &__logo
-    display: block
-    width: 100%
-    height: 80px
-    object-fit: contain
-</style>

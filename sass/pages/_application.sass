@@ -32,32 +32,6 @@
     object-fit: cover
     object-position: top
 
-.grid-container
-  &--application-header
-    display: grid
-    grid-template-columns: repeat(2, 50%)
-    grid-gap: 1rem
-    .column
-      display: flex
-      flex-direction: column
-  &--application
-    display: grid
-    grid-template-columns: repeat(2, 50%)
-    grid-gap: 3rem
-    margin-bottom: 3rem !important
-    .column--application
-      font-size: 1.125rem
-      display: flex
-      flex-direction: column
-      align-items: flex-start
-      .note
-        color: #aaa
-        margin-top: auto
-  &--slider-full-width
-    max-width: calc(100vw - var(--scrollbar-width)) !important
-    max-height: 820px
-    overflow: hidden
-
 .jumbotron
   &__header
     margin-right: -5rem
@@ -80,7 +54,109 @@
           margin-left: -50%
           transform: scale(0.9)
 
+.integrations
+  &__container
+    display: grid
+    grid-template-columns: repeat(5, 1fr)
+    grid-auto-rows: 1fr
+    grid-gap: 1rem
+    margin: 2rem auto
+
 .integration
+  display: flex
+  align-items: center
+  padding: 1rem
+  background-color: var(--block-color)
+  border-radius: $border-radius-large
   &__preview
     flex: 1 1 33.3333%
+    width: 100px
+  &__logo
+    display: block
     width: 100%
+    height: 80px
+    object-fit: contain
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .application__jumbotron
+    &-image
+      margin-right: -25rem
+      margin-left: 10rem
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .application__jumbotron
+    &-image
+      margin-top: -6rem
+      margin-right: -25rem
+      margin-left: 10rem
+    &-links
+      flex-direction: column
+      .button
+        margin-bottom: 0.5rem
+        &:last-child
+          margin-bottom: 0
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .application__jumbotron
+    &-image
+      margin-top: -6rem
+      margin-right: -30rem
+      margin-left: 10rem
+      width: calc(100% + 30rem)
+    &-links
+      flex-direction: column
+      .button
+        margin-bottom: 0.5rem
+        &:last-child
+          margin-bottom: 0
+  .integrations
+    &__container
+      grid-template-columns: repeat(3, 1fr)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .application__jumbotron
+    background: rgba(0,0,0,0.6)
+    padding: 1rem 0
+    margin-bottom: 1rem
+    height: auto
+    position: relative
+    &-image
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      margin: 0
+      object-fit: cover
+      z-index: -1
+    &-links
+      flex-direction: column
+      .button
+        margin-bottom: 0.5rem
+        &:last-child
+          margin-bottom: 0
+  .application
+    &__description
+      font-size: 1rem
+      margin-bottom: 1rem
+  .integrations
+    &__container
+      grid-template-columns: repeat(2, 1fr)
+    &__heading
+      margin: 2rem auto
+      justify-content: center
+      .integration
+        &__preview
+          &:nth-child(1)
+            margin-right: -50%
+            transform: scale(0.9)
+          &:nth-child(2)
+            box-shadow: 0 0 2rem rgba(0,0,0,0.5)
+          &:nth-child(3)
+            margin-left: -50%
+            transform: scale(0.9)
+  .integration
+    &__preview
+      flex: 0 0 100%
+    &__logo
+      height: 40px

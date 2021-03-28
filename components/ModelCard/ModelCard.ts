@@ -1,21 +1,11 @@
 import { format } from 'date-fns'
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import VueTag from '@/components/Tag/Tag.vue'
+import type { StrapiSimpleModel } from '@/types'
 
-@Component({
+@Component<ModelCard>({
   components: {
     VueTag
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    row: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
   },
   methods: {
     format
@@ -23,14 +13,12 @@ import VueTag from '@/components/Tag/Tag.vue'
 })
 
 export default class ModelCard extends Vue {
+  @Prop({ type: Object, required: true }) readonly item!: StrapiSimpleModel;
+  @Prop({ type: Boolean, required: false, default: false }) readonly row!: boolean;
+
   getImageUrl (thumbnail: string | null): string {
     const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
     return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
-  }
-
-  getUniquePrograms (programs: any[]): string[] {
-    const filteredPrograms = new Set(programs.map((item: any) => item.program))
-    return [...filteredPrograms]
   }
 
   getProgramIcon (program: string): string {

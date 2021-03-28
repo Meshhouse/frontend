@@ -13,7 +13,7 @@
       <img src="/icons/logo-icon.svg" alt="Meshhouse">
     </span>
     <span slot="logo">
-      <img src="/icons/logo-full.svg" alt="Meshhouse" style="width: 300px">
+      <img src="/icons/logo-icon.svg" alt="Meshhouse" style="width: 3rem">
     </span>
   </model-viewer>
 </template>

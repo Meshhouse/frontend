@@ -1,16 +1,8 @@
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import type { StrapiModelTag } from '@/types'
 
-@Component({
-  props: {
-    tag: {
-      type: Object,
-      required: true
-    }
-  }
-})
+@Component({})
 
 export default class VueTag extends Vue {
-  onClick () {
-    this.$router.push(this.localePath('/models/all?tag=' + this.$props.tag[`title_${this.$i18n.locale}`]))
-  }
+  @Prop({ type: Object, required: true }) readonly tag!: StrapiModelTag
 }

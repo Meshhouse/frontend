@@ -46,19 +46,31 @@
     height: 100%
     padding: 1rem
     color: var(--light)
-    .title
+    .display-text
       margin: 0
-      text-transform: uppercase
-      font-size: 2.5rem
-      line-height: 1.1
-      font-weight: 900
-      span
-        display: inline
-        background: var(--primary)
-        box-shadow: 1rem 0 0 var(--primary), -1rem 0 0 var(--primary)
-        box-decoration-break: clone
+      margin-left: -10px
   &:hover
     text-decoration: none
     .featured-category
       &__background
         transform: scale(1.1)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .featured-categories
+    display: flex
+    flex-direction: column
+    grid-template-columns: none
+    grid-template-rows: none
+    min-height: 0
+    &--aside
+      display: grid
+      grid-template-columns: 1fr
+      grid-template-rows: repeat(2, 1fr)
+      grid-gap: $grid-gap-large
+    &--sub
+      display: grid
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: 1fr
+      grid-gap: $grid-gap-large
+  .featured-category
+    min-height: 10rem

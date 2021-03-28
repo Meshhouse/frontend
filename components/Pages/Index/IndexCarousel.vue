@@ -14,7 +14,7 @@
             <img
               class="slide__background"
               :src="getImageUrl(slide.background)"
-              alt=""
+              loading="lazy"
             >
           </picture>
           <div class="slide__container">

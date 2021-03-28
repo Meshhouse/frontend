@@ -2,10 +2,12 @@
   <header class="header">
     <div class="header__top-block">
       <nav class="top-block__container">
-        <div class="nav-item">
-          <nuxt-link class="nav-link" :to="localePath('/how-to-use-models')">
-            {{ $t('navigation.howto') }}
-          </nuxt-link>
+        <div class="navbar__info">
+          <div class="nav-item">
+            <nuxt-link class="nav-link" :to="localePath('/how-to-use-models')">
+              {{ $t('navigation.howto') }}
+            </nuxt-link>
+          </div>
         </div>
         <div class="navbar__links">
           <div class="nav-item">
@@ -19,12 +21,15 @@
     </div>
     <div class="header__navbar">
       <nav class="navbar__container">
-        <nuxt-link class="navbar__brand" :to="localePath('/')">
+        <nuxt-link class="brand brand--navbar" :to="localePath('/')">
           <img
             class="brand__image"
-            src="/icons/logo-full.svg"
+            src="/icons/logo-icon.svg"
             alt="Meshhouse"
           >
+          <p class="brand__title">
+            <b>esh</b>house
+          </p>
         </nuxt-link>
         <header-categories />
         <search-box />

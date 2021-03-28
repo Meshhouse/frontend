@@ -1,13 +1,14 @@
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Component, mixins } from 'nuxt-property-decorator'
+import { mixin as clickaway } from 'vue-clickaway'
 import ModelCard from '@/components/ModelCard/ModelCard.vue'
 
-@Component({
+@Component<SearchBox>({
   components: {
     ModelCard
   }
 })
 
-export default class SearchBox extends Vue {
+export default class SearchBox extends mixins(clickaway) {
   search = ''
   isResultsVisible = false
   results: any[] = []
@@ -39,12 +40,12 @@ export default class SearchBox extends Vue {
 
   onKeypress (event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      this.$router.push(this.localePath(`/models/all?search=${this.search}`))
+      this.$router.push(this.localePath(`/search?q=${this.search}`))
     }
   }
 
   async fetchSearchResults (): Promise<any> {
-    const response = await (this as any).$strapiBrowser({
+    const response = await (this as any).$strapi({
       method: 'GET',
       url: '/models/search',
       params: {

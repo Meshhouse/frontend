@@ -1,5 +1,15 @@
 .uploaded-models
   &__container
     display: grid
-    grid-gap: $grid-gap-large
+    grid-gap: 0.125rem
     grid-template-columns: repeat(5, 1fr)
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .uploaded-models
+    &__container
+      grid-template-columns: repeat(3, 1fr)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .uploaded-models
+    &__container
+      grid-template-columns: repeat(2, 1fr)

@@ -19,8 +19,8 @@
       content: ""
       height: 26px
       width: 26px
-      left: 4px
-      bottom: 4px
+      left: 0.25rem
+      bottom: 0.25rem
       background-color: white
       -webkit-transition: .4s
       transition: .4s
@@ -44,3 +44,59 @@
         height: 1rem
     input:checked + .slider:before
       transform: translateX(1rem)
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .switch
+    &--small
+      width: 2.25rem
+      height: 1.25rem
+      .slider
+        &:before
+          width: 0.875rem
+          height: 0.875rem
+          left: 0.175rem
+          bottom: 0.15rem
+      input:checked + .slider:before
+        transform: translateX(1rem)
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .switch
+    &--small
+      width: 2.25rem
+      height: 1.25rem
+      .slider
+        &:before
+          width: 0.875rem
+          height: 0.875rem
+          left: 0.175rem
+          bottom: 0.15rem
+      input:checked + .slider:before
+        transform: translateX(1rem)
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .switch
+    &--small
+      width: 2.25rem
+      height: 1.25rem
+      .slider
+        &:before
+          width: 0.875rem
+          height: 0.875rem
+          left: 0.175rem
+          bottom: 0.15rem
+      input:checked + .slider:before
+        transform: translateX(1rem)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .switch
+    &--small
+      width: 2.25rem
+      height: 1.25rem
+      .slider
+        &:before
+          width: 0.875rem
+          height: 0.875rem
+          left: 0.175rem
+          bottom: 0.15rem
+      input:checked + .slider:before
+        transform: translateX(1rem)

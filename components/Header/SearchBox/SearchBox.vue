@@ -1,5 +1,5 @@
 <template>
-  <div class="search-box">
+  <div v-on-clickaway="onInputBlur" class="search-box">
     <font-awesome-icon class="search-box__icon" icon="search" />
     <input
       v-model="search"
@@ -8,12 +8,12 @@
       type="text"
       :placeholder="$t('search-box__placeholder')"
       @focus="onInputFocus"
-      @blur="onInputBlur"
       @keypress="onKeypress"
     >
     <div
       class="search-box__results"
       :class="isResultsVisible ? 'is-visible' : ''"
+      @click="onInputBlur"
     >
       <model-card
         v-for="model in results"
@@ -23,7 +23,7 @@
       />
       <nuxt-link
         class="result result--link"
-        :to="localePath(`/models/all?search=${search}`)"
+        :to="localePath(`/search?q=${search}`)"
       >
         {{ $t('search-box__link', { query: search }) }}
       </nuxt-link>

@@ -2,11 +2,11 @@
   <div
     v-on-clickaway="away"
     class="dropdown"
-    @click="toggle"
   >
     <button
       class="button button--primary button--dropdown"
       :class="toggled ? 'button--dropdown-active' : ''"
+      @click="toggle"
     >
       <font-awesome-icon
         v-if="prependIcon !== null && prependIcon !== ''"
@@ -29,7 +29,6 @@
       class="dropdown__container"
       :class="toggled ? 'dropdown__container--active' : ''"
       :style="width !== null ? `min-width: ${width}px` : ''"
-      tabindex="0"
     >
       <slot name="content" />
     </div>

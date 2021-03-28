@@ -2,33 +2,6 @@ import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faBars,
-  faAngleDoubleLeft,
-  faSun,
-  faMoon,
-  faCalendarAlt,
-  faSearch,
-  faCheck,
-  faCheckCircle,
-  faTimes,
-  faTimesCircle,
-  faInfo,
-  faExclamation,
-  faVenus,
-  faDonate,
-  faCaretDown,
-  faCloudDownloadAlt
-} from '@fortawesome/free-solid-svg-icons'
-
-import {
-  faApple,
-  faLinux,
-  faWindows
-} from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-library.add(
-  faBars,
-  faAngleDoubleLeft,
   faSun,
   faMoon,
   faCalendarAlt,
@@ -43,6 +16,43 @@ library.add(
   faDonate,
   faCaretDown,
   faCloudDownloadAlt,
+  faAngleLeft,
+  faAngleDoubleLeft,
+  faAngleRight,
+  faAngleDoubleRight,
+  faCube,
+  faShareAlt
+} from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faApple,
+  faLinux,
+  faWindows
+} from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(
+  faBars,
+  faSun,
+  faMoon,
+  faCalendarAlt,
+  faSearch,
+  faCheck,
+  faCheckCircle,
+  faTimes,
+  faTimesCircle,
+  faInfo,
+  faExclamation,
+  faVenus,
+  faDonate,
+  faCaretDown,
+  faCloudDownloadAlt,
+  faAngleLeft,
+  faAngleDoubleLeft,
+  faAngleRight,
+  faAngleDoubleRight,
+  faCube,
+  faShareAlt,
   faApple,
   faLinux,
   faWindows

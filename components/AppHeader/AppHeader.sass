@@ -13,7 +13,6 @@
         color: var(--light)
 
 .header__navbar
-  color: var(--dark)
   padding: 1rem 0
   border-bottom: 0.125rem solid var(--primary)
 
@@ -78,12 +77,93 @@
       fill: var(--light)
 
 .brand
+  display: flex
+  align-items: center
+  margin-right: 1rem
   &__image
     height: 3rem
   &__title
     color: var(--header-text-color)
-    margin: 0 0 0 1rem
-    font-size: 3rem
+    margin: 0
+    margin-bottom: -0.125rem
+    font-size: 4.25rem
     line-height: 1
     letter-spacing: -4px
     text-transform: uppercase
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .brand
+    &__image
+      height: 2.625rem
+    &__title
+      margin-bottom: -0.125rem
+      font-size: 3.75rem
+  .navbar
+    &__container
+      .search-box
+        flex: 0 1 350px
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .brand
+    &__image
+      height: 2rem
+    &__title
+      margin-bottom: -0.125rem
+      font-size: 2.825rem
+  .navbar
+    &__container
+      .search-box
+        flex: 0 1 250px
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .brand
+    &__image
+      height: 2rem
+    &__title
+      display: none
+  .navbar
+    &__container
+      .search-box
+        flex: 0 1 250px
+        &__results
+          .model-card
+            &--row
+              .image
+                &__outer
+                  margin-right: -160px
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .brand
+    margin-right: 0.5rem
+    &__image
+      height: 2.55rem
+    &__title
+      display: none
+  .top-block
+    &__container
+      flex-direction: column
+      .navbar
+        &__links
+          margin: 0 auto
+          width: 100%
+          justify-content: space-between
+  .header
+    &__navbar
+      padding: 1rem 0 0
+  .navbar
+    &__info
+      display: none
+    &__container
+      flex-wrap: wrap
+      .search-box
+        flex: 0 0 calc(100vw - 123px)
+        &__results
+          left: -123px + 30px
+          width: calc(100vw - #{$padding-mobile * 2})
+          .model-card
+            &--row
+              .image
+                &__outer
+                  margin-right: -200px
+  .nav-item
+    margin-right: 0.5rem

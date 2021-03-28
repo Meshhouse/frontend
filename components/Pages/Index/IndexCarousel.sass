@@ -47,3 +47,38 @@
   display: grid
   grid-template-columns: repeat(2, 1fr)
   grid-column-gap: 2rem
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .swiper-slide--index-slider
+    height: 600px - 100px
+  .slide
+    &__content
+      padding: 2.5rem 0
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .swiper-slide--index-slider
+    height: 320px
+  .slide
+    &__container
+      display: block
+      grid-template-columns: none
+    &__content
+      padding: $padding-mobile 0
+      .description
+        font-size: 1rem
+      .courtesy
+        font-size: 0.875rem
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .swiper-slide--index-slider
+    height: 320px
+  .slide
+    &__container
+      display: block
+      grid-template-columns: none
+    &__content
+      padding: $padding-mobile 0
+      .description
+        font-size: 1rem
+      .courtesy
+        font-size: 0.875rem

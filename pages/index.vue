@@ -3,8 +3,8 @@
     <index-carousel :slides="indexPageData.slider" />
     <index-our-features />
     <featured-categories :categories="indexPageData.featuredCategories" />
-    <index-programs />
-    <index-uploaded-models :models="lastUploadedModels" />
+    <index-programs :stats="indexPageData.statistics" />
+    <index-uploaded-models :models="indexPageData.lastUploadedModels" />
   </div>
 </template>
 
@@ -16,8 +16,9 @@ import IndexUploadedModels from '@/components/Pages/Index/IndexUploadedModels.vu
 import FeaturedCategories from '@/components/Pages/Index/FeaturedCategories.vue'
 import IndexOurFeatures from '@/components/Pages/Index/IndexOurFeatures.vue'
 import LazyHydrate from 'vue-lazy-hydration'
+import type { StrapiIndexPage } from '@/types'
 
-@Component({
+@Component<IndexPage>({
   components: {
     FeaturedCategories,
     IndexCarousel,
@@ -34,31 +35,46 @@ import LazyHydrate from 'vue-lazy-hydration'
 })
 
 export default class IndexPage extends Vue {
+  indexPageData: StrapiIndexPage = {
+    featuredCategories: [],
+    slider: [],
+    statistics: {
+      max: 0,
+      maya: 0,
+      blender: 0,
+      c4d: 0,
+      unity: 0,
+      unreal: 0
+    },
+    lastUploadedModels: []
+  }
+
   async asyncData ({ app }: { app: any }): Promise<any> {
     try {
-      const indexPageData = (await app.$strapi({
+      const indexPageData: StrapiIndexPage = (await app.$strapi({
         method: 'GET',
         url: '/mainpage'
       })).data
 
-      const lastUploadedModels = (await app.$strapi({
-        method: 'GET',
-        url: '/models',
-        params: {
-          _limit: 5,
-          _sort: 'created_at'
-        }
-      })).data
-
       return {
-        indexPageData,
-        lastUploadedModels
+        indexPageData
       }
     } catch (err) {
       console.log(err)
       return {
-        indexPageData: {},
-        lastUploadedModels: []
+        indexPageData: {
+          featuredCategories: [],
+          slider: [],
+          statistics: {
+            max: 0,
+            maya: 0,
+            blender: 0,
+            c4d: 0,
+            unity: 0,
+            unreal: 0
+          },
+          lastUploadedModels: []
+        }
       }
     }
   }

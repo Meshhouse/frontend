@@ -12,6 +12,11 @@ export default class HeaderCategories extends Vue {
     this.$store.commit('setModalVisibility', !this.$store.state.modalVisible)
   }
 
+  navigate (path: string): void {
+    this.toggle()
+    this.$router.push(this.localePath(path))
+  }
+
   setActiveTab (slug: string): void {
     this.active = slug
   }

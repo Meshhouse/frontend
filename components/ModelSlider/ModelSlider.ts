@@ -1,10 +1,12 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import FsLightbox from 'fslightbox-vue'
+import LoaderSlider from '@/components/Loader/LoaderSlider.vue'
 import { hydrateWhenVisible } from 'vue-lazy-hydration'
 import type { StrapiModel } from '@/types'
 @Component({
   components: {
     FsLightbox,
+    LoaderSlider,
     VueModelViewer: hydrateWhenVisible(
       () => import('@/components/ModelViewer/ModelViewer.vue'),
       { observerOptions: { rootMargin: '100px' } }
@@ -30,13 +32,18 @@ export default class ModelSlider extends Vue {
 
   swiperOption = {
     slidesPerView: 1,
+    lazy: {
+      preloaderClass: 'loading__container--slide'
+    },
     grabCursor: true,
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev'
     },
     pagination: {
-      el: '.swiper-pagination'
+      el: '.swiper-pagination',
+      dynamicBullets: true,
+      dynamicMainBullets: 3
     }
   }
 
