@@ -8,6 +8,11 @@
               {{ $t('navigation.howto') }}
             </nuxt-link>
           </div>
+          <div class="nav-item">
+            <nuxt-link class="nav-link" :to="localePath('/embed-models')">
+              {{ $t('navigation.embed-models') }}
+            </nuxt-link>
+          </div>
         </div>
         <div class="navbar__links">
           <div class="nav-item">

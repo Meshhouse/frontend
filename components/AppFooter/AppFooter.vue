@@ -32,6 +32,11 @@
             </nuxt-link>
           </li>
           <li>
+            <nuxt-link :to="localePath('/embed-models')">
+              {{ $t('navigation.embed-models') }}
+            </nuxt-link>
+          </li>
+          <li>
             <nuxt-link :to="localePath('/application')">
               {{ $t('navigation.application') }}
             </nuxt-link>
@@ -53,11 +58,6 @@
           <li>
             <nuxt-link :to="localePath('/privacy-policy')">
               {{ $t('navigation.privacyPolicy') }}
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link :to="localePath('/contact-us')">
-              {{ $t('navigation.contactUs') }}
             </nuxt-link>
           </li>
           <li>

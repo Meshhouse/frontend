@@ -1,32 +1,17 @@
 export default {
-  application: {
-    title: 'Приложение Meshhouse',
-    lead: 'Meshhouse - галерея 3D моделей с открытым исходным кодом, сделанный на Electron. <b>100% опционально</b>',
-    featureTitle: 'Возможности:',
-    featureList: "<li><p class='mb-0'>Интеграция с сервисом Meshhouse*</p></li><li><p class='mb-0'>Добавление своих каталогов моделей (вид сеткой и таблицей)</p></li><li><p class='mb-0'>Сортируйте модели в вашей коллекции</p></li><li><p class='mb-0'>Поддержка локализации</p></li>",
-    note: '* - пока не реализовано.',
-    platforms: 'Поддерживаемые платформы:',
-    platformWin: 'Windows 7-10 (только x64)',
-    platformMac: 'MacOS 10.10 Yosemite и новее',
-    platformLinux: 'Ubuntu 12.04, Fedora 21, Debian 8 и новее',
-    localize: 'Локализации:',
-    status: 'На данный момент программа в разработке, но вы можете собрать приложение самому:',
-    link: 'Репозиторий Github'
-  },
   common: {
-    language: 'Язык',
-    contactLink: 'Обратная связь'
+    language: 'Язык'
   },
   navigation: {
     home: 'Главная',
     modelsCatalog: 'Каталог моделей',
     modelsAll: 'Все модели',
     howto: 'Как использовать модели',
+    'embed-models': 'Встраивание моделей',
     tos: 'Условия обслуживания',
     application: 'Приложение',
     dmca: 'Политика DMCA',
     privacyPolicy: 'Политика конфиденциальности',
-    contactUs: 'Контакты',
     news: 'Новости'
   },
   pages: {

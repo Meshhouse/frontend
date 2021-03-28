@@ -157,7 +157,11 @@ export default class EmbedCard extends Vue {
   }
 
   get routeLang (): string {
-    return this.$route.query.lang !== null ? this.$route.query.lang.toString() : 'en'
+    if (this.$route.query.lang === undefined || this.$route.query.lang === null || this.$route.query.lang === '') {
+      return 'en'
+    } else {
+      return this.$route.query.lang.toString()
+    }
   }
 
   getImageUrl (thumbnail: string | null): string {
