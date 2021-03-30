@@ -3,13 +3,14 @@ import HeaderCategories from '@/components/Header/HeaderCategories/HeaderCategor
 import LanguageSelector from '@/components/Header/LanguageSelector/LanguageSelector.vue'
 import ThemeSelector from '@/components/Header/ThemeSelector/ThemeSelector.vue'
 import SearchBox from '@/components/Header/SearchBox/SearchBox.vue'
-
+import NavbarButtons from '@/components/Header/NavbarButtons/NavbarButtons.vue'
 @Component({
   components: {
     HeaderCategories,
     LanguageSelector,
     ThemeSelector,
-    SearchBox
+    SearchBox,
+    NavbarButtons
   }
 })
 

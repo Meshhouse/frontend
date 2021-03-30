@@ -1,4 +1,22 @@
-@media (min-width: $breakpoint-modern-desktop)
+@media (min-width: $breakpoint-retina-desktop)
+  .top-block__container,
+  .navbar__container,
+  .slide__container,
+  .footer__container,
+  .categories__container
+    max-width: $container-max-width-retina-desktop
+    margin: 0 auto
+  .featured-categories
+    max-width: $container-max-width-modern-desktop
+    min-height: ($container-max-width-modern-desktop - 8px) / 2 !important
+  .slide__content
+    .title
+      font-size: 4.5rem
+  .grid-container
+    max-width: $container-max-width-modern-desktop
+    margin: 0 auto
+
+@media (min-width: $breakpoint-modern-desktop) and (max-width: $breakpoint-retina-desktop - 1px)
   .top-block__container,
   .navbar__container,
   .slide__container,

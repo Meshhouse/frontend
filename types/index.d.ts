@@ -202,6 +202,12 @@ export type AxiosStrapiNewsQuery = AxiosRequestConfig & {
   }
 }
 
+export type AxiosStrapiFavoritesQuery = AxiosRequestConfig & {
+  data: {
+    ids: number[];
+  }
+}
+
 // Axios response data
 
 export type AxiosStrapiSimpleModelsResponse = {

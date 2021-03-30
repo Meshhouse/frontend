@@ -34,4 +34,8 @@ export default class ModelCard extends Vue {
       }
     }
   }
+
+  get isInFavorite (): boolean {
+    return this.$store.state.favorites.find((item: number) => item === this.item.id) !== undefined
+  }
 }

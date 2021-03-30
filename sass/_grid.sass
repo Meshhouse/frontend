@@ -58,6 +58,14 @@ body.no-scroll
     &--slider-full-width
       max-width: 100vw !important
 
+@media (min-width: $breakpoint-retina-desktop)
+  .grid-container
+    &--models
+      grid-template-columns: repeat(8, 1fr)
+      max-width: $container-max-width-retina-desktop !important
+    &--application-header
+      max-width: $container-max-width-retina-desktop !important
+
 @media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
   .grid-container
     &--application

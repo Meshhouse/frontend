@@ -38,6 +38,7 @@
         </nuxt-link>
         <header-categories />
         <search-box />
+        <navbar-buttons />
         <div class="navbar__links">
           <div class="nav-item">
             <nuxt-link class="nav-link" :to="localePath('/news')">

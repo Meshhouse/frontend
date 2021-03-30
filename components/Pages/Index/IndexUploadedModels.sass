@@ -4,6 +4,11 @@
     grid-gap: 0.125rem
     grid-template-columns: repeat(5, 1fr)
 
+@media (min-width: $breakpoint-retina-desktop)
+  .uploaded-models
+    &__container
+      grid-template-columns: repeat(8, 1fr)
+
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
   .uploaded-models
     &__container

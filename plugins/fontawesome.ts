@@ -21,7 +21,8 @@ import {
   faAngleRight,
   faAngleDoubleRight,
   faCube,
-  faShareAlt
+  faShareAlt,
+  faHeart
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -53,6 +54,7 @@ library.add(
   faAngleDoubleRight,
   faCube,
   faShareAlt,
+  faHeart,
   faApple,
   faLinux,
   faWindows

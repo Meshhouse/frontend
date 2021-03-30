@@ -111,7 +111,7 @@ export default class ModelCatalog extends Vue {
         url: '/models',
         params: {
           page: 1,
-          count: 50,
+          count: 48,
           category: 'all'
         }
       }

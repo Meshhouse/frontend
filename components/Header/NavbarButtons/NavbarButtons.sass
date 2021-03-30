@@ -1,0 +1,18 @@
+.navbar-buttons
+  margin-left: 1rem
+  display: flex
+  align-items: center
+  > .button
+    margin-right: 1rem
+    &:last-child
+      margin-right: 0
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .navbar-buttons
+    margin-left: 0
+    > .button
+      min-width: 0
+      min-height: 0
+      .svg-inline--fa
+        width: 1rem
+        height: 1rem

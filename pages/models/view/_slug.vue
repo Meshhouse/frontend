@@ -6,6 +6,13 @@
         <span>{{ model[`title_${$i18n.locale}`] }}</span>
       </h1>
       <div class="button-group">
+        <button
+          class="button button--primary button--icon button--icon-lg"
+          :class="{ 'button--favorite-active': isInFavorite }"
+          @click="$store.commit('changeFavorite', model.id)"
+        >
+          <font-awesome-icon icon="heart" />
+        </button>
         <dropdown-button
           prepend-icon="share-alt"
           :width="300"
@@ -91,11 +98,6 @@
           {{ $t('pages.model-single.alerts.mature_content.text') }}
         </vue-alert>
         <div v-if="model[`description_${$i18n.locale}`] !== ''">
-          <h4 class="display-text display-text--h4">
-            <span>
-              {{ $t('pages.model-single.information.description') }}
-            </span>
-          </h4>
           <div style="margin-bottom: 1rem;" v-html="model[`description_${$i18n.locale}`]" />
         </div>
         <div v-if="model.tags.length > 0">
@@ -402,6 +404,10 @@ export default class ModelSinglePage extends Vue {
   getImageUrl (thumbnail: string | null): string {
     const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
     return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
+  }
+
+  get isInFavorite (): boolean {
+    return this.$store.state.favorites.find((item: number) => item === this.model.id) !== undefined
   }
 }
 </script>

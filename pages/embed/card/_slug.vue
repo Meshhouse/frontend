@@ -21,12 +21,14 @@
           </h1>
           <div class="tag-group">
             <div
+              v-if="model.brands.length > 0"
               class="tag tag--icon tag--warning"
               :title="translations[routeLang].brands"
             >
               <font-awesome-icon icon="exclamation" />
             </div>
             <div
+              v-if="model.is_mature_content"
               class="tag tag--icon tag--onlyfans"
               :title="translations[routeLang].mature"
             >

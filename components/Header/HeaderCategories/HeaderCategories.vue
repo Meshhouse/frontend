@@ -45,7 +45,9 @@
               :href="localePath(`/models/${item.slug}`)"
               @click.prevent="navigate(`/models/${item.slug}`)"
             >
-              {{ $t('navigation.modelsAll') }}
+              <div class="category__top">
+                {{ $t('navigation.modelsAll') }}
+              </div>
             </a>
             <a
               v-for="nestedItem in getNestedCategories(item)"
@@ -54,13 +56,18 @@
               :href="localePath(`/models/${nestedItem.slug}`)"
               @click.prevent="navigate(`/models/${nestedItem.slug}`)"
             >
-              <img
-                class="category__icon"
-                :src="`/icons/${nestedItem.icon}.png`"
-                loading="lazy"
+              <div class="category__top">
+                <img
+                  class="category__icon"
+                  :src="`/icons/${nestedItem.icon}.png`"
+                  loading="lazy"
+                >
+                {{ nestedItem[`title_${$i18n.locale}`] }}
+              </div>
+              <p
+                v-if="nestedItem[`description_${$i18n.locale}`].length > 0"
+                class="category__description"
               >
-              {{ nestedItem[`title_${$i18n.locale}`] }}
-              <p class="category__description">
                 {{ nestedItem[`description_${$i18n.locale}`] }}
               </p>
             </a>
