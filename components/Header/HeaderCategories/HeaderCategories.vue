@@ -65,7 +65,7 @@
                 {{ nestedItem[`title_${$i18n.locale}`] }}
               </div>
               <p
-                v-if="nestedItem[`description_${$i18n.locale}`].length > 0"
+                v-if="nestedItem[`description_${$i18n.locale}`] !== null && nestedItem[`description_${$i18n.locale}`].length > 0"
                 class="category__description"
               >
                 {{ nestedItem[`description_${$i18n.locale}`] }}
