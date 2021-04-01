@@ -6,7 +6,7 @@ module.exports = {
     port: process.env.PORT || 3000,
     host: '0.0.0.0'
   },
-  // modern: 'client',
+  modern: process.env.NODE_ENV === 'production' ? 'client' : false,
   watchers: {
     webpack: {
       ignored: [/\.nuxt\//, /node_modules/]

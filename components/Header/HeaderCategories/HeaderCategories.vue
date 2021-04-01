@@ -40,37 +40,45 @@
             :key="item.id"
             class="category__tab"
           >
-            <a
-              class="category category--nested"
-              :href="localePath(`/models/${item.slug}`)"
-              @click.prevent="navigate(`/models/${item.slug}`)"
+            <div
+              v-if="item[`description_${$i18n.locale}`] !== null"
+              class="tab__description"
             >
-              <div class="category__top">
-                {{ $t('navigation.modelsAll') }}
-              </div>
-            </a>
-            <a
-              v-for="nestedItem in getNestedCategories(item)"
-              :key="nestedItem.id"
-              class="category category--nested"
-              :href="localePath(`/models/${nestedItem.slug}`)"
-              @click.prevent="navigate(`/models/${nestedItem.slug}`)"
-            >
-              <div class="category__top">
-                <img
-                  class="category__icon"
-                  :src="`/icons/${nestedItem.icon}.png`"
-                  loading="lazy"
-                >
-                {{ nestedItem[`title_${$i18n.locale}`] }}
-              </div>
-              <p
-                v-if="nestedItem[`description_${$i18n.locale}`] !== null && nestedItem[`description_${$i18n.locale}`].length > 0"
-                class="category__description"
+              {{ item[`description_${$i18n.locale}`] }}
+            </div>
+            <div class="tab__grid">
+              <a
+                class="category category--nested"
+                :href="localePath(`/models/${item.slug}`)"
+                @click.prevent="navigate(`/models/${item.slug}`)"
               >
-                {{ nestedItem[`description_${$i18n.locale}`] }}
-              </p>
-            </a>
+                <div class="category__top">
+                  {{ $t('navigation.modelsAll') }}
+                </div>
+              </a>
+              <a
+                v-for="nestedItem in getNestedCategories(item)"
+                :key="nestedItem.id"
+                class="category category--nested"
+                :href="localePath(`/models/${nestedItem.slug}`)"
+                @click.prevent="navigate(`/models/${nestedItem.slug}`)"
+              >
+                <div class="category__top">
+                  <img
+                    class="category__icon"
+                    :src="`/icons/${nestedItem.icon}.png`"
+                    loading="lazy"
+                  >
+                  {{ nestedItem[`title_${$i18n.locale}`] }}
+                </div>
+                <p
+                  v-if="nestedItem[`description_${$i18n.locale}`] !== null && nestedItem[`description_${$i18n.locale}`].length > 0"
+                  class="category__description"
+                >
+                  {{ nestedItem[`description_${$i18n.locale}`] }}
+                </p>
+              </a>
+            </div>
           </div>
         </div>
         <!--
