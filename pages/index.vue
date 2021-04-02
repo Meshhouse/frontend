@@ -34,7 +34,6 @@ import IndexPrograms from '@/components/Pages/Index/IndexPrograms.vue'
 import IndexUploadedModels from '@/components/Pages/Index/IndexUploadedModels.vue'
 import FeaturedCategories from '@/components/Pages/Index/FeaturedCategories.vue'
 import IndexOurFeatures from '@/components/Pages/Index/IndexOurFeatures.vue'
-import LazyHydrate from 'vue-lazy-hydration'
 import type { StrapiIndexPage } from '@/types'
 
 @Component<IndexPage>({
@@ -43,8 +42,7 @@ import type { StrapiIndexPage } from '@/types'
     IndexCarousel,
     IndexPrograms,
     IndexUploadedModels,
-    IndexOurFeatures,
-    LazyHydrate
+    IndexOurFeatures
   },
   head () {
     return {
