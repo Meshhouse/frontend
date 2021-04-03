@@ -104,6 +104,7 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
+    'nuxt-ssr-cache',
     ['nuxt-i18n', {
       vueI18nLoader: true,
       defaultLocale: 'en',
@@ -129,6 +130,23 @@ module.exports = {
       vueI18n: '~/plugins/i18n.ts'
     }]
   ],
+  cache: {
+    useHostPrefix: false,
+    pages: [
+      '/'
+    ],
+    store: {
+      type: 'redis',
+      host: 'redis',
+      port: 6379,
+      auth_pass: process.env.REDIS_PASSWORD,
+      ttl: 60 * 60,
+      configure: [
+        ['maxmemory', '128mb'],
+        ['maxmemory-policy', 'allkeys-lru']
+      ]
+    }
+  },
   router: {
     prefetchLinks: false
   }
