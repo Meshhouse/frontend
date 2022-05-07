@@ -25,15 +25,15 @@
     </nuxt-link>
     <nuxt-link
       class="button button--primary button--icon"
-      :to="generateLink((activePage + 1) < pagination.pages ? (activePage + 1) : pagination.pages)"
-      :disabled="activePage === pagination.pages"
+      :to="generateLink((activePage + 1) < pagination.last_page ? (activePage + 1) : pagination.last_page)"
+      :disabled="activePage === pagination.last_page"
     >
       <font-awesome-icon icon="angle-right" />
     </nuxt-link>
     <nuxt-link
       class="button button--primary button--icon"
-      :to="generateLink(pagination.pages)"
-      :disabled="activePage === pagination.pages"
+      :to="generateLink(pagination.last_page)"
+      :disabled="activePage === pagination.last_page"
     >
       <font-awesome-icon icon="angle-double-right" />
     </nuxt-link>

@@ -22,7 +22,7 @@
       <div class="column">
         <ul class="footer__links">
           <li>
-            <nuxt-link :to="localePath('/models/all')">
+            <nuxt-link :to="localePath('/models')">
               {{ $t('navigation.modelsAll') }}
             </nuxt-link>
           </li>
@@ -37,8 +37,18 @@
             </nuxt-link>
           </li>
           <li>
+            <nuxt-link :to="localePath('/licensing-policy')">
+              {{ $t('navigation.licensing') }}
+            </nuxt-link>
+          </li>
+          <li>
             <nuxt-link :to="localePath('/application')">
               {{ $t('navigation.application') }}
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link :to="localePath('/api-docs')">
+              API
             </nuxt-link>
           </li>
         </ul>

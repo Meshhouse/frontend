@@ -1,6 +1,15 @@
+import form from './form'
+import validations from './validations'
+import breadcrumbs from './breadcrumbs'
+
 export default {
+  breadcrumbs,
+  form,
+  validations,
   common: {
-    language: 'Язык'
+    language: 'Язык',
+    true: 'Да',
+    false: 'Нет'
   },
   navigation: {
     home: 'Главная',
@@ -12,6 +21,7 @@ export default {
     application: 'Приложение',
     dmca: 'Политика DMCA',
     privacyPolicy: 'Политика конфиденциальности',
+    licensing: 'Лицензирование моделей',
     news: 'Новости'
   },
   pages: {

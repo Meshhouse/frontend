@@ -1,0 +1,35 @@
+.license
+  padding: $grid-gap-large
+  border: $border-width solid $primary
+  border-radius: $border-radius
+  background: var(--block-color)
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    .title
+      font-size: 1.05rem
+    .icons
+      display: flex
+      align-items: center
+      justify-content: flex-end
+      flex: 0 0 3rem
+      .svg-inline--fa
+        width: 1.25rem
+        height: 1.25rem
+        margin-right: $grid-gap-large
+        &:last-child
+          margin-right: 0
+
+      .icon
+        &-copyright
+          color: $warning
+        &-donate
+          color: $success
+        &-onlyfans
+          color: $matureNotice
+
+
+.licenses
+  .license
+    margin-bottom: $grid-gap-large

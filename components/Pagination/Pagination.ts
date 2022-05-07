@@ -1,11 +1,14 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import type {
+  Pagination
+} from '@/types/api'
 
 @Component({})
 
-export default class Pagination extends Vue {
-  @Prop({ type: Object, required: true }) readonly pagination!: any
-  @Prop({ type: String, required: true, default: 'models' }) readonly baseUrl!: any
-  @Prop({ type: String, required: true, default: '' }) readonly param!: any
+export default class Paginator extends Vue {
+  @Prop({ type: Object, required: true }) readonly pagination!: Pagination
+  @Prop({ type: String, required: true, default: 'models' }) readonly baseUrl!: string
+  @Prop({ type: String, required: true, default: '' }) readonly param!: string
 
   paginatorLimit = 5
 
@@ -15,12 +18,12 @@ export default class Pagination extends Vue {
 
   get paginatorPages (): number[] {
     const arr: number[] = []
-    for (let i = 1; i <= this.pagination.pages; i++) {
+    for (let i = 1; i <= this.pagination.last_page; i++) {
       arr.push(i)
     }
     const pages = Number(this.activePage) + this.paginatorLimit
     const slicedArr = arr.slice(this.activePage - 1, pages)
-    if (this.pagination.pages < this.paginatorLimit) {
+    if (this.pagination.last_page < this.paginatorLimit) {
       return arr
     }
     if (slicedArr.length <= this.paginatorLimit) {

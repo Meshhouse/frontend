@@ -63,7 +63,7 @@ export default class ModelSearch extends Vue {
     count: 0
   }
 
-  async asyncData ({ app, route }: { app: any, route: any }): Promise<any> {
+  async asyncData ({ app, route }: { app: NuxtApp, route: any }): Promise<any> {
     try {
       const params: AxiosStrapiSearchQuery = {
         method: 'GET',

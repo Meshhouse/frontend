@@ -1,4 +1,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
+import type {
+  CategoryTreeItem
+} from '@/types/api/categories'
 
 @Component({})
 
@@ -21,17 +24,11 @@ export default class HeaderCategories extends Vue {
     this.active = slug
   }
 
-  get categories (): any[] {
+  get categories (): CategoryTreeItem[] {
     return this.$store.state.categories
   }
 
-  get rootCategories (): any[] {
-    return this.categories.filter((item: any) => item.parent_category === null)
-  }
-
-  getNestedCategories (parent: any): any[] {
-    return this.categories.filter((item: any) => {
-      return item.parent_category !== null && item.parent_category.id === parent.id
-    })
+  get rootCategories (): CategoryTreeItem[] {
+    return this.categories.filter(item => item.parent_id === null)
   }
 }

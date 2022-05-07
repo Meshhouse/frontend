@@ -1,5 +1,8 @@
 <template>
-  <div class="loading__container loading__container--slide loading__container--visible">
+  <div
+    class="loading__container loading__container--slide loading__container--visible"
+    :class="loaderClass"
+  >
     <div class="spinner">
       <div class="rect1" />
       <div class="rect2" />

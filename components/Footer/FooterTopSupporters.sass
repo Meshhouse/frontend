@@ -1,0 +1,27 @@
+.top-supporters
+  background-color: $primary
+  color: $white
+  padding: 2rem 0
+  &__wrapper
+    display: grid
+    grid-template-columns: repeat(5, 1fr)
+    grid-auto-rows: min-content
+    align-items: flex-start
+    grid-gap: 0.125rem
+  .display-text
+    text-align: center
+
+.top-supporter
+  display: block
+  &__image
+    filter: grayscale(1) brightness(3)
+
+@media (min-width: $breakpoint-tablet ) and (max-width: $breakpoint-desktop - 1px)
+  .top-supporters
+     &__wrapper
+      grid-template-columns: repeat(3, 1fr)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .top-supporters
+     &__wrapper
+      grid-template-columns: repeat(2, 1fr)

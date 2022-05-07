@@ -1,5 +1,5 @@
 import { Vue, Component } from 'nuxt-property-decorator'
-import DropdownButton from '@/components/Button/DropdownButton.vue'
+import DropdownButton from '@/components/DropdownButton/DropdownButton.vue'
 
 @Component({
   components: {

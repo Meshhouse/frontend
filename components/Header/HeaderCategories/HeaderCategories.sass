@@ -1,6 +1,6 @@
 .categories
   position: fixed
-  top: 9rem
+  top: 8.775rem
   left: 0
   width: 100%
   height: calc(100vh - 8.5rem)
@@ -119,14 +119,15 @@
   &--root
     background: var(--primary)
     padding: 0.25rem 1rem
-    font-weight: 400
+    font-weight: 700
+    font-family: $fontDisplay
     text-transform: uppercase
     color: #fff
     border-radius: $border-radius
     .svg-inline--fa
       margin-left: auto
       opacity: 0
-    &:hover
+    &:hover, &-active
       .svg-inline--fa
         opacity: 1
 
@@ -149,8 +150,8 @@
       .svg-inline--fa
         margin-left: 0
   .categories
-    top: 8.65rem
-    height: calc(100vh - 8.65rem)
+    top: 8.067rem
+    height: calc(100vh - 8.067rem)
 
 @media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
   .header__categories
@@ -161,8 +162,8 @@
       .svg-inline--fa
         margin-left: 0
   .categories
-    top: 8rem
-    height: calc(100vh - 8rem)
+    top: 7.425rem
+    height: calc(100vh - 7.425rem)
 
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
   .header__categories
@@ -173,8 +174,8 @@
       .svg-inline--fa
         margin-left: 0
   .categories
-    top: 8rem
-    height: calc(100vh - 8rem)
+    top: 7.425rem
+    height: calc(100vh - 7.425rem)
     &__tabs
       max-height: none
     &__nav
@@ -194,8 +195,8 @@
       .svg-inline--fa
         margin-left: 0
   .categories
-    top: 9rem
-    height: calc(100vh - 9rem)
+    top: 6.25rem
+    height: calc(100vh - 6.25rem)
     &__nav
       padding: 0.5rem
       overflow: hidden
@@ -209,7 +210,7 @@
     &__container
       grid-template-columns: none
       grid-template-rows: 3rem 1fr
-      max-height: calc(100vh - 9rem)
+      max-height: calc(100vh - 6.25rem)
   .tab
     &__grid
       grid-template-columns: none

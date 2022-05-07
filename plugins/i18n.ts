@@ -1,5 +1,6 @@
 export default function (): any {
   return {
+    silentTranslationWarn: true,
     pluralizationRules: {
       ru (choice: number, choicesLength: number) {
         if (choice === 0) {

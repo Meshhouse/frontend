@@ -1,11 +1,16 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import FsLightbox from 'fslightbox-vue'
 import LoaderSlider from '@/components/Loader/LoaderSlider.vue'
+import Overlay from '@/components/Overlay/Overlay.vue'
+import ModelSliderOverlay from '@/components/Modals/ModelSliderOverlay/ModelSliderOverlay.vue'
 import { hydrateWhenVisible } from 'vue-lazy-hydration'
-import type { StrapiModel } from '@/types'
+
+import type {
+  ModelFull
+} from '@/types/api/models'
 @Component({
   components: {
-    FsLightbox,
+    Overlay,
+    ModelSliderOverlay,
     LoaderSlider,
     VueModelViewer: hydrateWhenVisible(
       () => import('@/components/ModelViewer/ModelViewer.vue'),
@@ -24,11 +29,16 @@ export default class ModelSlider extends Vue {
         preview: null
       }
     }
-  }) readonly model!: StrapiModel
+  }) readonly model!: ModelFull
+
+  @Prop({
+    type: Boolean,
+    default: false
+  }) readonly togglePreview!: boolean
 
   viewerVisible = false
-  toggleLightBox = false
-  lightboxSlide = 1
+  overlayVisible = false
+  lightboxSlide = 0
 
   swiperOption = {
     slidesPerView: 1,
@@ -54,18 +64,9 @@ export default class ModelSlider extends Vue {
     slideToClickedSlide: true
   }
 
-  getImageUrl (thumbnail: string | null): string {
-    const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
-    return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
-  }
-
   openLightboxOnSlide (slide: number): void {
     this.lightboxSlide = slide
-    this.toggleLightBox = !this.toggleLightBox
-  }
-
-  get lightboxSources (): string[] {
-    return this.model.images.map((image: any) => this.getImageUrl(image))
+    this.overlayVisible = !this.overlayVisible
   }
 
   mounted (): void {

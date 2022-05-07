@@ -1,0 +1,24 @@
+.model-specifications
+  padding: $grid-gap-large
+  border: $border-width solid $primary
+  border-radius: $border-radius
+  background: var(--block-color)
+  display: flex
+  flex-direction: column
+
+.specification
+  display: flex
+  justify-content: space-between
+  align-items: center
+  font-size: 1.05rem
+  padding: $grid-gap 0
+  border-bottom: $border-width solid $primary
+  margin-bottom: $grid-gap
+  &:last-child
+    border-bottom: none
+  &__value
+    .icon
+      &--danger
+        color: $danger
+      &--success
+        color: $success

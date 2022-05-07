@@ -1,8 +1,11 @@
 <template>
   <div class="navbar-buttons">
-    <nuxt-link
-      class="button button--secondary button--icon button--icon-lg"
-      :to="localePath('/favorites')"
+    <!--<v-button
+      color="secondary"
+      icon
+      size="lg"
+      :title="$t('favorites')"
+      :href="localePath('/favorites')"
     >
       <font-awesome-icon icon="heart" />
       <span
@@ -11,9 +14,27 @@
       >
         {{ favoritesString }}
       </span>
-    </nuxt-link>
+    </v-button>-->
+    <user-box
+      :title="$t('user')"
+      @open-login="$emit('open-login')"
+      @open-register="$emit('open-register')"
+    />
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "favorites": "Favorites",
+    "user": "User settings"
+  },
+  "ru": {
+    "favorites": "Список желаемого",
+    "user": "Настройки пользователя"
+  }
+}
+</i18n>
 
 <script lang="ts" src="./NavbarButtons.ts" />
 

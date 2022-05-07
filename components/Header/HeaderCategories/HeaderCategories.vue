@@ -1,12 +1,13 @@
 <template>
   <div class="header__categories">
-    <button
-      class="button button--primary"
+    <v-button
+      color="primary"
+      :title="$t('navigation.modelsCatalog')"
       @click="toggle"
     >
       <span>{{ $t('navigation.modelsCatalog') }}</span>
-      <font-awesome-icon icon="bars" />
-    </button>
+      <font-awesome-icon icon="bars" style="min-width: 0.875rem; flex: 0 0 0.875rem" />
+    </v-button>
     <div
       class="categories"
       :class="toggled ? 'categories--active' : ''"
@@ -16,108 +17,72 @@
         <div class="categories__nav">
           <a
             class="category category--root"
-            :href="localePath('/models/all')"
-            @click.prevent="navigate('/models/all')"
+            :href="localePath('/models/')"
+            @click.prevent="navigate('/models/')"
           >
             {{ $t('navigation.modelsAll') }}
-            <font-awesome-icon icon="angle-double-left" />
+            <font-awesome-icon icon="angle-double-right" />
           </a>
           <a
             v-for="item in rootCategories"
             :key="item.id"
             class="category category--root"
-            href="#"
+            :class="{ 'category--root-active': active === item.slug }"
+            :href="localePath(`/models/${item.slug}`)"
             @click.prevent="setActiveTab(item.slug)"
           >
             {{ item[`title_${$i18n.locale}`] }}
-            <font-awesome-icon icon="angle-double-left" />
+            <font-awesome-icon icon="angle-double-right" />
           </a>
         </div>
         <div class="categories__tabs">
           <div
-            v-for="item in rootCategories"
-            v-show="active === item.slug"
-            :key="item.id"
+            v-for="category in rootCategories"
+            v-show="active === category.slug"
+            :key="category.id"
             class="category__tab"
           >
             <div
-              v-if="item[`description_${$i18n.locale}`] !== null"
+              v-if="category[`description_${$i18n.locale}`] !== null"
               class="tab__description"
             >
-              {{ item[`description_${$i18n.locale}`] }}
+              {{ category[`description_${$i18n.locale}`] }}
             </div>
             <div class="tab__grid">
               <a
                 class="category category--nested"
-                :href="localePath(`/models/${item.slug}`)"
-                @click.prevent="navigate(`/models/${item.slug}`)"
+                :href="localePath(`/models/${category.slug}`)"
+                @click.prevent="navigate(`/models/${category.slug}`)"
               >
                 <div class="category__top">
                   {{ $t('navigation.modelsAll') }}
                 </div>
               </a>
               <a
-                v-for="nestedItem in getNestedCategories(item)"
-                :key="nestedItem.id"
+                v-for="children in category.childrens"
+                :key="children.id"
                 class="category category--nested"
-                :href="localePath(`/models/${nestedItem.slug}`)"
-                @click.prevent="navigate(`/models/${nestedItem.slug}`)"
+                :href="localePath(`/models/${children.slug}`)"
+                @click.prevent="navigate(`/models/${children.slug}`)"
               >
                 <div class="category__top">
                   <img
                     class="category__icon"
-                    :src="`/icons/${nestedItem.icon}.png`"
+                    :src="`/icons/${children.icon}.png`"
                     loading="lazy"
                   >
-                  {{ nestedItem[`title_${$i18n.locale}`] }}
+                  {{ children[`title_${$i18n.locale}`] }}
                 </div>
                 <p
-                  v-if="nestedItem[`description_${$i18n.locale}`] !== null && nestedItem[`description_${$i18n.locale}`].length > 0"
+                  v-if="String(children[`description_${$i18n.locale}`]).length > 0"
                   class="category__description"
                 >
-                  {{ nestedItem[`description_${$i18n.locale}`] }}
+                  {{ children[`description_${$i18n.locale}`] }}
                 </p>
               </a>
             </div>
           </div>
         </div>
-        <!--
-        <div class="column">
-          <nuxt-link
-            class="category category--root"
-            :to="localePath('/models/all')"
-          >
-            {{ $t('navigation.modelsAll') }}
-            <font-awesome-icon icon="angle-double-left" />
-          </nuxt-link>
-        </div>
-        <div
-          v-for="item in rootCategories"
-          :key="item.id"
-          class="column"
-        >
-          <nuxt-link
-            class="category category--root"
-            :to="localePath(`/models/${item.slug}`)"
-          >
-            {{ item[`title_${$i18n.locale}`] }}
-            <font-awesome-icon icon="angle-double-left" />
-          </nuxt-link>
-          <div class="category__block">
-            <nuxt-link
-              v-for="nestedItem in getNestedCategories(item)"
-              :key="nestedItem.id"
-              class="category category--nested"
-              :to="localePath(`/models/${nestedItem.slug}`)"
-            >
-              <img
-                class="category__icon"
-                :src="`/icons/${nestedItem.icon}.png`"
-              >
-              {{ nestedItem[`title_${$i18n.locale}`] }}
-            </nuxt-link>
-          </div>
-        </div>-->
       </div>
     </div>
   </div>

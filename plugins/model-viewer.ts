@@ -7,5 +7,6 @@ if (!process.browser) {
 }
 
 Vue.config.ignoredElements = [
-  'model-viewer'
+  'model-viewer',
+  'elements-api'
 ]

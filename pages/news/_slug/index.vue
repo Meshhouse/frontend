@@ -12,11 +12,13 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import PostCard from '@/components/PostCard/PostCard.vue'
-import type { StrapiPost } from '~/types'
+import type {
+  BlogFull
+} from '@/types/api/posts'
 
-type NewsSingleAsyncData = {
-  post: StrapiPost
-}
+import type { NuxtApp } from '@nuxt/types/app'
+import type { Route } from 'vue-router'
+import type { AxiosRequestConfig } from 'axios'
 
 @Component<NewsSingle>({
   components: {
@@ -30,7 +32,7 @@ type NewsSingleAsyncData = {
 })
 
 export default class NewsSingle extends Vue {
-  post: StrapiPost = {
+  post: BlogFull = {
     id: -1,
     title_en: 'string',
     title_ru: 'string',
@@ -44,14 +46,15 @@ export default class NewsSingle extends Vue {
     content_ru: ''
   }
 
-  async asyncData ({ app, route }: { app: any, route: any }): Promise<NewsSingleAsyncData> {
+  async asyncData ({ app, route }: { app: NuxtApp, route: Route }): Promise<any> {
     try {
-      const params = {
+      const params: AxiosRequestConfig = {
         method: 'GET',
-        url: `/blog-posts/${route.params.slug}`
+        url: `posts/${route.params.slug}`,
+        headers: app.$generateAuthHeader(`posts/${route.params.slug}`, 'GET')
       }
 
-      const data: StrapiPost = (await app.$strapi(params)).data
+      const data: BlogFull = (await app.$api(params)).data
 
       return {
         post: data

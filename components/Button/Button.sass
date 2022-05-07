@@ -1,0 +1,94 @@
+.button
+  position: relative
+  border: none
+  display: flex
+  align-items: center
+  color: var(--light)
+  min-height: 3rem
+  padding: 0.5rem 1rem
+  border-radius: $border-radius
+  cursor: pointer
+  transition: all 0.3s ease
+  &:focus
+    outline: none
+  .svg-inline--fa
+    max-height: 1rem
+    margin-left: 0.5rem
+  .badge
+    position: absolute
+    top: -0.5rem
+    right: -0.5rem
+  &[disabled="disabled"], &--disabled
+    background: var(--block-color) !important
+    color: $disabled-color !important
+    cursor: not-allowed !important
+    &:hover
+      background: var(--block-color)
+      color: $disabled-color
+
+.button
+  &--primary
+    background-color: var(--primary)
+    &:hover
+      background-color: darken($primary, 10%)
+    &[disabled="disabled"]
+      background-color: var(--block-color)
+      color: var(--text-color)
+  &--secondary
+    background-color: $lightGray
+    color: var(--text-color)
+    &:hover
+      background-color: darken($lightGray, 10%)
+    .svg-inline--fa
+      path
+        fill: var(--text-color)
+  &--danger
+    background-color: $danger
+    &:hover
+      background-color: darken($danger, 10%)
+    .svg-inline--fa
+      path
+        fill: var(--text-color)
+  &--dropdown
+    .svg-inline--fa
+      margin: 0
+    .dropdown
+      &__prepend-icon
+        margin-right: 0.5rem
+      &__append-icon, &__caret
+        margin-left: 0.5rem
+    &-active
+      .dropdown
+         &__caret
+           transform: rotate(180deg)
+  &--icon
+    justify-content: center
+    .svg-inline--fa
+      margin: 0
+      max-height: none
+  &--favorite-active
+    background-color: darken($primary, 10%)
+    .svg-inline--fa
+      path
+        fill: red
+
+
+.button
+  &--lg
+    padding: 0.5rem
+    min-width: 3rem
+    .svg-inline--fa
+      width: 1.5rem
+      height: 1.5rem
+
+.button-group
+  display: flex
+  align-items: center
+  grid-gap: $grid-gap-large
+
+body.theme-dark
+  .button
+    &--secondary
+      background-color: $darkGray
+      &:hover
+        background-color: lighten($darkGray, 10%)

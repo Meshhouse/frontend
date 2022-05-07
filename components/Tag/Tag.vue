@@ -1,9 +1,9 @@
 <template>
   <nuxt-link
     class="tag"
-    :to="localePath('/models/all?tag=' + tag[`title_${$i18n.locale}`])"
+    :to="localePath('/models/all?tag=' + tag)"
   >
-    {{ tag[`title_${$i18n.locale}`] }}
+    {{ tag }}
   </nuxt-link>
 </template>
 

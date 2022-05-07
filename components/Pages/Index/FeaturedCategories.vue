@@ -9,7 +9,7 @@
       <nuxt-link class="featured-category" :to="localePath(getUrl(categories[0]))">
         <img
           class="featured-category__background"
-          :src="getImageUrl(categories[0].thumbnail)"
+          :src="categories[0].thumbnail"
           loading="lazy"
         >
         <div class="featured-category__content">
@@ -22,7 +22,7 @@
         <nuxt-link class="featured-category" :to="localePath(getUrl(categories[1]))">
           <img
             class="featured-category__background"
-            :src="getImageUrl(categories[1].thumbnail)"
+            :src="categories[1].thumbnail"
             loading="lazy"
           >
           <div class="featured-category__content">
@@ -35,7 +35,7 @@
           <nuxt-link class="featured-category" :to="localePath(getUrl(categories[2]))">
             <img
               class="featured-category__background"
-              :src="getImageUrl(categories[2].thumbnail)"
+              :src="categories[2].thumbnail"
               loading="lazy"
             >
             <div class="featured-category__content">
@@ -47,7 +47,7 @@
           <nuxt-link class="featured-category" :to="localePath(getUrl(categories[3]))">
             <img
               class="featured-category__background"
-              :src="getImageUrl(categories[3].thumbnail)"
+              :src="categories[3].thumbnail"
               loading="lazy"
             >
             <div class="featured-category__content">

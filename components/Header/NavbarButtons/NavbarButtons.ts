@@ -1,6 +1,9 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
+import UserBox from '@/components/Header/UserBox/UserBox.vue'
 @Component({
+  components: {
+    UserBox
+  }
 })
 
 export default class NavbarButtons extends Vue {

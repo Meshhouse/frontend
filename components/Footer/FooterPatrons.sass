@@ -1,0 +1,30 @@
+.patrons
+  background-color: var(--block-color-alt)
+  padding: 2rem 0
+  &__wrapper
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    grid-gap: $grid-gap-large
+  .display-text
+    text-align: center
+
+.patron
+  line-height: 1
+  display: block
+  &--basic
+    opacity: 0.35
+  &--advanced
+    opacity: 0.75
+    font-size: 1.125rem
+  &--intermediate
+    font-size: 1.375rem
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .patron
+    &--basic
+      font-size: 0.625rem
+    &--advanced
+      font-size: 0.85rem
+    &--intermediate
+      font-size: 1rem

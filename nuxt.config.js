@@ -1,6 +1,7 @@
 module.exports = {
   env: {
-    isDev: process.env.NODE_ENV === 'development'
+    isDev: process.env.NODE_ENV === 'development',
+    apiKey: process.env.API_SECRET_KEY
   },
   server: {
     port: process.env.PORT || 3000,
@@ -84,10 +85,13 @@ module.exports = {
     }
   },
   css: [
-    '~/node_modules/swiper/css/swiper.css'
+    '~/node_modules/swiper/css/swiper.css',
+    '~sass/main.sass'
   ],
   styleResources: {
-    sass: ['~sass/_variables.sass']
+    sass: [
+      '~sass/_variables.sass'
+    ]
   },
   plugins: [
     { src: '~/plugins/axios.ts' },
@@ -95,7 +99,10 @@ module.exports = {
     { src: '~/plugins/fontawesome.ts' },
     { src: '~/plugins/vue-awesome-swiper.ts', mode: 'client' },
     { src: '~/plugins/vue-debounce.ts', mode: 'client' },
-    { src: '~/plugins/model-viewer.ts' }
+    { src: '~/plugins/model-viewer.ts' },
+    { src: '~/plugins/vuelidate.ts' },
+    { src: '~/plugins/components.ts' },
+    { src: '~/plugins/auth.ts' }
   ],
   buildModules: [
     '@nuxtjs/style-resources',
@@ -104,7 +111,7 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
-    'nuxt-ssr-cache',
+    'portal-vue/nuxt',
     ['nuxt-i18n', {
       vueI18nLoader: true,
       defaultLocale: 'en',
@@ -130,25 +137,15 @@ module.exports = {
       vueI18n: '~/plugins/i18n.ts'
     }]
   ],
-  cache: {
-    useHostPrefix: false,
-    pages: [
-      '/'
-    ],
-    store: {
-      type: 'redis',
-      host: 'redis',
-      port: 6379,
-      auth_pass: process.env.REDIS_PASSWORD,
-      ttl: 60 * 60,
-      configure: [
-        ['maxmemory', '128mb'],
-        ['maxmemory-policy', 'allkeys-lru']
-      ]
-    }
-  },
   router: {
-    prefetchLinks: false
+    prefetchLinks: false,
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'models',
+        path: '/models',
+        component: resolve(__dirname, 'pages/models/_category/index.vue')
+      })
+    }
   }
 }
 

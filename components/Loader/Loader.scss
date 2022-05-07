@@ -1,6 +1,6 @@
 .loading__container {
   position: fixed;
-  top: 9rem;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -12,6 +12,9 @@
   transition: all 1s ease;
   opacity: 0;
   visibility: collapse;
+  &--without-background {
+    background: none;
+  }
 }
 
 .loading__container--visible {
@@ -35,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -9rem;
+  margin-top: 0;
 }
 
 .spinner > div {
@@ -68,71 +71,5 @@
     transform: scaleY(0.4);
   }  20% {
     transform: scaleY(1.0);
-  }
-}
-
-@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px) {
-  .loading__container {
-    top: 8rem;
-  }
-  .spinner {
-    width: 5rem;
-    height: 10rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -8rem;
-  }
-  .loading__container--slide {
-    position: absolute;
-    transition: opacity 1s ease;
-    top: 0rem;
-  }
-  .loading__container--slide .spinner {
-    margin-top: 0rem;
-  }
-}
-
-@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px) {
-  .loading__container {
-    top: 8rem;
-  }
-  .spinner {
-    width: 5rem;
-    height: 10rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -8rem;
-  }
-  .loading__container--slide {
-    position: absolute;
-    transition: opacity 1s ease;
-    top: 0rem;
-  }
-  .loading__container--slide .spinner {
-    margin-top: 0rem;
-  }
-}
-
-@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px) {
-  .loading__container {
-    top: 9rem;
-  }
-  .spinner {
-    width: 5rem;
-    height: 10rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -9rem;
-  }
-  .loading__container--slide {
-    position: absolute;
-    transition: opacity 1s ease;
-    top: 0rem;
-  }
-  .loading__container--slide .spinner {
-    margin-top: 0rem;
   }
 }

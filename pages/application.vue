@@ -14,30 +14,30 @@
           <div class="application__jumbotron-links">
             <a
               class="button button--primary"
-              :href="data.release.assets.windows"
+              :href="release.assets.windows"
               target="_blank"
               rel="noreferrer"
             >
               <font-awesome-icon :icon="['fab', 'windows']" />
-              {{ $t('application.download.windows', { version: data.release.version }) }}
+              {{ $t('application.download.windows', { version: release.version }) }}
             </a>
             <a
               class="button button--primary"
-              :href="data.release.assets.mac"
+              :href="release.assets.mac"
               target="_blank"
               rel="noreferrer"
             >
               <font-awesome-icon :icon="['fab', 'apple']" />
-              {{ $t('application.download.mac', { version: data.release.version }) }}
+              {{ $t('application.download.mac', { version: release.version }) }}
             </a>
             <a
               class="button button--primary"
-              :href="data.release.assets.linux"
+              :href="release.assets.linux"
               target="_blank"
               rel="noreferrer"
             >
               <font-awesome-icon :icon="['fab', 'linux']" />
-              {{ $t('application.download.linux', { version: data.release.version }) }}
+              {{ $t('application.download.linux', { version: release.version }) }}
             </a>
           </div>
         </div>
@@ -127,7 +127,7 @@
       </div>
       <div class="integrations__container">
         <div
-          v-for="integration in data.integrations"
+          v-for="integration in integrations.content"
           :key="`integration-${integration.title}`"
         >
           <a
@@ -137,7 +137,7 @@
           >
             <img
               class="integration__logo"
-              :src="getImageUrl(integration.logo)"
+              :src="integration.logo"
               :alt="integration.title"
               :title="integration.title"
             >
@@ -158,30 +158,30 @@
           </thead>
           <tbody>
             <tr
-              v-for="integration in data.integrations"
+              v-for="integration in integrations.content"
               :key="`integration-tr-${integration.title}`"
             >
               <td>
                 <img
                   class="table__image"
-                  :src="getImageUrl(integration.logo)"
+                  :src="integration.logo"
                   :alt="integration.title"
                 >
               </td>
               <td>
-                <font-awesome-icon :icon="integration.authentication ? 'check-circle' : 'times-circle'" />
+                <font-awesome-icon :icon="integration.params.auth ? 'check-circle' : 'times-circle'" />
               </td>
               <td>
-                <font-awesome-icon :icon="integration.custom_filters ? 'check-circle' : 'times-circle'" />
+                <font-awesome-icon :icon="integration.params.filters ? 'check-circle' : 'times-circle'" />
               </td>
               <td>
-                <font-awesome-icon :icon="integration.download_models ? 'check-circle' : 'times-circle'" />
+                <font-awesome-icon :icon="integration.params.download ? 'check-circle' : 'times-circle'" />
               </td>
               <td>
-                <font-awesome-icon :icon="integration.custom_installation ? 'check-circle' : 'times-circle'" />
+                <font-awesome-icon :icon="integration.params.custom_install ? 'check-circle' : 'times-circle'" />
               </td>
               <td>
-                <font-awesome-icon :icon="integration.purchase_models ? 'check-circle' : 'times-circle'" />
+                <font-awesome-icon :icon="integration.params.purchase ? 'check-circle' : 'times-circle'" />
               </td>
             </tr>
           </tbody>
@@ -277,7 +277,15 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import LazyHydrate from 'vue-lazy-hydration'
-import type { StrapiApplicationPC } from '@/types'
+import type {
+  ApplicationRelease
+} from '@/types/api'
+
+import type {
+  IntegrationDynamicBlock
+} from '@/types/api/blocks'
+
+import type { NuxtApp } from '@nuxt/types/app'
 
 @Component({
   components: {
@@ -291,49 +299,55 @@ import type { StrapiApplicationPC } from '@/types'
 })
 
 export default class IndexPage extends Vue {
-  data: StrapiApplicationPC = {
-    integrations: [],
-    release: {
-      version: 'N/A',
-      assets: {
-        windows: '',
-        mac: '',
-        linux: ''
-      }
+  draft: ApplicationRelease = {
+    version: 'N/A',
+    assets: {
+      windows: '',
+      mac: '',
+      linux: ''
     }
   }
 
-  async asyncData ({ app }: { app: any }): Promise<{ data: StrapiApplicationPC }> {
+  release: ApplicationRelease = {
+    version: 'N/A',
+    assets: {
+      windows: '',
+      mac: '',
+      linux: ''
+    }
+  }
+
+  integrations: IntegrationDynamicBlock = {
+    id: -1,
+    type: 'integrations',
+    content: [],
+    created_at: '',
+    updated_at: ''
+  }
+
+  async asyncData ({ app }: { app: NuxtApp }): Promise<any> {
     try {
-      const data: StrapiApplicationPC = (await app.$strapi({
-        method: 'GET',
-        url: '/application-pc'
-      })).data
+      const responses = await Promise.all([
+        app.$api({
+          method: 'GET',
+          url: 'pages/application',
+          headers: app.$generateAuthHeader('pages/application', 'GET')
+        }),
+        app.$api({
+          method: 'GET',
+          url: 'blocks/integrations',
+          headers: app.$generateAuthHeader('blocks/integrations', 'GET')
+        })
+      ])
 
       return {
-        data
+        release: responses[0].data.release,
+        draft: responses[0].data.draft,
+        integrations: responses[1].data
       }
     } catch (err) {
       console.log(err)
-      return {
-        data: {
-          integrations: [],
-          release: {
-            version: 'N/A',
-            assets: {
-              windows: '',
-              mac: '',
-              linux: ''
-            }
-          }
-        }
-      }
     }
-  }
-
-  getImageUrl (thumbnail: string | null): string {
-    const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
-    return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
   }
 }
 </script>

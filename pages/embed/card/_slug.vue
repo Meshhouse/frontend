@@ -2,14 +2,14 @@
   <div class="embed-card">
     <img
       class="image__background"
-      :src="getImageUrl(model.images[0] || model.thumbnail)"
+      :src="model.images.length > 0 ? model.images[0].original : model.thumbnail"
       loading="lazy"
     >
     <div class="card__content">
       <div class="image__outer">
         <img
           class="image__inner"
-          :src="getImageUrl(model.thumbnail)"
+          :src="model.thumbnail"
           :alt="model[`title_${routeLang}`]"
           loading="lazy"
         >
@@ -39,15 +39,16 @@
         <div class="card__center">
           <div class="tag-group">
             <div
-              v-for="(tag, idx) in model.tags"
+              v-for="(tag, idx) in model[`tags_${$route.query.lang || 'en'}`]"
               :key="`tag-${idx}`"
               class="tag tag--primary"
             >
-              {{ tag[`title_${$route.query.lang || 'en'}`] }}
+              {{ tag }}
             </div>
           </div>
         </div>
         <div class="card__footer">
+          <!--
           <div class="card__programs">
             <div
               v-for="(program, idx) in getUniquePrograms(model.model_links)"
@@ -59,7 +60,7 @@
                 :title="getProgramIcon(program)"
               >
             </div>
-          </div>
+          </div>-->
           <a
             :href="generateLink"
             class="card__button"
@@ -75,7 +76,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import type { StrapiModel } from '@/types'
+
+import type {
+  ModelFull
+} from '@/types/api/models'
+
+import type { NuxtApp } from '@nuxt/types/app'
+import type { Route } from 'vue-router'
 
 @Component({
   layout: 'embed',
@@ -104,50 +111,60 @@ export default class EmbedCard extends Vue {
     }
   }
 
-  model: StrapiModel = {
+  model: ModelFull = {
     id: -1,
     title_en: 'string',
     title_ru: 'string',
     slug: 'string',
-    category: {
-      slug: 'string',
-      title_en: 'string',
-      title_ru: 'string'
-    },
     description_en: 'string',
     description_ru: 'string',
-    textures_link: null,
+    textures_link: '',
     is_mature_content: false,
-    available_formats: [],
-    model_information: {
-      polygons: '5000',
-      vertices: '25000',
-      blendshapes: false,
-      rigged: false,
-      hair_system: false,
-      textures_type: 'procedural',
-      hair_system_type: 'standard',
-      uv_maps: false,
-      uv_maps_type: 'generated',
-      rig_type: 'bones'
-    },
+    polygons: 5000,
+    vertices: 25000,
+    blendshapes: false,
+    textures: 'procedural',
+    hair_system: 'standard',
+    uv: false,
+    rig: 'bones',
     created_at: '0',
     updated_at: '0',
-    model_links: [],
-    tags: [],
+    files: [],
+    tags_en: [],
+    tags_ru: [],
     brands: [],
     related_models: [],
-    thumbnail: null,
+    thumbnail: '',
     images: [],
     thumbnail_images: [],
-    preview: null
+    preview: null,
+    mature_content: false,
+    install_paths: {
+      models: '',
+      textures: ''
+    },
+    licenses: [],
+    collections: [],
+    category: {
+      id: -1,
+      slug: '',
+      icon: '',
+      parent_id: null,
+      created_at: '',
+      updated_at: '',
+      title_en: '',
+      title_ru: '',
+      description_en: '',
+      description_ru: ''
+    }
   }
 
-  async asyncData ({ app, route }: { app: any, route: any }): Promise<any> {
+  async asyncData ({ app, route }: { app: NuxtApp, route: Route }): Promise<any> {
     try {
-      const data: StrapiModel = (await app.$strapi({
+      const data: ModelFull = (await app.$api({
         method: 'GET',
-        url: `/models/${route.params.slug}`
+        url: `models/${route.params.slug}`,
+        headers: app.$generateAuthHeader(`models/${route.params.slug}`, 'GET')
       })).data
 
       return {
@@ -164,11 +181,6 @@ export default class EmbedCard extends Vue {
     } else {
       return this.$route.query.lang.toString()
     }
-  }
-
-  getImageUrl (thumbnail: string | null): string {
-    const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
-    return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
   }
 
   getUniquePrograms (programs: any[]): string[] {
@@ -192,7 +204,7 @@ export default class EmbedCard extends Vue {
 
   get generateLink (): string {
     const base = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://meshhouse.art'
-    return `${base}/models/view/${this.model.slug}`
+    return `${base}/models/${this.model.category.slug}/${this.model.slug}`
   }
 }
 </script>

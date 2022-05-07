@@ -4,6 +4,7 @@ body.theme-dark
   --text-color: #{$white}
   --block-color: #{$darkGray}
   --block-color-gradient: #{transparentize($darkGray, 0.5)}
+  --block-color-glass: #{transparentize($darkGray, 0.8)}
   --block-color-alt: #{$darkGrayAlt}
   --block-color-lighter: #{$darkGrayLighter}
   --theme-color: #{$lightThemeColor}
@@ -17,3 +18,6 @@ body.theme-dark
       background: $darkGrayAlt
       &:focus
         border-color: var(--primary)
+  .api-docs
+    .sl-bg-canvas
+      background-color: $darkGrayAlt

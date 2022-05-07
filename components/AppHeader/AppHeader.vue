@@ -14,14 +14,6 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="navbar__links">
-          <div class="nav-item">
-            <language-selector />
-          </div>
-          <div class="nav-item">
-            <theme-selector />
-          </div>
-        </div>
       </nav>
     </div>
     <div class="header__navbar">
@@ -38,7 +30,10 @@
         </nuxt-link>
         <header-categories />
         <search-box />
-        <navbar-buttons />
+        <navbar-buttons
+          @open-login="openLogin"
+          @open-register="openRegister"
+        />
         <div class="navbar__links">
           <div class="nav-item">
             <nuxt-link class="nav-link" :to="localePath('/news')">
@@ -53,6 +48,16 @@
         </div>
       </nav>
     </div>
+    <overlay
+      :visible="overlayVisible"
+      @close="overlayVisible = false"
+    >
+      <component
+        :is="overlayComponent"
+        @redirect="onChangeOverlay"
+        @close="overlayVisible = false"
+      />
+    </overlay>
   </header>
 </template>
 

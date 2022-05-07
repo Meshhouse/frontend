@@ -5,4 +5,3 @@ declare module '*.vue' {
 
 declare module 'vue-lazy-hydration'
 declare module 'vue-clickaway'
-declare module 'fslightbox-vue'

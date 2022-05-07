@@ -1,0 +1,56 @@
+.model-slider-overlay
+  height: 100vh
+  display: flex
+  flex-direction: column
+  &__header
+    padding: $grid-gap-large
+    background-color: $primary
+    display: flex
+    justify-content: space-between
+    align-items: center
+    height: 62px
+    .overlay-close
+      background-color: var(--block-color-alt)
+    .display-text
+      margin: 0
+  &__wrapper
+    flex: 1 1 100%
+  .swiper-slide--model-slide
+    height: 100%
+    background: none
+    overflow: hidden
+    .model-viewer
+      height: 100%
+
+  .swiper-container--top
+    max-height: calc(100vh - 100px - 62px)
+    height: 100%
+    overflow-y: hidden
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .model-slider-overlay
+    &__header
+      height: 59px
+    .swiper-container--top
+      max-height: calc(100vh - 82px - 59px)
+
+@media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
+  .model-slider-overlay
+    &__header
+      height: 54px
+    .swiper-container--top
+      max-height: calc(100vh - 82px - 54px)
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .model-slider-overlay
+    &__header
+      height: 48px
+    .swiper-container--top
+      max-height: calc(100vh - 48px)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .model-slider-overlay
+    &__header
+      height: 48px
+    .swiper-container--top
+      max-height: calc(100vh - 48px)

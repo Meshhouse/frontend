@@ -46,10 +46,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import ModelCard from '@/components/ModelCard/ModelCard.vue'
-import type {
-  StrapiSimpleModel,
-  AxiosStrapiFavoritesQuery
-} from '@/types'
+import type { NuxtApp } from '@nuxt/types/app'
 
 @Component<ModelFavorites>({
   components: {
@@ -65,7 +62,7 @@ import type {
 export default class ModelFavorites extends Vue {
   models: StrapiSimpleModel[] = []
 
-  async asyncData ({ app, store }: { app: any, store: any }): Promise<any> {
+  async asyncData ({ app, store }: { app: NuxtApp, store: any }): Promise<any> {
     try {
       const params: AxiosStrapiFavoritesQuery = {
         method: 'POST',

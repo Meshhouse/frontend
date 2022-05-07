@@ -1,5 +1,8 @@
 <template>
-  <dropdown-button type="primary">
+  <dropdown-button
+    class="dropdown__item"
+    align="right"
+  >
     {{ $t('common.language') }}
     <template slot="content">
       <nuxt-link class="dropdown__item" :to="switchLocalePath('en')">

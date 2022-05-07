@@ -1,0 +1,29 @@
+.checkbox
+  display: flex
+  align-items: center
+  &__input
+    display: none
+    &:checked ~ .checkbox__block
+      color: #fff
+      background-color: $primary
+  &__block
+    width: 1.25rem
+    height: 1.25rem
+    border: 0.125rem solid $primary
+    border-radius: $border-radius
+    display: flex
+    align-items: center
+    justify-content: center
+    color: rgba(255,255,255,0)
+    background-color: var(--block-color)
+    transition: all 0.1s ease
+    will-change: background-color
+    font-size: 0.875rem
+  &__label
+    margin-left: 0.5rem
+    user-select: none
+
+  &--error
+    .checkbox
+      &__block
+        border-color: $danger

@@ -1,0 +1,48 @@
+.accordion
+  position: relative
+  border-radius: $border-radius
+  overflow: hidden
+  &__header
+    position: relative
+    z-index: 1
+    font-size: 1.05rem
+    line-height: 1rem
+    background-color: var(--block-color-alt)
+    padding: $grid-gap-large
+    display: flex
+    justify-content: space-between
+    align-items: center
+    cursor: pointer
+    .header-badge
+      margin-top: $grid-gap
+      display: flex
+      align-items: center
+      .badge
+        background-color: $primary
+        margin-right: $grid-gap-large
+      .caret
+        width: 1.25rem
+        height: 1.25rem
+        transition: transform 0.3s ease
+        transform: rotate(-180deg)
+  &__body
+    background-color: var(--block-color-alt)
+    border-top: $border-width solid var(--block-color-alt)
+    overflow: hidden
+    max-height: 0
+    padding: 0 $grid-gap-large
+    transition-property: max-height, padding, border-top
+    transition-duration: 0.5s
+    transition-timing-function: cubic-bezier(0,1,0,1)
+
+  &--active
+    .accordion
+      &__header
+        .caret
+          transform: none
+          color: $primary
+      &__body
+        padding: $grid-gap-large
+        max-height: 9999px
+        transition-timing-function: cubic-bezier(1,0,1,0)
+        border-top: $border-width solid $primary

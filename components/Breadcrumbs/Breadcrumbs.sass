@@ -1,0 +1,45 @@
+.breadcrumbs
+  display: inline-flex
+  align-items: center
+  list-style: none
+  overflow: hidden
+  margin: 0.5rem 0
+  border: $border-width solid $primary
+  border-radius: $border-radius
+  .breadcrumb
+    position: relative
+    background-color: var(--block-color)
+    padding: 0.25rem 0.25rem 0.25rem 1.75rem
+    transition: background 0.3s ease
+    a, span
+      color: var(--text-color)
+      transition: color 0.3s ease
+    &:before, &:after
+      content: ''
+      clip-path: polygon(100% 50%, -100% -50%, 0 100%)
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 100%
+      width: 1rem
+      background-color: var(--block-color)
+      transition: background 0.3s ease
+      z-index: 1
+    &:before
+      background-color: $primary
+      margin-left: 1px
+    &:first-child
+      padding-left: 1.25rem
+    &:last-child
+      border-right: none
+      padding-right: 1.25rem
+    &--active, &:hover
+      background-color: $primary
+      a, span
+        color: $white
+      &:after
+        background-color: $primary
+
+@media (max-width: $breakpoint-tablet - 1px)
+  .breadcrumbs
+    display: none

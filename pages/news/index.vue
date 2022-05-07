@@ -16,11 +16,8 @@
         :item="post"
       />
     </div>
-    <div
-      v-if="pagination.pages > 1"
-      class="grid-container"
-    >
-      <pagination
+    <div class="grid-container">
+      <paginator
         :pagination="pagination"
         base-url="news"
         param=""
@@ -46,23 +43,25 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import Pagination from '@/components/Pagination/Pagination.vue'
+import Paginator from '@/components/Pagination/Pagination.vue'
 import PostCard from '@/components/PostCard/PostCard.vue'
-import type {
-  StrapiPagination,
-  StrapiSimplePost,
-  AxiosStrapiNewsQuery,
-  AxiosStrapiNewsResponse
-} from '@/types'
 
-type NewsAsyncData = {
-  posts: StrapiSimplePost[];
-  pagination: StrapiPagination;
-}
+import type {
+  Pagination,
+  WithPagination
+} from '@/types/api/'
+
+import type {
+  BlogSimple
+} from '@/types/api/posts'
+
+import type { NuxtApp } from '@nuxt/types/app'
+import type { Route } from 'vue-router'
+import type { AxiosRequestConfig } from 'axios'
 
 @Component<NewsList>({
   components: {
-    Pagination,
+    Paginator,
     PostCard
   },
   head () {
@@ -76,25 +75,27 @@ type NewsAsyncData = {
 })
 
 export default class NewsList extends Vue {
-  posts: StrapiSimplePost[] = []
-  pagination: StrapiPagination = {
-    pages: 0,
-    count: 0
+  posts: BlogSimple[] = []
+  pagination: Pagination = {
+    total: 0,
+    current_page: 1,
+    last_page: 1
   }
 
-  async asyncData ({ app, route }: { app: any, route: any }): Promise<NewsAsyncData> {
+  async asyncData ({ app, route }: { app: NuxtApp, route: Route }): Promise<any> {
     try {
       const page = route.query.page ?? 1
-      const params: AxiosStrapiNewsQuery = {
+      const params: AxiosRequestConfig = {
         method: 'GET',
-        url: '/blog-posts',
+        url: 'posts',
         params: {
           page,
           count: 25
-        }
+        },
+        headers: app.$generateAuthHeader('posts', 'GET')
       }
 
-      const data: AxiosStrapiNewsResponse = (await app.$strapi(params)).data
+      const data: WithPagination<BlogSimple[]> = (await app.$api(params)).data
 
       return {
         posts: data.items,
@@ -105,8 +106,9 @@ export default class NewsList extends Vue {
       return {
         posts: [],
         pagination: {
-          pages: 0,
-          count: 0
+          total: 0,
+          current_page: 1,
+          last_page: 1
         }
       }
     }

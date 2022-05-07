@@ -1,0 +1,31 @@
+.licenses
+  display: flex
+  flex-direction: column
+
+.license
+  padding: 1rem
+  display: flex
+  flex-direction: column
+  border: 0.125rem solid $primary
+  border-radius: $border-radius
+  margin-bottom: 1rem
+  &__table
+    border-collapse: collapse
+    table-layout: fixed
+    margin: 0.5rem 0
+    tbody
+      td, th
+        border: 0.125rem solid $primary
+        padding: 0.25rem
+      th
+        width: 65%
+  &__requirements
+    padding: 0.5rem
+    background-color: $primary
+    color: $white
+    &--warning
+      background-color: $warning
+      color: $black
+    &--success
+      background-color: $success
+      color: $white

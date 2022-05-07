@@ -4,12 +4,11 @@
     class="model-card model-card--lite"
   >
     <nuxt-link
-      class="image__outer"
-      :to="localePath(`/models/view/${item.slug}`)"
+      class="image__inner"
+      :to="localePath(`/models/${item.category}/${item.slug}`)"
     >
       <img
-        class="image__inner"
-        :src="getImageUrl(item.thumbnail)"
+        :src="item.thumbnail"
         :alt="item[`title_${$i18n.locale}`]"
         loading="lazy"
       >
@@ -20,7 +19,7 @@
       </p>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
-        {{ format(new Date(), 'dd.MM.yyyy') }}
+        {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
       <div class="tag-group model-card__tags">
         <div
@@ -38,6 +37,7 @@
           <font-awesome-icon icon="venus" />
         </div>
       </div>
+      <!--
       <div class="model-card__programs">
         <div
           v-for="(program, idx) in item.available_formats"
@@ -50,26 +50,28 @@
           >
         </div>
       </div>
+      -->
     </div>
     <div class="model-card__actions">
-      <button
-        class="button button--primary button--icon button--icon-lg"
+      <v-button
         :class="{ 'button--favorite-active': isInFavorite }"
+        color="primary"
+        icon
+        size="lg"
         @click="$store.commit('changeFavorite', item.id)"
       >
         <font-awesome-icon icon="heart" />
-      </button>
+      </v-button>
     </div>
   </article>
   <nuxt-link
     v-else
     class="model-card model-card--row"
-    :to="localePath(`/models/view/${item.slug}`)"
+    :to="localePath(`/models/${item.category}/${item.slug}`)"
   >
-    <div class="image__outer">
+    <div class="image__inner">
       <img
-        class="image__inner"
-        :src="getImageUrl(item.thumbnail)"
+        :src="item.thumbnail"
         :alt="item[`title_${$i18n.locale}`]"
         loading="lazy"
       >
@@ -80,8 +82,9 @@
       </p>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
-        {{ format(new Date(), 'dd.MM.yyyy') }}
+        {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
+      <!--
       <div class="model-card__programs">
         <div
           v-for="(program, idx) in item.available_formats"
@@ -94,6 +97,7 @@
           >
         </div>
       </div>
+      -->
     </div>
   </nuxt-link>
 </template>

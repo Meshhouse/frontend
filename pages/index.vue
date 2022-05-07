@@ -1,10 +1,16 @@
 <template>
   <div>
-    <index-carousel :slides="indexPageData.slider" />
+    <index-carousel :slides="sliderBlock.content" />
     <index-our-features />
-    <featured-categories :categories="indexPageData.featuredCategories" />
-    <index-programs :stats="indexPageData.statistics" />
-    <index-uploaded-models :models="indexPageData.lastUploadedModels" />
+    <featured-categories
+      v-if="featuredBlock.content.length === 4"
+      :categories="featuredBlock.content"
+    />
+    <index-programs :stats="statistics" />
+    <index-uploaded-models
+      v-if="lastUploadedModels.length > 0"
+      :models="lastUploadedModels"
+    />
   </div>
 </template>
 
@@ -34,7 +40,21 @@ import IndexPrograms from '@/components/Pages/Index/IndexPrograms.vue'
 import IndexUploadedModels from '@/components/Pages/Index/IndexUploadedModels.vue'
 import FeaturedCategories from '@/components/Pages/Index/FeaturedCategories.vue'
 import IndexOurFeatures from '@/components/Pages/Index/IndexOurFeatures.vue'
-import type { StrapiIndexPage } from '@/types'
+
+import type {
+  CourtesyDynamicBlock,
+  FeaturedCategoriesDynamicBlock
+} from '@/types/api/blocks'
+
+import type {
+  ModelSimple
+} from '@/types/api/models'
+
+import type {
+  WithPagination
+} from '@/types/api'
+
+import type { NuxtApp } from '@nuxt/types/app'
 
 @Component<IndexPage>({
   components: {
@@ -56,47 +76,80 @@ import type { StrapiIndexPage } from '@/types'
 })
 
 export default class IndexPage extends Vue {
-  indexPageData: StrapiIndexPage = {
-    featuredCategories: [],
-    slider: [],
-    statistics: {
-      max: 0,
-      maya: 0,
-      blender: 0,
-      c4d: 0,
-      unity: 0,
-      unreal: 0
-    },
-    lastUploadedModels: []
+  sliderBlock: CourtesyDynamicBlock = {
+    id: -1,
+    type: 'courtesy_slider',
+    content: [],
+    created_at: '',
+    updated_at: ''
   }
 
-  async asyncData ({ app }: { app: any }): Promise<{ indexPageData: StrapiIndexPage }> {
+  featuredBlock: FeaturedCategoriesDynamicBlock = {
+    id: -1,
+    type: 'featured_categories',
+    content: [],
+    created_at: '',
+    updated_at: ''
+  }
+
+  lastUploadedModels: ModelSimple[] = []
+
+  statistics = {
+    max: 0,
+    maya: 0,
+    blender: 0,
+    c4d: 0,
+    unity: 0,
+    unreal: 0
+  }
+
+  async asyncData ({ app }: { app: NuxtApp }): Promise<any> {
     try {
-      const indexPageData: StrapiIndexPage = (await app.$strapi({
-        method: 'GET',
-        url: '/mainpage'
-      })).data
+      const responses = await Promise.all([
+        app.$api.request<CourtesyDynamicBlock>({
+          method: 'GET',
+          url: 'blocks/courtesy_slider',
+          headers: app.$generateAuthHeader('blocks/courtesy_slider', 'GET')
+        }),
+        app.$api.request<FeaturedCategoriesDynamicBlock>({
+          method: 'GET',
+          url: 'blocks/featured_categories',
+          headers: app.$generateAuthHeader('blocks/featured_categories', 'GET')
+        }),
+        app.$api.request<WithPagination<ModelSimple[]>>({
+          method: 'POST',
+          url: 'models',
+          data: {
+            page: 1,
+            count: 5
+          },
+          headers: {
+            ...app.$generateAuthHeader('models', 'POST'),
+            'x-meshhouse-mature-content': false
+          }
+        }),
+        app.$api.request<any>({
+          method: 'GET',
+          url: 'pages/index/stats',
+          headers: {
+            ...app.$generateAuthHeader('pages/index/stats', 'GET')
+          }
+        })
+      ])
+
+      const sliderBlock = responses[0].data
+      const featuredBlock = responses[1].data
+      const lastUploadedModels = responses[2].data.items
+      const statistics = responses[3].data.stats
 
       return {
-        indexPageData
+        sliderBlock,
+        featuredBlock,
+        lastUploadedModels,
+        statistics
       }
     } catch (err) {
       console.log(err)
-      return {
-        indexPageData: {
-          featuredCategories: [],
-          slider: [],
-          statistics: {
-            max: 0,
-            maya: 0,
-            blender: 0,
-            c4d: 0,
-            unity: 0,
-            unreal: 0
-          },
-          lastUploadedModels: []
-        }
-      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="uploaded-models">
     <div class="grid-container">
       <h2 class="display-text display-text--h2">
         <span>
@@ -7,11 +7,12 @@
         </span>
       </h2>
     </div>
-    <div class="grid-container grid-container--models">
+    <div class="grid-container grid-container--model-collection">
       <model-card
         v-for="model in models"
         :key="model.id"
         :item="model"
+        row
       />
     </div>
   </div>

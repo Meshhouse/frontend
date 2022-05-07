@@ -4,28 +4,28 @@
     class="post-card"
   >
     <nuxt-link
-      class="image__outer"
+      class="image__inner"
       :to="localePath(`/news/${item.slug}`)"
     >
       <img
-        class="image__inner"
-        :src="getImageUrl(item.thumbnail)"
+        :src="item.thumbnail"
         :alt="item[`title_${$i18n.locale}`]"
         loading="lazy"
       >
     </nuxt-link>
     <div class="post-card__info">
-      <p class="title">
-        {{ item[`title_${$i18n.locale}`] }}
-      </p>
+      <h2 class="display-text display-text--h3">
+        <span>{{ item[`title_${$i18n.locale}`] }}</span>
+      </h2>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
-        {{ format(new Date(), 'dd.MM.yyyy') }}
+        {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
     </div>
-    <div class="post-card__content">
-      {{ item[`excerpt_${$i18n.locale}`] }}
-    </div>
+    <div
+      class="post-card__content"
+      v-html="item[`excerpt_${$i18n.locale}`]"
+    />
     <nuxt-link
       class="button button--primary"
       :to="localePath(`/news/${item.slug}`)"
@@ -37,21 +37,19 @@
     v-else
     class="post-card post-card--full"
   >
-    <div class="image__outer">
-      <img
-        class="image__inner"
-        :src="getImageUrl(item.thumbnail)"
-        :alt="item[`title_${$i18n.locale}`]"
-        loading="lazy"
-      >
-    </div>
+    <img
+      class="image__inner"
+      :src="item.thumbnail"
+      :alt="item[`title_${$i18n.locale}`]"
+      loading="lazy"
+    >
     <div class="post-card__info">
-      <p class="title">
-        {{ item[`title_${$i18n.locale}`] }}
-      </p>
+      <h2 class="display-text display-text--h3">
+        <span>{{ item[`title_${$i18n.locale}`] }}</span>
+      </h2>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
-        {{ format(new Date(), 'dd.MM.yyyy') }}
+        {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
     </div>
     <div

@@ -1,23 +1,18 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import type { StrapiFeaturedCategory } from '@/types'
+import type { FeaturedCategory } from '@/types/api/blocks'
 @Component({})
 
 export default class FeaturedCategories extends Vue {
-  @Prop({ type: Array, required: true, default: () => [] }) readonly categories!: StrapiFeaturedCategory[]
+  @Prop({ type: Array, required: true, default: () => [] }) readonly categories!: FeaturedCategory[]
 
-  getUrl (category: StrapiFeaturedCategory): string {
+  getUrl (category: FeaturedCategory): string {
     if (category === undefined) {
       return ''
     }
     let baseUrl = '/models/'
-    baseUrl += category.category !== null ? category.category.slug : 'all'
-    baseUrl += category.tag !== null && category.tag !== '' ? `?tag=${category.tag}` : ''
+    baseUrl += category.category_slug !== '' ? category.category_slug : ''
+    baseUrl += category.tag !== '' ? `?tag=${category.tag}` : ''
 
     return baseUrl
-  }
-
-  getImageUrl (thumbnail: string | null): string {
-    const imageBaseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:1337' : 'https://api.meshhouse.art'
-    return thumbnail !== null ? `${imageBaseUrl}${thumbnail}` : ''
   }
 }

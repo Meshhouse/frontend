@@ -1,0 +1,42 @@
+.radio
+  display: flex
+  align-items: center
+  &__input
+    display: none
+    &:checked ~ .radio__block
+      &:after
+        background-color: $primary
+    &:disabled ~ .radio__block
+      background-color: $disabled-color
+      border-color: $disabled-color
+      &:after
+        background-color: $disabled-color
+    &:disabled ~ .radio__label
+      color: $disabled-color
+  &__block
+    position: relative
+    width: 1.25rem
+    height: 1.25rem
+    border: 0.125rem solid $primary
+    border-radius: 50%
+    display: flex
+    align-items: center
+    justify-content: center
+    background-color: var(--block-color)
+    font-size: 0.875rem
+    &:after
+      content: ''
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate(-50%, -50%)
+      display: block
+      border-radius: 50%
+      background-color: var(--block-color)
+      transition: all 0.1s ease
+      will-change: background-color
+      width: 0.5rem
+      height: 0.5rem
+  &__label
+    margin-left: 0.5rem
+    user-select: none

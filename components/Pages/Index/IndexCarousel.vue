@@ -7,13 +7,14 @@
       <div class="swiper-wrapper">
         <div
           v-for="(slide, idx) in slides"
-          :key="slide.id"
+          :key="`index-slide-${idx}`"
           class="swiper-slide swiper-slide--index-slider"
         >
           <picture class="slide__background">
             <img
               class="slide__background"
-              :src="getImageUrl(slide.background)"
+              :src="slide.background"
+              :alt="slide.courtesy"
               loading="lazy"
             >
           </picture>

@@ -1,0 +1,2327 @@
+openapi: 3.1.0
+info:
+  title: MeshHouse API V1
+  version: '1.0'
+  description: Public API for MeshHouse services
+  license:
+    identifier: MPL-2.0
+    name: MPL-2.0
+  contact:
+    url: 'https://meshhouse.art'
+  termsOfService: 'https://meshhouse.art/terms-of-service'
+  summary: Public API for MeshHouse services
+servers:
+  - url: 'http://localhost:3333/api/v1'
+    description: Localhost Test Server
+  - url: 'https://api.meshhouse.art/api/v1'
+    description: Production Server
+paths:
+  /categories:
+    get:
+      summary: Get categories list
+      responses:
+        '200':
+          $ref: '#/components/responses/Categories-list-response'
+      operationId: get-categories
+      x-internal: false
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: page
+          description: Current page
+        - schema:
+            type: number
+          in: query
+          name: count
+          description: Categories per page
+        - schema:
+            type: boolean
+          in: query
+          name: roots_only
+          description: Return only root categories
+        - $ref: '#/components/parameters/Language'
+      description: Get categories list with pagination
+      tags:
+        - Categories
+  /category-tree:
+    get:
+      summary: Get category tree
+      responses:
+        '200':
+          $ref: '#/components/responses/Category-tree-response'
+      operationId: get-category-tree
+      description: Get category tree with childrens
+      parameters:
+        - $ref: '#/components/parameters/Language'
+      tags:
+        - Categories
+  '/categories/{id}':
+    get:
+      summary: Get single category
+      responses:
+        '200':
+          $ref: '#/components/responses/Category-single-response'
+        '404':
+          description: Not Found
+      operationId: 'get-categories-:id'
+      description: Get single category by id
+      parameters:
+        - $ref: '#/components/parameters/Language'
+      tags:
+        - Categories
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        description: Category id
+  /blocks:
+    get:
+      summary: Get dynamic blocks
+      tags:
+        - Dynamic blocks
+      responses:
+        '200':
+          $ref: '#/components/responses/Dynamic-blocks-response'
+      operationId: get-blocks
+      description: Get all dynamic blocks
+  '/blocks/{type}':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - integrations
+            - featured_categories
+            - courtesy_slider
+            - site_supporters
+            - site_patrons
+          example: integrations
+        name: type
+        in: path
+        required: true
+        description: Dynamic block type
+    get:
+      summary: Get single dynamic block
+      tags:
+        - Dynamic blocks
+      responses:
+        '200':
+          $ref: '#/components/responses/Dynamic-block-response'
+        '404':
+          description: Not Found
+      operationId: get-blocks-type
+      description: Get single dynamic block by type
+  /models:
+    post:
+      summary: Get models list
+      operationId: post-models
+      responses:
+        '200':
+          $ref: '#/components/responses/Models-list-response'
+      requestBody:
+        $ref: '#/components/requestBodies/Models-list-body'
+      description: Get models list
+      parameters:
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Mature-content'
+      tags:
+        - Models
+  /models/collection:
+    post:
+      summary: Get models from collection
+      operationId: post-models-collection
+      responses:
+        '200':
+          $ref: '#/components/responses/Model-collection-response'
+        '422':
+          description: Unprocessable Entity (WebDAV)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: number
+              required:
+                - ids
+      description: Get models from collection
+      parameters:
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Mature-content'
+      tags:
+        - Models
+  '/models/{slug}':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Model slug
+    get:
+      summary: Get single model
+      tags:
+        - Models
+      responses:
+        '200':
+          $ref: '#/components/responses/Single-model-response'
+        '404':
+          description: Not Found
+        '451':
+          description: Locked
+      operationId: get-models-slug
+      parameters:
+        - $ref: '#/components/parameters/Language'
+      description: Get single model by slug
+  /posts:
+    get:
+      summary: Get news list
+      tags:
+        - Posts
+      responses:
+        '200':
+          $ref: '#/components/responses/Posts-list-response'
+      operationId: get-posts
+      description: Get news list
+      parameters:
+        - $ref: '#/components/parameters/Language'
+        - schema:
+            type: number
+          in: query
+          name: page
+          description: Current page
+        - schema:
+            type: number
+          in: query
+          name: count
+          description: Items per page
+  '/posts/{slug}':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Blog post slug
+    get:
+      summary: Get single blog post
+      tags:
+        - Posts
+      responses:
+        '200':
+          $ref: '#/components/responses/Single-post-response'
+        '404':
+          description: Not Found
+      operationId: get-posts-slug
+      description: Get single blog post by slug
+      parameters:
+        - $ref: '#/components/parameters/Language'
+  /licenses:
+    get:
+      summary: Get licenses list
+      tags:
+        - Licenses
+      responses:
+        '200':
+          $ref: '#/components/responses/Licenses-response'
+      operationId: get-licenses
+      parameters:
+        - $ref: '#/components/parameters/Language'
+      description: Get licenses list
+  /autocomplete:
+    get:
+      summary: Get autocomplete snippets
+      tags:
+        - Models
+      responses:
+        '200':
+          $ref: '#/components/responses/Autocomplete-response'
+      operationId: get-autocomplete
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: query
+          required: true
+          description: Search term
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Mature-content'
+      description: Get autocomplete snippets by search term
+components:
+  schemas:
+    Paginator:
+      description: Shared paginator model
+      type: object
+      x-examples:
+        example-1:
+          total: 1
+          current_page: 1
+          last_page: 1
+      examples:
+        - total: 10
+          current_page: 1
+          last_page: 1
+      properties:
+        total:
+          type: number
+        current_page:
+          type: number
+        last_page:
+          type: number
+      required:
+        - total
+        - current_page
+        - last_page
+    Category:
+      description: Shared category model
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          slug: test-category
+          icon: ''
+          parent_id: null
+          created_at: '2022-02-01T17:55:08.000+00:00'
+          updated_at: '2022-02-01T17:55:08.000+00:00'
+          title_en: Test category
+          title_ru: Test category
+          description_en: null
+          description_ru: null
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        icon:
+          type: string
+        parent_id:
+          type:
+            - number
+            - 'null'
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        description_en:
+          type:
+            - string
+            - 'null'
+        description_ru:
+          type:
+            - string
+            - 'null'
+      required:
+        - id
+        - slug
+        - icon
+        - created_at
+        - updated_at
+        - title_en
+        - title_ru
+      examples:
+        - id: 1
+          slug: test-category
+          icon: ''
+          parent_id: null
+          created_at: '2022-02-01T17:55:08.000+00:00'
+          updated_at: '2022-02-01T17:55:08.000+00:00'
+          title_en: Test category
+          title_ru: Test category
+          description_en: null
+          description_ru: null
+    Category-Tree:
+      description: Shared category tree model
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          slug: test-category
+          icon: ''
+          parent_id: null
+          created_at: '2022-02-01T17:55:08.000+00:00'
+          updated_at: '2022-02-01T17:55:08.000+00:00'
+          title_en: Test category
+          title_ru: Test category
+          description_en: null
+          description_ru: null
+          childrens: []
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        icon:
+          type: string
+        parent_id:
+          type:
+            - number
+            - 'null'
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        description_en:
+          type:
+            - string
+            - 'null'
+        description_ru:
+          type:
+            - string
+            - 'null'
+        childrens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category-Tree'
+      required:
+        - id
+        - slug
+        - icon
+        - created_at
+        - updated_at
+        - title_en
+        - title_ru
+        - childrens
+    Shared-Dynamic-Block:
+      description: Shared dynamic block model
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          type: courtesy_slider
+          content: []
+          created_at: '2022-02-06T10:20:23.000+00:00'
+          updated_at: '2022-02-06T10:20:23.000+00:00'
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+          minLength: 1
+        content:
+          oneOf:
+            - description: Courtesy slider
+              items:
+                $ref: '#/components/schemas/Courtesy-Slider'
+            - description: Integration
+              items:
+                $ref: '#/components/schemas/Integration'
+            - description: Site Patron
+              items:
+                $ref: '#/components/schemas/Patron'
+            - description: Site Supporter
+              items:
+                $ref: '#/components/schemas/Site-Supporter'
+            - description: Featured category
+              items:
+                $ref: '#/components/schemas/Featured-Category'
+          type: array
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - type
+        - content
+        - created_at
+        - updated_at
+    Courtesy-Slider:
+      description: ''
+      type: object
+      properties:
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        description_en:
+          type: string
+          minLength: 1
+        description_ru:
+          type: string
+          minLength: 1
+        background:
+          type: string
+          minLength: 1
+        courtesy:
+          type: string
+          minLength: 1
+      required:
+        - title_en
+        - title_ru
+        - description_en
+        - description_ru
+        - background
+        - courtesy
+      x-examples:
+        example-1:
+          title_en: Free 3D models
+          title_ru: Бесплатные 3D модели
+          description_en: 'Also for commercial use, with fair restrictions. We provide models in several formats.'
+          description_ru: 'Пригодные для коммерческого использования, с разумными ограничениями. Модели представлены в нескольких форматах.'
+          background: 'http://localhost:3333/uploads/courtesy/ckyznj1zl00013sqt8yft6bk8.webp'
+          courtesy: Loft studio by Maxim Makarov
+      examples:
+        - title_en: Free 3D models
+          title_ru: Бесплатные 3D модели
+          description_en: 'Also for commercial use, with fair restrictions. We provide models in several formats.'
+          description_ru: 'Пригодные для коммерческого использования, с разумными ограничениями. Модели представлены в нескольких форматах.'
+          background: 'http://localhost:3333/uploads/courtesy/ckyznj1zl00013sqt8yft6bk8.webp'
+          courtesy: Loft studio by Maxim Makarov
+    Integration:
+      description: ''
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        logo:
+          type: string
+          minLength: 1
+        params:
+          type: object
+          properties:
+            auth:
+              type: boolean
+            custom_install:
+              type: boolean
+            download:
+              type: boolean
+            filters:
+              type: boolean
+            purchase:
+              type: boolean
+          required:
+            - auth
+            - custom_install
+            - download
+            - filters
+            - purchase
+        url:
+          type: string
+          minLength: 1
+      required:
+        - title
+        - logo
+        - params
+        - url
+      x-examples:
+        example-1:
+          title: SFMLab
+          logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+          params:
+            auth: false
+            custom_install: false
+            download: true
+            filters: false
+            purchase: false
+          url: 'https://sfmlab.com'
+      examples:
+        - title: Open3DLab
+          logo: 'http://localhost:3333/uploads/integrations/ckzb6zydk000e55pv0v746oh1.svg'
+          params:
+            auth: false
+            custom_install: false
+            download: true
+            filters: false
+            purchase: false
+          url: 'https://open3dlab.com'
+    Patron:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          title: John Cena
+          level: basic
+      properties:
+        title:
+          type: string
+          minLength: 1
+        level:
+          type: string
+          minLength: 1
+          enum:
+            - basic
+            - advanced
+            - intermediate
+      required:
+        - title
+        - level
+      examples:
+        - title: John Cena
+          level: basic
+    Site-Supporter:
+      description: ''
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        logo:
+          type: string
+          minLength: 1
+        url:
+          type: string
+          minLength: 1
+      required:
+        - title
+        - logo
+        - url
+      x-examples:
+        example-1:
+          title: SFMLab
+          logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+          url: 'https://sfmlab.com'
+      examples:
+        - title: SFMLab
+          logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+          url: 'https://sfmlab.com'
+    Featured-Category:
+      description: ''
+      type: object
+      properties:
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        thumbnail:
+          type: string
+          minLength: 1
+        tag:
+          type: string
+          minLength: 1
+        category_slug:
+          type: string
+          minLength: 1
+      required:
+        - title_en
+        - title_ru
+        - thumbnail
+        - tag
+        - category_slug
+      x-examples:
+        example-1:
+          title_en: string
+          title_ru: string
+          thumbnail: string
+          tag: string
+          category_slug: string
+    License:
+      description: Shared license model
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          access: free
+          mature_content: false
+          copyright_content: false
+          created_at: '2022-02-01T20:54:45.000+00:00'
+          updated_at: '2022-02-01T20:54:45.000+00:00'
+          title_en: Standart license
+          title_ru: Стандартная лицензия
+          description_en: Lorem ipsum
+          description_ru: Lorem ipsum
+      properties:
+        id:
+          type: number
+        access:
+          type: string
+          minLength: 1
+          enum:
+            - free
+            - subscriber
+            - subscriber-continious
+          example: free
+        mature_content:
+          type: boolean
+        copyright_content:
+          type: boolean
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        description_en:
+          type: string
+          minLength: 1
+        description_ru:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - access
+        - mature_content
+        - copyright_content
+        - created_at
+        - updated_at
+        - title_en
+        - title_ru
+        - description_en
+        - description_ru
+      examples:
+        - id: 1
+          access: free
+          mature_content: false
+          copyright_content: false
+          created_at: '2022-02-01T20:54:45.000+00:00'
+          updated_at: '2022-02-01T20:54:45.000+00:00'
+          title_en: Standart license
+          title_ru: Стандартная лицензия
+          description_en: Lorem ipsum
+          description_ru: Lorem ipsum
+    Simple-Model:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        mature_content:
+          type: boolean
+        thumbnail:
+          type: string
+          minLength: 1
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        category:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - slug
+        - mature_content
+        - thumbnail
+        - created_at
+        - updated_at
+        - category
+        - title_en
+        - title_ru
+      x-examples:
+        example-1:
+          id: 1
+          slug: crystal-maiden
+          mature_content: false
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          category: test-category
+          title_en: Test model
+          title_ru: Тестовая модель
+      examples:
+        - id: 1
+          slug: crystal-maiden
+          mature_content: false
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          category: test-category
+          title_en: Test model
+          title_ru: Тестовая модель
+    Simple-Post:
+      description: Shared simple blog post model
+      type: object
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        thumbnail:
+          type: string
+          minLength: 1
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        excerpt_en:
+          type: string
+          minLength: 1
+        excerpt_ru:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - slug
+        - thumbnail
+        - created_at
+        - updated_at
+        - title_en
+        - title_ru
+        - excerpt_en
+        - excerpt_ru
+      x-examples:
+        example-1:
+          id: 1
+          slug: test-post
+          thumbnail: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+          created_at: '2022-02-09T17:14:43.000+00:00'
+          updated_at: '2022-02-09T17:14:43.000+00:00'
+          title_en: Test post
+          title_ru: Test post
+          excerpt_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+          excerpt_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+    Post:
+      description: Shared post model
+      type: object
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        thumbnail:
+          type: string
+          minLength: 1
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        excerpt_en:
+          type: string
+          minLength: 1
+        excerpt_ru:
+          type: string
+          minLength: 1
+        content_en:
+          type: string
+          minLength: 1
+        content_ru:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - slug
+        - thumbnail
+        - created_at
+        - updated_at
+        - title_en
+        - title_ru
+        - excerpt_en
+        - excerpt_ru
+        - content_en
+        - content_ru
+      x-examples:
+        example-1:
+          id: 1
+          slug: test-post
+          thumbnail: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+          created_at: '2022-02-09T17:14:43.000+00:00'
+          updated_at: '2022-02-09T17:14:43.000+00:00'
+          title_en: Test post
+          title_ru: Test post
+          excerpt_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+          excerpt_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+          content_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p><p><br></p><p>Nunc quis lectus arcu. In bibendum bibendum vestibulum. Nullam facilisis semper urna eu tincidunt. Integer odio eros, tincidunt id consectetur et, lacinia vel lacus. Sed in nisi facilisis tortor pharetra rutrum. Suspendisse gravida mi ut ligula pretium, at rhoncus sapien accumsan. Morbi quis mauris ante. Nam dolor quam, accumsan vitae nunc id, dignissim laoreet metus. Praesent aliquet tortor ac leo viverra congue.</p><p><br></p><p>Vestibulum faucibus dolor eget massa aliquet dapibus. Suspendisse elit lacus, consectetur id risus vitae, hendrerit rutrum tellus. Etiam cursus faucibus ex, sit amet porttitor massa imperdiet sed. Pellentesque sed pulvinar est, nec placerat leo. Duis tempus, augue ut ullamcorper bibendum, augue tellus rhoncus nulla, ut molestie velit lectus ac arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce tincidunt orci vel eros luctus, ullamcorper consequat metus elementum. Etiam finibus risus odio, in posuere est fringilla a. Aenean id mauris fermentum, blandit lectus non, interdum nisl. Vivamus quis egestas ligula. Etiam eget elit at nisl placerat tincidunt quis vel diam. Nunc eleifend lacus sed nunc mattis, eget sollicitudin elit tristique.</p><p><br></p><p>Etiam consequat vehicula vehicula. Sed rutrum cursus odio quis pellentesque. Vivamus malesuada nisl augue, et eleifend felis tincidunt id. Nunc iaculis non velit sit amet mollis. Nullam euismod laoreet nisl, quis pharetra orci pellentesque quis. Cras id risus mollis, faucibus ipsum vehicula, mollis metus. Ut molestie massa justo, quis tempor leo tincidunt in.</p><p><br></p><p>Curabitur lobortis eget arcu non rutrum. Mauris tristique tortor eu neque rutrum condimentum. Nunc vulputate tristique mi finibus placerat. Sed vitae vulputate quam. Etiam nec auctor nisl. Quisque a aliquet est. Donec vitae nibh auctor, pellentesque justo a, viverra nisl. Praesent facilisis dui nec quam venenatis, eu tempus metus viverra. Nulla faucibus, nunc sed condimentum blandit, risus massa vehicula mi, eget sagittis libero orci quis lacus.&nbsp;</p>'
+          content_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p><p><br></p><p>Nunc quis lectus arcu. In bibendum bibendum vestibulum. Nullam facilisis semper urna eu tincidunt. Integer odio eros, tincidunt id consectetur et, lacinia vel lacus. Sed in nisi facilisis tortor pharetra rutrum. Suspendisse gravida mi ut ligula pretium, at rhoncus sapien accumsan. Morbi quis mauris ante. Nam dolor quam, accumsan vitae nunc id, dignissim laoreet metus. Praesent aliquet tortor ac leo viverra congue.</p><p><br></p><p>Vestibulum faucibus dolor eget massa aliquet dapibus. Suspendisse elit lacus, consectetur id risus vitae, hendrerit rutrum tellus. Etiam cursus faucibus ex, sit amet porttitor massa imperdiet sed. Pellentesque sed pulvinar est, nec placerat leo. Duis tempus, augue ut ullamcorper bibendum, augue tellus rhoncus nulla, ut molestie velit lectus ac arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce tincidunt orci vel eros luctus, ullamcorper consequat metus elementum. Etiam finibus risus odio, in posuere est fringilla a. Aenean id mauris fermentum, blandit lectus non, interdum nisl. Vivamus quis egestas ligula. Etiam eget elit at nisl placerat tincidunt quis vel diam. Nunc eleifend lacus sed nunc mattis, eget sollicitudin elit tristique.</p><p><br></p><p>Etiam consequat vehicula vehicula. Sed rutrum cursus odio quis pellentesque. Vivamus malesuada nisl augue, et eleifend felis tincidunt id. Nunc iaculis non velit sit amet mollis. Nullam euismod laoreet nisl, quis pharetra orci pellentesque quis. Cras id risus mollis, faucibus ipsum vehicula, mollis metus. Ut molestie massa justo, quis tempor leo tincidunt in.</p><p><br></p><p>Curabitur lobortis eget arcu non rutrum. Mauris tristique tortor eu neque rutrum condimentum. Nunc vulputate tristique mi finibus placerat. Sed vitae vulputate quam. Etiam nec auctor nisl. Quisque a aliquet est. Donec vitae nibh auctor, pellentesque justo a, viverra nisl. Praesent facilisis dui nec quam venenatis, eu tempus metus viverra. Nulla faucibus, nunc sed condimentum blandit, risus massa vehicula mi, eget sagittis libero orci quis lacus.&nbsp;</p>'
+    Model-Filter-Renderer:
+      description: Model filter renderer
+      type: object
+      x-examples:
+        example-1:
+          renderer: cycles
+          renderer_version: ''
+      properties:
+        renderer:
+          type: string
+          minLength: 1
+          enum:
+            - v-ray
+            - mental_ray
+            - arnold
+            - redshift
+            - cycles
+            - corona
+            - unity
+            - unreal_engine
+          description: Renderer engine
+        renderer_version:
+          type: string
+          description: Renderer engine version
+      required:
+        - renderer
+        - renderer_version
+    Model-Filter-DCC:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          program: 3ds_max
+          program_version: '2016'
+      properties:
+        program:
+          type: string
+          minLength: 1
+          description: DCC program
+          enum:
+            - 3ds_max
+            - maya
+            - blender
+            - cinema4d
+            - unity
+            - unreal_engine
+        program_version:
+          type: string
+          minLength: 1
+          description: DCC version
+      required:
+        - program
+        - program_version
+    Model:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          slug: crystal-maiden
+          mature_content: true
+          brands: []
+          licenses:
+            - 5
+            - 6
+          install_paths:
+            models: Test
+            textures: Textures/Test
+          textures_link: 'https://google.com'
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          images:
+            - original: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+              slide: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+            - original: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+              slide: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+            - original: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+              slide: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+            - original: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+              slide: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+            - original: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+              slide: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+              slide: 'http://localhost:3333/uploads/images/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+              slide: 'http://localhost:3333/uploads/images/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+            - original: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+              slide: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+            - original: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+              slide: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+            - original: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+              slide: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-46529256-4ec6-4276-a006-7c7c72994649.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+              slide: 'http://localhost:3333/uploads/images/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+            - original: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+              slide: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+            - original: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+              slide: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+            - original: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+              slide: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+          preview: null
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          files:
+            - id: 1
+              url: 'https://google.com'
+              program: 3ds_max
+              program_version: '2016'
+              renderer: redshift
+              renderer_version: '2.6'
+            - id: 2
+              url: 'https://google.com2'
+              program: 3ds_max
+              program_version: '2017'
+              renderer: redshift
+              renderer_version: '2.6'
+          collections:
+            - id: 1
+              slug: test-collection
+              title_en: Test collection
+              title_ru: Тестовая коллекция
+          category:
+            id: 1
+            slug: test-category
+            icon: ''
+            parent_id: null
+            created_at: '2022-02-01T17:55:08.000+00:00'
+            updated_at: '2022-02-01T17:55:08.000+00:00'
+            title_en: Test category
+            title_ru: Test category
+            description_en: null
+            description_ru: null
+          title_en: Test model
+          title_ru: Тестовая модель
+          description_en: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+          description_ru: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+          tags_en:
+            - tag 1
+            - tag 2
+          tags_ru:
+            - тег 1
+            - тег 2
+          polygons: 55000
+          vertices: 75000
+          blendshapes: true
+          rig: autodesk_cat
+          hair_system: ornatrix
+          textures: pbr
+          uv: udim
+      examples:
+        - id: 1
+          slug: crystal-maiden
+          mature_content: true
+          brands: []
+          licenses:
+            - 5
+            - 6
+          install_paths:
+            models: Test
+            textures: Textures/Test
+          textures_link: 'https://google.com'
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          images:
+            - original: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+              slide: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+            - original: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+              slide: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+            - original: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+              slide: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+            - original: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+              slide: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+            - original: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+              slide: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+              slide: 'http://localhost:3333/uploads/images/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+              slide: 'http://localhost:3333/uploads/images/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+            - original: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+              slide: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+            - original: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+              slide: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+            - original: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+              slide: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-46529256-4ec6-4276-a006-7c7c72994649.webp'
+            - original: 'http://localhost:3333/uploads//images/originals/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+              slide: 'http://localhost:3333/uploads/images/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+            - original: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+              slide: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+            - original: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+              slide: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+            - original: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+              slide: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+              thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+          preview: null
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          files:
+            - id: 1
+              url: 'https://google.com'
+              program: 3ds_max
+              program_version: '2016'
+              renderer: redshift
+              renderer_version: '2.6'
+            - id: 2
+              url: 'https://google.com2'
+              program: 3ds_max
+              program_version: '2017'
+              renderer: redshift
+              renderer_version: '2.6'
+          collections:
+            - id: 1
+              slug: test-collection
+              title_en: Test collection
+              title_ru: Тестовая коллекция
+          category:
+            id: 1
+            slug: test-category
+            icon: ''
+            parent_id: null
+            created_at: '2022-02-01T17:55:08.000+00:00'
+            updated_at: '2022-02-01T17:55:08.000+00:00'
+            title_en: Test category
+            title_ru: Test category
+            description_en: null
+            description_ru: null
+          title_en: Test model
+          title_ru: Тестовая модель
+          description_en: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+          description_ru: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+          tags_en:
+            - tag 1
+            - tag 2
+          tags_ru:
+            - тег 1
+            - тег 2
+          polygons: 55000
+          vertices: 75000
+          blendshapes: true
+          rig: autodesk_cat
+          hair_system: ornatrix
+          textures: pbr
+          uv: udim
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+          minLength: 1
+        mature_content:
+          type: boolean
+        brands:
+          type: array
+          items:
+            type: string
+        licenses:
+          type: array
+          items:
+            type: number
+        install_paths:
+          type: object
+          required:
+            - models
+            - textures
+          description: Model installation path
+          properties:
+            models:
+              type: string
+              minLength: 1
+            textures:
+              type: string
+              minLength: 1
+        textures_link:
+          type: string
+          minLength: 1
+        thumbnail:
+          type: string
+          minLength: 1
+        images:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            type: object
+            properties:
+              original:
+                type: string
+                minLength: 1
+              slide:
+                type: string
+                minLength: 1
+              thumbnail:
+                type: string
+                minLength: 1
+            required:
+              - original
+              - slide
+              - thumbnail
+        preview:
+          type:
+            - 'null'
+            - string
+        created_at:
+          type: string
+          minLength: 1
+        updated_at:
+          type: string
+          minLength: 1
+        files:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Model-File'
+        collections:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              slug:
+                type: string
+                minLength: 1
+              title_en:
+                type: string
+                minLength: 1
+              title_ru:
+                type: string
+                minLength: 1
+            required:
+              - id
+              - slug
+              - title_en
+              - title_ru
+        category:
+          $ref: '#/components/schemas/Category'
+        title_en:
+          type: string
+          minLength: 1
+        title_ru:
+          type: string
+          minLength: 1
+        description_en:
+          type: string
+          minLength: 1
+        description_ru:
+          type: string
+          minLength: 1
+        tags_en:
+          type: array
+          items:
+            type: string
+        tags_ru:
+          type: array
+          items:
+            type: string
+        polygons:
+          type: number
+        vertices:
+          type: number
+        blendshapes:
+          type: boolean
+        rig:
+          type:
+            - string
+            - boolean
+          minLength: 1
+          enum:
+            - bones
+            - autodesk_cat
+            - false
+        hair_system:
+          type:
+            - string
+            - boolean
+          minLength: 1
+          enum:
+            - standard
+            - ornatrix
+            - xgen
+            - hairfarm
+            - yeti
+            - false
+        textures:
+          type:
+            - string
+            - boolean
+          minLength: 1
+          enum:
+            - procedural
+            - pbr
+            - npr
+            - false
+        uv:
+          type:
+            - string
+            - boolean
+          minLength: 1
+          enum:
+            - generated
+            - unwrap_uvw
+            - udim
+            - uvtile
+            - false
+      required:
+        - id
+        - slug
+        - mature_content
+        - brands
+        - licenses
+        - install_paths
+        - textures_link
+        - thumbnail
+        - images
+        - created_at
+        - updated_at
+        - files
+        - collections
+        - category
+        - title_en
+        - title_ru
+        - description_en
+        - description_ru
+        - tags_en
+        - tags_ru
+        - polygons
+        - vertices
+        - blendshapes
+        - rig
+        - hair_system
+        - textures
+        - uv
+    Model-File:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          url: 'https://google.com'
+          program: 3ds_max
+          program_version: '2016'
+          renderer: redshift
+          renderer_version: '2.6'
+      properties:
+        id:
+          type: number
+          description: File id
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          description: File URL
+        program:
+          type: string
+          minLength: 1
+          enum:
+            - 3ds_max
+            - maya
+            - blender
+            - cinema4d
+            - unity
+            - unreal_engine
+          description: DCC
+        program_version:
+          type: string
+          minLength: 1
+          description: DCC version
+        renderer:
+          type: string
+          minLength: 1
+          enum:
+            - v-ray
+            - mental_ray
+            - arnold
+            - redshift
+            - cycles
+            - corona
+            - unity
+            - unreal_engine
+          description: Renderer engine
+        renderer_version:
+          type: string
+          minLength: 1
+          description: Renderer version
+      required:
+        - id
+        - url
+        - program
+        - program_version
+        - renderer
+        - renderer_version
+  securitySchemes:
+    api-key:
+      type: http
+      scheme: bearer
+  responses:
+    Categories-list-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                pagination:
+                  total: 1
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: test-category
+                    icon: ''
+                    parent_id: null
+                    created_at: '2022-02-01T17:55:08.000+00:00'
+                    updated_at: '2022-02-01T17:55:08.000+00:00'
+                    title_en: Test category
+                    title_ru: Test category
+                    description_en: null
+                    description_ru: null
+            properties:
+              pagination:
+                $ref: '#/components/schemas/Paginator'
+              items:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/Category'
+            required:
+              - pagination
+              - items
+          examples:
+            Example:
+              value:
+                pagination:
+                  total: 10
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: test-category
+                    icon: ''
+                    parent_id: null
+                    created_at: '2022-02-01T17:55:08.000+00:00'
+                    updated_at: '2022-02-01T17:55:08.000+00:00'
+                    title_en: Test category
+                    title_ru: Test category
+                    description_en: null
+                    description_ru: null
+    Category-tree-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            description: ''
+            minItems: 1
+            uniqueItems: true
+            x-examples:
+              example-1:
+                - id: 1
+                  slug: test-category
+                  icon: ''
+                  parent_id: null
+                  created_at: '2022-02-01T17:55:08.000+00:00'
+                  updated_at: '2022-02-01T17:55:08.000+00:00'
+                  title_en: Test category
+                  title_ru: Test category
+                  description_en: null
+                  description_ru: null
+                  childrens: []
+            items:
+              $ref: '#/components/schemas/Category-Tree'
+          examples:
+            Example:
+              value:
+                - id: 1
+                  slug: test-category
+                  icon: ''
+                  parent_id: null
+                  created_at: '2022-02-01T17:55:08.000+00:00'
+                  updated_at: '2022-02-01T17:55:08.000+00:00'
+                  title_en: Test category
+                  title_ru: Test category
+                  description_en: null
+                  description_ru: null
+                  childrens: []
+    Category-single-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Category'
+          examples:
+            Example:
+              value:
+                id: 1
+                slug: test-category
+                icon: ''
+                parent_id: null
+                created_at: '2022-02-01T17:55:08.000+00:00'
+                updated_at: '2022-02-01T17:55:08.000+00:00'
+                title_en: Test category
+                title_ru: Test category
+                description_en: null
+                description_ru: null
+    Dynamic-blocks-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            description: ''
+            minItems: 1
+            uniqueItems: true
+            x-examples:
+              example-1:
+                - id: 1
+                  type: courtesy_slider
+                  content:
+                    - title_en: Free 3D models
+                      title_ru: Бесплатные 3D модели
+                      description_en: 'Also for commercial use, with fair restrictions. We provide models in several formats.'
+                      description_ru: 'Пригодные для коммерческого использования, с разумными ограничениями. Модели представлены в нескольких форматах.'
+                      background: 'http://localhost:3333/uploads/courtesy/ckyznj1zl00013sqt8yft6bk8.webp'
+                      courtesy: Loft studio by Maxim Makarov
+                    - title_en: PBR-Ready materials
+                      title_ru: PBR-Ready материалы
+                      description_en: 'Each model has materials, based on PBR principals. This models are compatible with models game engines and offline-renders (Vray, Arnold, Redshift, Renderman).'
+                      description_ru: 'На каждой модели наложены материалы, основанные на принципах PBR. Данные модели совместимы с современными игровыми движками, а также offline-рендерами (Vray, Arnold, Redshift, Renderman).'
+                      background: 'http://localhost:3333/uploads/courtesy/ckyznzy7q00033sqtd7i8c0yv.webp'
+                      courtesy: Desolator by Maxim Makarov
+                    - title_en: 4K+ PBR-Ready textures
+                      title_ru: 4K+ PBR-Ready текстуры
+                      description_en: 'By using modern pipeline, we provide PBR-Ready textures, average at 4K resolution. In some cases we using UDIM-unwrapping.'
+                      description_ru: 'Используя современный pipeline, на выходе получаются PBR-Ready текстуры, имеющие разрешение в среднем 4K. При необходимости используем UDIM-развертку.'
+                      background: 'http://localhost:3333/uploads/courtesy/ckyzxs2ct000161qt42868ufm.webp'
+                      courtesy: Drow Ranger by Maxim Makarov
+                  created_at: '2022-02-06T10:20:23.000+00:00'
+                  updated_at: '2022-02-06T10:20:23.000+00:00'
+                - id: 2
+                  type: featured_categories
+                  content: []
+                  created_at: '2022-02-06T10:36:48.000+00:00'
+                  updated_at: '2022-02-06T10:36:48.000+00:00'
+                - id: 3
+                  type: integrations
+                  content:
+                    - title: SFMLab
+                      logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+                      params:
+                        auth: false
+                        custom_install: false
+                        download: true
+                        filters: false
+                        purchase: false
+                      url: 'https://sfmlab.com'
+                    - title: Smutbase
+                      logo: 'http://localhost:3333/uploads/integrations/ckzb6zlr8000b55pv6ysa7q5u.svg'
+                      params:
+                        auth: false
+                        custom_install: false
+                        download: true
+                        filters: false
+                        purchase: false
+                      url: 'https://smutba.se'
+                    - title: Open3DLab
+                      logo: 'http://localhost:3333/uploads/integrations/ckzb6zydk000e55pv0v746oh1.svg'
+                      params:
+                        auth: false
+                        custom_install: false
+                        download: true
+                        filters: false
+                        purchase: false
+                      url: 'https://open3dlab.com'
+                  created_at: '2022-02-06T11:36:25.000+00:00'
+                  updated_at: '2022-02-06T11:39:17.000+00:00'
+                - id: 4
+                  type: site_supporters
+                  content:
+                    - title: SFMLab
+                      logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+                      url: 'https://sfmlab.com'
+                  created_at: '2022-05-06T14:53:59.000+00:00'
+                  updated_at: '2022-05-06T14:53:59.000+00:00'
+                - id: 5
+                  type: site_patrons
+                  content:
+                    - title: John Cena
+                      level: basic
+                    - title: Jane Smith
+                      level: advanced
+                    - title: Kratos
+                      level: intermediate
+                  created_at: '2022-05-06T15:12:00.000+00:00'
+                  updated_at: '2022-05-06T16:57:35.000+00:00'
+                - id: 6
+                  type: featured_categories
+                  content:
+                    - title_en: Test
+                      title_ru: Test
+                      thumbnail: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+                      tag: test
+                      category_slug: ''
+                  created_at: '2022-05-07T10:14:55.000+00:00'
+                  updated_at: '2022-05-07T10:14:55.000+00:00'
+            items:
+              $ref: '#/components/schemas/Shared-Dynamic-Block'
+          examples:
+            Example:
+              value:
+                - id: 0
+                  type: string
+                  content:
+                    - title_en: Free 3D models
+                      title_ru: Бесплатные 3D модели
+                      description_en: 'Also for commercial use, with fair restrictions. We provide models in several formats.'
+                      description_ru: 'Пригодные для коммерческого использования, с разумными ограничениями. Модели представлены в нескольких форматах.'
+                      background: 'http://localhost:3333/uploads/courtesy/ckyznj1zl00013sqt8yft6bk8.webp'
+                      courtesy: Loft studio by Maxim Makarov
+                  created_at: string
+                  updated_at: string
+    Dynamic-block-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Shared-Dynamic-Block'
+          examples:
+            Example:
+              value:
+                id: 3
+                type: integrations
+                content:
+                  - title: SFMLab
+                    logo: 'http://localhost:3333/uploads/integrations/ckzb6uxua00144dpv8shl3evz.svg'
+                    params:
+                      auth: false
+                      custom_install: false
+                      download: true
+                      filters: false
+                      purchase: false
+                    url: 'https://sfmlab.com'
+                  - title: Smutbase
+                    logo: 'http://localhost:3333/uploads/integrations/ckzb6zlr8000b55pv6ysa7q5u.svg'
+                    params:
+                      auth: false
+                      custom_install: false
+                      download: true
+                      filters: false
+                      purchase: false
+                    url: 'https://smutba.se'
+                  - title: Open3DLab
+                    logo: 'http://localhost:3333/uploads/integrations/ckzb6zydk000e55pv0v746oh1.svg'
+                    params:
+                      auth: false
+                      custom_install: false
+                      download: true
+                      filters: false
+                      purchase: false
+                    url: 'https://open3dlab.com'
+                created_at: '2022-02-06T11:36:25.000+00:00'
+                updated_at: '2022-02-06T11:39:17.000+00:00'
+    Licenses-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            description: ''
+            minItems: 1
+            uniqueItems: true
+            x-examples:
+              example-1:
+                - id: 1
+                  access: free
+                  mature_content: false
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Standart license
+                  title_ru: Стандартная лицензия
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 2
+                  access: subscriber
+                  mature_content: false
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Standart license - Supporter
+                  title_ru: Стандартная лицензия - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 3
+                  access: free
+                  mature_content: false
+                  copyright_content: true
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Copyright license
+                  title_ru: Copyright лицензия
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 4
+                  access: subscriber
+                  mature_content: false
+                  copyright_content: true
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Copyright license - Supporter
+                  title_ru: Copyright лицензия - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 5
+                  access: free
+                  mature_content: true
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Mature content license
+                  title_ru: Лицензия контента для взрослых
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 6
+                  access: subscriber-continious
+                  mature_content: true
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Mature content license - Supporter
+                  title_ru: Лицензия контента для взрослых - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+            items:
+              $ref: '#/components/schemas/License'
+          examples:
+            Example:
+              value:
+                - id: 1
+                  access: free
+                  mature_content: false
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Standart license
+                  title_ru: Стандартная лицензия
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 2
+                  access: subscriber
+                  mature_content: false
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Standart license - Supporter
+                  title_ru: Стандартная лицензия - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 3
+                  access: free
+                  mature_content: false
+                  copyright_content: true
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Copyright license
+                  title_ru: Copyright лицензия
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 4
+                  access: subscriber
+                  mature_content: false
+                  copyright_content: true
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Copyright license - Supporter
+                  title_ru: Copyright лицензия - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 5
+                  access: free
+                  mature_content: true
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Mature content license
+                  title_ru: Лицензия контента для взрослых
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+                - id: 6
+                  access: subscriber-continious
+                  mature_content: true
+                  copyright_content: false
+                  created_at: '2022-02-01T20:54:45.000+00:00'
+                  updated_at: '2022-02-01T20:54:45.000+00:00'
+                  title_en: Mature content license - Supporter
+                  title_ru: Лицензия контента для взрослых - Поддержка
+                  description_en: Lorem ipsum
+                  description_ru: Lorem ipsum
+    Autocomplete-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                models:
+                  - id: 1
+                    slug: crystal-maiden
+                    mature_content: false
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    mature_content: false
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    title_en: Test model 2
+                    title_ru: Test model 2
+            properties:
+              models:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/Simple-Model'
+            required:
+              - models
+          examples:
+            Example:
+              value:
+                models:
+                  - id: 1
+                    slug: crystal-maiden
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    title_en: Test model 2
+                    title_ru: Test model 2
+    Posts-list-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                pagination:
+                  total: 1
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: test-post
+                    thumbnail: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                    created_at: '2022-02-09T17:14:43.000+00:00'
+                    updated_at: '2022-02-09T17:14:43.000+00:00'
+                    title_en: Test post
+                    title_ru: Test post
+                    excerpt_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+                    excerpt_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+            properties:
+              pagination:
+                $ref: '#/components/schemas/Paginator'
+              items:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/Simple-Post'
+            required:
+              - pagination
+              - items
+          examples:
+            Example:
+              value:
+                pagination:
+                  total: 1
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: test-post
+                    thumbnail: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                    created_at: '2022-02-09T17:14:43.000+00:00'
+                    updated_at: '2022-02-09T17:14:43.000+00:00'
+                    title_en: Test post
+                    title_ru: Test post
+                    excerpt_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+                    excerpt_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+    Single-post-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Post'
+          examples:
+            Example:
+              value:
+                id: 1
+                slug: test-post
+                thumbnail: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                created_at: '2022-02-09T17:14:43.000+00:00'
+                updated_at: '2022-02-09T17:14:43.000+00:00'
+                title_en: Test post
+                title_ru: Test post
+                excerpt_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+                excerpt_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p>'
+                content_en: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p><p><br></p><p>Nunc quis lectus arcu. In bibendum bibendum vestibulum. Nullam facilisis semper urna eu tincidunt. Integer odio eros, tincidunt id consectetur et, lacinia vel lacus. Sed in nisi facilisis tortor pharetra rutrum. Suspendisse gravida mi ut ligula pretium, at rhoncus sapien accumsan. Morbi quis mauris ante. Nam dolor quam, accumsan vitae nunc id, dignissim laoreet metus. Praesent aliquet tortor ac leo viverra congue.</p><p><br></p><p>Vestibulum faucibus dolor eget massa aliquet dapibus. Suspendisse elit lacus, consectetur id risus vitae, hendrerit rutrum tellus. Etiam cursus faucibus ex, sit amet porttitor massa imperdiet sed. Pellentesque sed pulvinar est, nec placerat leo. Duis tempus, augue ut ullamcorper bibendum, augue tellus rhoncus nulla, ut molestie velit lectus ac arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce tincidunt orci vel eros luctus, ullamcorper consequat metus elementum. Etiam finibus risus odio, in posuere est fringilla a. Aenean id mauris fermentum, blandit lectus non, interdum nisl. Vivamus quis egestas ligula. Etiam eget elit at nisl placerat tincidunt quis vel diam. Nunc eleifend lacus sed nunc mattis, eget sollicitudin elit tristique.</p><p><br></p><p>Etiam consequat vehicula vehicula. Sed rutrum cursus odio quis pellentesque. Vivamus malesuada nisl augue, et eleifend felis tincidunt id. Nunc iaculis non velit sit amet mollis. Nullam euismod laoreet nisl, quis pharetra orci pellentesque quis. Cras id risus mollis, faucibus ipsum vehicula, mollis metus. Ut molestie massa justo, quis tempor leo tincidunt in.</p><p><br></p><p>Curabitur lobortis eget arcu non rutrum. Mauris tristique tortor eu neque rutrum condimentum. Nunc vulputate tristique mi finibus placerat. Sed vitae vulputate quam. Etiam nec auctor nisl. Quisque a aliquet est. Donec vitae nibh auctor, pellentesque justo a, viverra nisl. Praesent facilisis dui nec quam venenatis, eu tempus metus viverra. Nulla faucibus, nunc sed condimentum blandit, risus massa vehicula mi, eget sagittis libero orci quis lacus.&nbsp;</p>'
+                content_ru: '<p>&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque lectus vitae feugiat sodales. Mauris ac metus sed metus elementum elementum at ac est. Aenean aliquam tortor ultricies erat tempor porta. Integer eleifend tortor vel lacus aliquam suscipit. Aenean tincidunt in sem dapibus tincidunt. Mauris turpis justo, cursus a efficitur quis, feugiat et ligula. Donec quis leo magna. Mauris ut lectus sit amet arcu auctor pretium non eu libero. Nulla luctus diam vitae lorem mattis, eget accumsan felis semper. Nam scelerisque lectus eget quam tempor, ut viverra urna molestie. Cras vestibulum, urna sit amet tempus lacinia, risus risus feugiat risus, sed pharetra enim purus eget nisi. Vestibulum convallis felis vitae gravida pulvinar. In eget diam vel ex dignissim consequat. Duis aliquam congue metus.</p><p><br></p><p>Nunc quis lectus arcu. In bibendum bibendum vestibulum. Nullam facilisis semper urna eu tincidunt. Integer odio eros, tincidunt id consectetur et, lacinia vel lacus. Sed in nisi facilisis tortor pharetra rutrum. Suspendisse gravida mi ut ligula pretium, at rhoncus sapien accumsan. Morbi quis mauris ante. Nam dolor quam, accumsan vitae nunc id, dignissim laoreet metus. Praesent aliquet tortor ac leo viverra congue.</p><p><br></p><p>Vestibulum faucibus dolor eget massa aliquet dapibus. Suspendisse elit lacus, consectetur id risus vitae, hendrerit rutrum tellus. Etiam cursus faucibus ex, sit amet porttitor massa imperdiet sed. Pellentesque sed pulvinar est, nec placerat leo. Duis tempus, augue ut ullamcorper bibendum, augue tellus rhoncus nulla, ut molestie velit lectus ac arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce tincidunt orci vel eros luctus, ullamcorper consequat metus elementum. Etiam finibus risus odio, in posuere est fringilla a. Aenean id mauris fermentum, blandit lectus non, interdum nisl. Vivamus quis egestas ligula. Etiam eget elit at nisl placerat tincidunt quis vel diam. Nunc eleifend lacus sed nunc mattis, eget sollicitudin elit tristique.</p><p><br></p><p>Etiam consequat vehicula vehicula. Sed rutrum cursus odio quis pellentesque. Vivamus malesuada nisl augue, et eleifend felis tincidunt id. Nunc iaculis non velit sit amet mollis. Nullam euismod laoreet nisl, quis pharetra orci pellentesque quis. Cras id risus mollis, faucibus ipsum vehicula, mollis metus. Ut molestie massa justo, quis tempor leo tincidunt in.</p><p><br></p><p>Curabitur lobortis eget arcu non rutrum. Mauris tristique tortor eu neque rutrum condimentum. Nunc vulputate tristique mi finibus placerat. Sed vitae vulputate quam. Etiam nec auctor nisl. Quisque a aliquet est. Donec vitae nibh auctor, pellentesque justo a, viverra nisl. Praesent facilisis dui nec quam venenatis, eu tempus metus viverra. Nulla faucibus, nunc sed condimentum blandit, risus massa vehicula mi, eget sagittis libero orci quis lacus.&nbsp;</p>'
+    Models-list-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                pagination:
+                  total: 2
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: crystal-maiden
+                    status: 1
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    status: 1
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    title_en: Test model 2
+                    title_ru: Test model 2
+            properties:
+              pagination:
+                $ref: '#/components/schemas/Paginator'
+              items:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/Simple-Model'
+            required:
+              - pagination
+              - items
+          examples:
+            Example:
+              value:
+                pagination:
+                  total: 2
+                  current_page: 1
+                  last_page: 1
+                items:
+                  - id: 1
+                    slug: crystal-maiden
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    title_en: Test model 2
+                    title_ru: Test model 2
+    Single-model-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Model'
+          examples:
+            Example:
+              value:
+                id: 1
+                slug: crystal-maiden
+                mature_content: true
+                brands: []
+                licenses:
+                  - 5
+                  - 6
+                install_paths:
+                  models: Test
+                  textures: Textures/Test
+                textures_link: 'https://google.com'
+                thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                images:
+                  - original: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-997e9892-bcc8-4052-aefb-b0fee71543c7.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-fbf2400e-07eb-4b2e-98d0-ca13857c4abb.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-ad1fc237-8a26-4d32-b1ce-bddc4e055de3.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-e265d42d-cbe1-4cd7-910e-07f4d7b0c5e9.webp'
+                  - original: 'http://localhost:3333/uploads//images/originals/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-b06b94c0-e3b8-4bb9-9f7f-8b6619fcf057.webp'
+                  - original: 'http://localhost:3333/uploads//images/originals/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-d09f71d0-4156-485c-a3d4-b0b585b76e31.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-8c40f5e5-0981-4e1f-a34c-b6a39fba2f97.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-68b01979-c77c-47ca-a1a0-742ad55a1b02.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-46529256-4ec6-4276-a006-7c7c72994649.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-46529256-4ec6-4276-a006-7c7c72994649.webp'
+                  - original: 'http://localhost:3333/uploads//images/originals/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-c30ed65f-6446-48f9-8f58-094f823e3ce9.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-114069a1-8fa5-4f12-afe3-bbc1c4335286.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-9b45ada2-ca67-4901-897c-61471594edc4.webp'
+                  - original: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+                    slide: 'http://localhost:3333/uploads/images/model-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+                    thumbnail: 'http://localhost:3333/uploads/images/thumbnails/thumbnail-57d31c11-8fd6-47a9-92cf-93bc61b0050b.webp'
+                preview: null
+                created_at: '2022-02-01T17:55:12.000+00:00'
+                updated_at: '2022-02-23T12:23:09.000+00:00'
+                files:
+                  - id: 1
+                    url: 'https://google.com'
+                    program: 3ds_max
+                    program_version: '2016'
+                    renderer: redshift
+                    renderer_version: '2.6'
+                  - id: 2
+                    url: 'https://google.com2'
+                    program: 3ds_max
+                    program_version: '2017'
+                    renderer: redshift
+                    renderer_version: '2.6'
+                collections:
+                  - id: 1
+                    slug: test-collection
+                    title_en: Test collection
+                    title_ru: Тестовая коллекция
+                category:
+                  id: 1
+                  slug: test-category
+                  icon: ''
+                  parent_id: null
+                  created_at: '2022-02-01T17:55:08.000+00:00'
+                  updated_at: '2022-02-01T17:55:08.000+00:00'
+                  title_en: Test category
+                  title_ru: Test category
+                  description_en: null
+                  description_ru: null
+                title_en: Test model
+                title_ru: Тестовая модель
+                description_en: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+                description_ru: '<p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus, elit eu condimentum dictum, nibh neque pellentesque justo, a convallis augue nisi sit amet massa. Nulla interdum consectetur felis non scelerisque. Integer nec nisl augue. Nulla sit amet eros nec sem tristique eleifend commodo ac risus. Integer cursus augue felis, ac elementum augue dictum nec. Fusce gravida dictum arcu, vitae consectetur nisi vulputate sed. Suspendisse ante odio, hendrerit sed lacus id, bibendum ultrices quam. Nulla tempus libero sed dui laoreet blandit. Praesent lectus risus, porttitor in molestie a, efficitur et tortor. Pellentesque volutpat ut est et feugiat. Etiam facilisis iaculis justo in vehicula. Praesent aliquam purus at posuere pretium.</p><p class="ql-align-justify">Fusce sit amet quam quis erat auctor scelerisque. Ut enim arcu, gravida non mattis in, blandit vel dui. Aliquam mollis consequat libero. Duis rutrum mollis efficitur. Pellentesque id maximus diam, non sodales est. In tincidunt nisi posuere erat sagittis pretium. Nulla accumsan enim id dui pretium hendrerit. Sed pellentesque, diam id congue ultricies, massa felis eleifend nulla, a dictum lacus orci vel eros.</p><p class="ql-align-justify">Aenean consectetur volutpat augue, vitae elementum neque auctor a. Etiam porttitor vestibulum nunc, eu sodales purus condimentum lobortis. Nam condimentum arcu at egestas efficitur. Proin luctus erat tellus, eu pellentesque odio mollis at. Morbi sit amet laoreet magna. Donec quis purus mattis, semper nunc id, gravida nibh. Pellentesque mauris arcu, dignissim in placerat dapibus, tristique in massa. Pellentesque sem ipsum, sagittis a hendrerit eu, laoreet vel purus. Sed sed ex in mauris tristique varius ut a sem. Pellentesque interdum congue vehicula. Morbi interdum felis ut massa porta, ac maximus dolor porttitor. Mauris leo nisi, feugiat vitae turpis ut, vehicula molestie nulla. Proin mattis orci at posuere tincidunt.</p><p class="ql-align-justify">Sed sed condimentum massa. Curabitur facilisis neque nec interdum commodo. Nulla facilisi. Ut vitae suscipit risus. Fusce imperdiet at dolor sit amet pharetra. Ut laoreet, orci quis tempus cursus, ex magna vulputate massa, ut blandit orci metus eu arcu. Fusce placerat dictum laoreet. Quisque commodo ex id sem aliquet, in elementum nibh consectetur. Curabitur vestibulum luctus tortor a euismod.</p><p class="ql-align-justify">Nunc sed lorem nisl. Etiam eu venenatis nunc, quis bibendum tortor. Praesent condimentum vitae diam at vestibulum. Aliquam rutrum commodo est non porttitor. Sed rutrum nec erat sed eleifend. Donec imperdiet, neque vitae aliquet dignissim, nisi metus tristique magna, id pellentesque mauris arcu sagittis velit. Ut gravida vulputate nibh, ac suscipit justo dapibus sed. Duis ultrices tempor dapibus. Nullam ut ante luctus, venenatis dui a, fringilla velit. Pellentesque ullamcorper massa imperdiet, vestibulum justo in, tempus libero. In accumsan interdum velit, vitae feugiat tellus interdum id. In tincidunt ligula quis ligula tempus scelerisque. Vivamus faucibus lorem auctor vehicula lacinia. Aliquam maximus felis consequat, elementum ante vel, dictum libero.</p><p><br></p>'
+                tags_en:
+                  - tag 1
+                  - tag 2
+                tags_ru:
+                  - тег 1
+                  - тег 2
+                polygons: 55000
+                vertices: 75000
+                blendshapes: true
+                rig: autodesk_cat
+                hair_system: ornatrix
+                textures: pbr
+                uv: udim
+    Model-collection-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: Object keyed by collection id
+            type: object
+            x-examples:
+              example-1:
+                '{collection_id}':
+                  - id: 1
+                    slug: crystal-maiden
+                    status: 1
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    collections:
+                      - 1
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    status: 1
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    collections:
+                      - 1
+                    title_en: Test model 2
+                    title_ru: Test model 2
+            properties:
+              '{collection_id}':
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/Simple-Model'
+            required:
+              - '{collection_id}'
+          examples:
+            Example:
+              value:
+                '{collection_id}':
+                  - id: 1
+                    slug: crystal-maiden
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+                    created_at: '2022-02-01T17:55:12.000+00:00'
+                    updated_at: '2022-02-23T12:23:09.000+00:00'
+                    category: test-category
+                    collections:
+                      - 1
+                    title_en: Test model
+                    title_ru: Тестовая модель
+                  - id: 2
+                    slug: drow-ranger
+                    mature_content: true
+                    thumbnail: 'http://localhost:3333/uploads/images/previews/model-5e4e4212-0089-4af8-a0db-34b6dc8cdf6b.webp'
+                    created_at: '2022-02-23T11:18:01.000+00:00'
+                    updated_at: '2022-02-23T11:38:09.000+00:00'
+                    category: test-category
+                    collections:
+                      - 1
+                    title_en: Test model 2
+                    title_ru: Test model 2
+  parameters:
+    Language:
+      name: x-meshhouse-language
+      in: header
+      required: false
+      schema:
+        type: string
+        enum:
+          - en
+          - ru
+      description: Set output language
+    Mature-content:
+      name: x-meshhouse-mature-content
+      in: header
+      required: false
+      schema:
+        type: boolean
+      description: Show mature content
+  requestBodies:
+    Models-list-body:
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                filters:
+                  formats:
+                    - program: 3ds_max
+                      program_version: '2016'
+                    - program: 3ds_max
+                      program_version: '2017'
+                  renderers:
+                    - renderer: cycles
+                      renderer_version: ''
+                    - renderer: redshift
+                      renderer_version: '2.6'
+                  polys: hi-poly
+                  hair_system: ornatrix
+                  rig: autodesk_cat
+                  textures: pbr
+                  uv: udim
+                page: 1
+                count: 48
+            properties:
+              filters:
+                type: object
+                required:
+                  - formats
+                  - renderers
+                  - polys
+                  - hair_system
+                  - rig
+                  - textures
+                  - uv
+                properties:
+                  formats:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/Model-Filter-DCC'
+                  renderers:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/Model-Filter-Renderer'
+                  polys:
+                    type: string
+                    minLength: 1
+                  hair_system:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - standard
+                      - ornatrix
+                      - xgen
+                      - hairfarm
+                      - yeti
+                  rig:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - bones
+                      - autodesk_cat
+                  textures:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - procedural
+                      - pbr
+                      - npr
+                  uv:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - generated
+                      - unwrap_uvw
+                      - udim
+                      - uvtile
+              page:
+                type: number
+              count:
+                type: number
+            required:
+              - filters
+              - page
+              - count
+          examples:
+            Example:
+              value:
+                filters:
+                  formats:
+                    - program: 3ds_max
+                      program_version: '2016'
+                    - program: 3ds_max
+                      program_version: '2017'
+                  renderers:
+                    - renderer: cycles
+                      renderer_version: ''
+                    - renderer: redshift
+                      renderer_version: '2.6'
+                  polys: hi-poly
+                  hair_system: ornatrix
+                  rig: autodesk_cat
+                  textures: pbr
+                  uv: udim
+                page: 1
+                count: 48
+tags:
+  - name: Categories
+  - name: Dynamic blocks
+  - name: Licenses
+  - name: Models
+  - name: Posts
