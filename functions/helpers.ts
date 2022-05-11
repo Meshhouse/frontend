@@ -6,7 +6,7 @@ import type {
 
 export function getDccName (program: string): string {
   const names: any = {
-    autodesk_3ds_max: '3ds Max',
+    '3ds_max': '3ds Max',
     maya: 'Maya',
     blender: 'Blender',
     cinema4d: 'Cinema 4D',
@@ -21,16 +21,26 @@ export function getDccName (program: string): string {
 export function getRendererName (renderer: string): string {
   const names: any = {
     redshift: 'Redshift',
-    v_ray: 'V-Ray',
+    'v-ray': 'V-Ray',
     arnold: 'Arnold',
     mental_ray: 'Mental Ray',
-    corona: 'Corona',
-    cycles: 'Cycles',
-    unity_hdrp: 'Unity HDRP',
-    unity_sdrp: 'Unity Standard',
-    unreal_standard: 'Unreal Engine Standard'
+    corona: 'Corona Renderer',
+    cycles: 'Blender Cycles',
+    unity: 'Unity',
+    unreal_engine: 'Unreal Engine'
   }
   return names[renderer]
+}
+
+export function getReadableFileSizeString (fileSizeInBytes: number): string {
+  let i = -1
+  const byteUnits = [' kB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB']
+  do {
+    fileSizeInBytes = fileSizeInBytes / 1024
+    i++
+  } while (fileSizeInBytes > 1024)
+
+  return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
 }
 
 export function stringCapitalize (string: string): string {

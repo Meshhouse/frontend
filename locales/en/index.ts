@@ -9,7 +9,8 @@ export default {
   common: {
     language: 'Language',
     true: 'Yes',
-    false: 'No'
+    false: 'No',
+    save: 'Save'
   },
   navigation: {
     home: 'Home',

@@ -32,7 +32,8 @@ import {
 import {
   faApple,
   faLinux,
-  faWindows
+  faWindows,
+  faPatreon
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -65,7 +66,8 @@ library.add(
   faHeart,
   faApple,
   faLinux,
-  faWindows
+  faWindows,
+  faPatreon
 )
 
 // eslint-disable-next-line vue/component-definition-name-casing

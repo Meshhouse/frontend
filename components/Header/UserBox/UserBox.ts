@@ -18,7 +18,7 @@ export default class NavbarButtons extends Vue {
   }
 
   async logout (): Promise<void> {
-    const authRoutes = ['/account/api-keys']
+    const authRoutes = ['/account/profile']
 
     try {
       await this.$api({

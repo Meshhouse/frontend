@@ -33,10 +33,10 @@
       </a>
       <nuxt-link
         v-if="$isLogged()"
-        :to="localePath('/account/api-keys')"
+        :to="localePath('/account/profile')"
         class="dropdown__item"
       >
-        {{ $t('form.apiKeys') }}
+        {{ $t('form.profile') }}
       </nuxt-link>
       <a
         v-if="$isLogged()"

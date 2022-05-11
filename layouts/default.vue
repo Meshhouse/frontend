@@ -17,6 +17,9 @@
     />
     <app-footer :class="footerClass" />
     <portal-target name="overlay" />
+    <client-only>
+      <notification-container />
+    </client-only>
   </div>
 </template>
 
@@ -28,6 +31,7 @@ import AppHeader from '@/components/AppHeader/AppHeader.vue'
 import AppFooter from '@/components/AppFooter/AppFooter.vue'
 import FooterTopSupporters from '@/components/Footer/FooterTopSupporters.vue'
 import FooterPatrons from '@/components/Footer/FooterPatrons.vue'
+import NotificationContainer from '@/components/Notification/NotificationContainer.vue'
 
 import type {
   SiteSupporter,
@@ -39,7 +43,8 @@ import type {
     AppHeader,
     AppFooter,
     FooterPatrons,
-    FooterTopSupporters
+    FooterTopSupporters,
+    NotificationContainer
   },
   head () {
     return {

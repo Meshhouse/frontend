@@ -9,7 +9,8 @@ export default {
   common: {
     language: 'Язык',
     true: 'Да',
-    false: 'Нет'
+    false: 'Нет',
+    save: 'Сохранить'
   },
   navigation: {
     home: 'Главная',

@@ -1050,6 +1050,7 @@ components:
             models: Test
             textures: Textures/Test
           textures_link: 'https://google.com'
+          textures_link_size: 0
           thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
           images:
             - original: 'http://localhost:3333/uploads/images/model-6062ecf7-c80a-41fc-8ea4-06e55cfe5291.webp'
@@ -1104,12 +1105,14 @@ components:
               program_version: '2016'
               renderer: redshift
               renderer_version: '2.6'
+              size: 1234
             - id: 2
               url: 'https://google.com2'
               program: 3ds_max
               program_version: '2017'
               renderer: redshift
               renderer_version: '2.6'
+              size: 1234
           collections:
             - id: 1
               slug: test-collection
@@ -1161,10 +1164,10 @@ components:
             type: number
         install_paths:
           type: object
+          description: Model installation path
           required:
             - models
             - textures
-          description: Model installation path
           properties:
             models:
               type: string
@@ -1175,6 +1178,8 @@ components:
         textures_link:
           type: string
           minLength: 1
+        textures_link_size:
+          type: number
         thumbnail:
           type: string
           minLength: 1
@@ -1315,6 +1320,7 @@ components:
         - licenses
         - install_paths
         - textures_link
+        - textures_link_size
         - thumbnail
         - images
         - created_at
@@ -1387,6 +1393,8 @@ components:
           type: string
           minLength: 1
           description: Renderer version
+        size:
+          type: number
       required:
         - id
         - url
@@ -2294,6 +2302,8 @@ components:
                 type: number
               count:
                 type: number
+              query:
+                type: string
             required:
               - filters
               - page

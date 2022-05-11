@@ -10,7 +10,7 @@
     <div class="api-block__actions">
       <v-button
         color="danger"
-        size="lg"
+        size="sm"
         :title="$t('form.delete')"
         icon
         @click="$emit('delete', block.id)"

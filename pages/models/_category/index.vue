@@ -585,7 +585,8 @@ export default class ModelCatalog extends Vue {
       const querystring = qs.stringify({
         page: this.pagination.current_page > 1 ? this.pagination.current_page : undefined,
         ...prepared.simplified,
-        mature: this.matureContent === 'false' ? false : undefined
+        mature: this.matureContent === 'false' ? false : undefined,
+        q: this.$route.query.q ? this.$route.query.q : undefined
       }, { encode: false })
 
       this.items = data.items

@@ -13,6 +13,9 @@ export default {
   create: 'Create',
   delete: 'Delete',
   apiKeys: 'API keys',
+  profile: 'Profile',
+  connectWith: 'Connect with {n}',
+  thirdParty: 'Third-party services',
   actions: {
     registered: 'Already registered?',
     newUser: 'Don\'t have an account? Register now',

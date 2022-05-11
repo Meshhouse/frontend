@@ -24,8 +24,8 @@
     border-color: #bd6a2c
     color: $white
   &--cinema4d
-    background-color: #7542a8
-    border-color: #7542a8
+    background-color: #3949ab
+    border-color: #3949ab
     color: $white
   &--unity
     background-color: $black
@@ -57,6 +57,19 @@
       padding: 0.5rem
   &__title
     text-align: center
+  &__list
+    li
+      display: flex
+      align-items: center
+      &:before
+        content: ''
+        border-radius: 50%
+        display: inline-block
+        background-color: $white
+        width: 0.375rem
+        height: 0.375rem
+        margin-right: 0.375rem
+        flex: 0 0 0.375rem
 
 @media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
   .index-programs

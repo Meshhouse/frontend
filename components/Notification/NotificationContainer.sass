@@ -1,0 +1,73 @@
+.notification-container
+  position: fixed
+  top: 2.5rem
+  right: 1rem
+  display: flex
+  flex-direction: column
+  width: 100%
+  max-width: 480px
+  grid-gap: 1rem
+
+.notification
+  display: flex
+  align-items: center
+  width: 100%
+  background-color: var(--block-color)
+  padding: $grid-gap-large
+  grid-gap: $grid-gap-large
+  border-left: 0.5rem solid var(--block-color)
+  border-radius: $border-radius
+  box-shadow: 0 1px 1rem rgba(0,0,0,0.25)
+  &--primary
+    border-color: $primary
+  &--success
+    border-color: $success
+  &--warning
+    border-color: $warning
+  &--danger
+    border-color: $danger
+
+  &__icon
+    .svg-inline--fa
+      width: 2rem
+      height: 2rem
+  &__content
+    flex: 1 1 100%
+  &__header
+    text-transform: uppercase
+    font-weight: 700
+    line-height: 1.15
+    margin-bottom: $grid-gap-large
+    font-family: $fontDisplay
+    font-size: 1.25rem
+  &__close
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    color: var(--text-color)
+    background: none
+    padding: 0.5rem
+    width: 2rem
+    height: 2rem
+    flex: 0 0 2rem
+    border-radius: 50%
+    cursor: pointer
+    transition: all 0.3s ease
+    &:hover
+      background-color: $primary
+      color: $white
+
+.notification-enter-active, .notification-leave-active
+  transition: all .3s
+
+.notification-enter, .notification-leave-to
+  opacity: 0
+  transform: translateX(30px)
+
+@media (max-width: $breakpoint-landscape-phone)
+  .notification-container
+    top: auto
+    right: 0
+    bottom: $grid-gap-large
+    max-width: 100vw

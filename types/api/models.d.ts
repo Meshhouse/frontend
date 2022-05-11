@@ -29,6 +29,7 @@ export type ModelFile = {
   program_version: string;
   renderer: ModelRenderer;
   renderer_version: string;
+  size: number;
 }
 
 export type ModelSimple = {

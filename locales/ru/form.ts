@@ -13,6 +13,9 @@ export default {
   create: 'Создать',
   delete: 'Удалить',
   apiKeys: 'API ключи',
+  profile: 'Профиль',
+  connectWith: 'Подключиться через {n}',
+  thirdParty: 'Сторонние сервисы',
   actions: {
     registered: 'Уже есть аккаунт?',
     newUser: 'Еще нет аккаунта? Зарегистрироваться',

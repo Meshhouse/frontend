@@ -55,7 +55,7 @@
               :href="model.textures_link"
               :disabled="model.textures_link === ''"
             >
-              {{ $t('pages.model-single.buttons.textures') }}
+              {{ $t('pages.model-single.buttons.textures') }} ({{ getReadableFileSizeString(model.textures_link_size || 0) }})
             </a>
             <p class="dropdown__header">
               {{ $t('pages.model-single.buttons.model_title') }}
@@ -66,7 +66,7 @@
               class="dropdown__item"
               :href="file.url"
             >
-              {{ getDccName(file.program) }} {{ file.program_version }} - {{ getRendererName(file.renderer) }} {{ file.renderer_version }}
+              {{ getDccName(file.program) }} {{ file.program_version }} - {{ getRendererName(file.renderer) }} {{ file.renderer_version }} ({{ getReadableFileSizeString(file.size || 0) }})
             </a>
           </template>
         </dropdown-button>
@@ -272,7 +272,7 @@ import type {
 import type { NuxtApp } from '@nuxt/types/app'
 
 import { format } from 'date-fns'
-import { getDccName, getRendererName, getStringedArray } from '@/functions/helpers'
+import { getDccName, getRendererName, getStringedArray, getReadableFileSizeString } from '@/functions/helpers'
 
 @Component<ModelSinglePage>({
   components: {
@@ -295,7 +295,8 @@ import { getDccName, getRendererName, getStringedArray } from '@/functions/helpe
     format,
     getDccName,
     getRendererName,
-    getStringedArray
+    getStringedArray,
+    getReadableFileSizeString
   }
 })
 

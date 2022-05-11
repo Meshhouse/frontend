@@ -15,6 +15,10 @@ import type {
   SiteSupporter
 } from '@/types/api/blocks'
 
+import type {
+  Notification
+} from '@/types'
+
 import { NuxtApp } from '@nuxt/types/app'
 
 type ApplicationStore = {
@@ -29,7 +33,8 @@ type ApplicationStore = {
   favorites: number[];
   theme: 'light' | 'dark';
   modalVisible: boolean,
-  user: User
+  user: User,
+  notifications: Notification[]
 }
 
 export function state (): ApplicationStore {
@@ -53,7 +58,8 @@ export function state (): ApplicationStore {
       role: 'basic',
       created_at: '',
       updated_at: ''
-    }
+    },
+    notifications: []
   }
 }
 
@@ -94,10 +100,24 @@ export const mutations = {
   },
   setPatronTopSupporters (state: ApplicationStore, payload: SiteSupporter[]) {
     state.topSupporters = payload
+  },
+  addNotification (state: ApplicationStore, payload: Notification) {
+    state.notifications.push(payload)
+  },
+  removeNotification (state: ApplicationStore, idx: number) {
+    state.notifications.splice(idx, 1)
   }
 }
 
 export const actions = {
+  addNotification ({ state, commit }: { state: ApplicationStore, commit: Function }, payload: Notification) {
+    commit('addNotification', payload)
+
+    if (payload.timeout) {
+      const idx = state.notifications.length - 1
+      setTimeout(() => commit('removeNotification', idx), payload.timeout)
+    }
+  },
   async nuxtServerInit ({ commit }: { commit: Function }, context: NuxtApp) {
     try {
       const theme = context.$cookies.get('theme')
