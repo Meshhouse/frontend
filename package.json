@@ -45,6 +45,7 @@
     "vue-debounce": "^2.6.0",
     "vue-i18n": "^8.22.4",
     "vue-lazy-hydration": "^2.0.0-beta.4",
+    "vue-slider-component": "^3.2.15",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {

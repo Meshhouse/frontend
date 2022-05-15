@@ -98,6 +98,7 @@ module.exports = {
     { src: '~/plugins/i18n.ts' },
     { src: '~/plugins/fontawesome.ts' },
     { src: '~/plugins/vue-awesome-swiper.ts', mode: 'client' },
+    { src: '~/plugins/vue-slider.ts', mode: 'client' },
     { src: '~/plugins/vue-debounce.ts', mode: 'client' },
     { src: '~/plugins/model-viewer.ts' },
     { src: '~/plugins/vuelidate.ts' },

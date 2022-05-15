@@ -43,7 +43,7 @@
             class="category__tab"
           >
             <div
-              v-if="category[`description_${$i18n.locale}`] !== null"
+              v-if="category[`description_${$i18n.locale}`]"
               class="tab__description"
             >
               {{ category[`description_${$i18n.locale}`] }}
@@ -74,7 +74,7 @@
                   {{ children[`title_${$i18n.locale}`] }}
                 </div>
                 <p
-                  v-if="String(children[`description_${$i18n.locale}`]).length > 0"
+                  v-if="children[`description_${$i18n.locale}`]"
                   class="category__description"
                 >
                   {{ children[`description_${$i18n.locale}`] }}

@@ -16,3 +16,17 @@ export type Category = {
 export type CategoryTreeItem = Category & {
   childrens: Category[];
 }
+
+export type CategoryFilter = {
+  [key: string]: any;
+  id: number;
+  category: number | null;
+  order: number;
+  key: string;
+  type: 'radio' | 'checkbox' | 'checkbox-color' | 'range'
+  querystring_alias: string;
+  value_delimeter: string | null;
+  values: any[];
+  title_en: string;
+  title_ru: string;
+}

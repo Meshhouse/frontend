@@ -20,7 +20,7 @@ export default class ModelCard extends Vue {
 
   getProgramIcon (program: string): string {
     switch (program) {
-      case 'autodesk_3ds_max': {
+      case '3ds_max': {
         return '3dsmax'
       }
       case 'unreal_engine': {

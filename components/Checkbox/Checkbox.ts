@@ -10,6 +10,7 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator'
 export default class DropdownButton extends Vue {
   @Prop({ type: [Boolean, Array], required: true, default: false }) readonly checked!: boolean | any[]
   @Prop({ required: false, default: '' }) readonly value!: string | number
+  @Prop({ type: String, default: '' }) readonly color!: string
 
   get isCheckedValue () : boolean {
     if (Array.isArray(this.checked)) {

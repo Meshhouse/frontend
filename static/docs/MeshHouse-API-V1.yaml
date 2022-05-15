@@ -77,6 +77,24 @@ paths:
         in: path
         required: true
         description: Category id
+  '/categories/{id}/filters':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        description: Category
+    get:
+      summary: Get category filters
+      tags:
+        - Categories
+      responses:
+        '200':
+          $ref: '#/components/responses/Category-filters-response'
+      operationId: get-categories-id-filters
+      description: Get category filters by id (or shared filters if null)
+      parameters:
+        - $ref: '#/components/parameters/Language'
   /blocks:
     get:
       summary: Get dynamic blocks
@@ -707,6 +725,29 @@ components:
     Simple-Model:
       description: ''
       type: object
+      x-examples:
+        example-1:
+          id: 1
+          slug: crystal-maiden
+          mature_content: false
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          category: test-category
+          title_en: Test model
+          title_ru: Тестовая модель
+      examples:
+        - id: 1
+          slug: crystal-maiden
+          mature_content: false
+          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
+          created_at: '2022-02-01T17:55:12.000+00:00'
+          updated_at: '2022-02-23T12:23:09.000+00:00'
+          category: test-category
+          title_en: Test model
+          title_ru: Тестовая модель
+          available_formats:
+            - 3ds_max
       properties:
         id:
           type: number
@@ -733,6 +774,10 @@ components:
         title_ru:
           type: string
           minLength: 1
+        available_formats:
+          type: array
+          items:
+            type: string
       required:
         - id
         - slug
@@ -743,27 +788,6 @@ components:
         - category
         - title_en
         - title_ru
-      x-examples:
-        example-1:
-          id: 1
-          slug: crystal-maiden
-          mature_content: false
-          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
-          created_at: '2022-02-01T17:55:12.000+00:00'
-          updated_at: '2022-02-23T12:23:09.000+00:00'
-          category: test-category
-          title_en: Test model
-          title_ru: Тестовая модель
-      examples:
-        - id: 1
-          slug: crystal-maiden
-          mature_content: false
-          thumbnail: 'http://localhost:3333/uploads/images/previews/model-deb0c19a-6944-4f5b-b076-53b8959bae3a.webp'
-          created_at: '2022-02-01T17:55:12.000+00:00'
-          updated_at: '2022-02-23T12:23:09.000+00:00'
-          category: test-category
-          title_en: Test model
-          title_ru: Тестовая модель
     Simple-Post:
       description: Shared simple blog post model
       type: object
@@ -1146,6 +1170,12 @@ components:
           hair_system: ornatrix
           textures: pbr
           uv: udim
+          filters:
+            height: '175'
+            body_type: average
+            skin_color: white
+            hair_color: blonde
+            breast_size: '5'
       properties:
         id:
           type: number
@@ -1312,6 +1342,22 @@ components:
             - udim
             - uvtile
             - false
+        filters:
+          type: object
+          properties:
+            '[key]':
+              type:
+                - string
+                - number
+                - boolean
+                - array
+              items:
+                anyOf:
+                  - {}
+                type:
+                  - string
+                  - number
+                  - boolean
       required:
         - id
         - slug
@@ -1402,6 +1448,637 @@ components:
         - program_version
         - renderer
         - renderer_version
+    Category-Filter:
+      type: array
+      description: ''
+      minItems: 1
+      uniqueItems: true
+      x-examples:
+        example-1:
+          - order: 1
+            key: formats
+            type: checkbox
+            querystring_alias: f
+            value_delimeter: ':'
+            values:
+              - title_en: 3ds Max 2016
+                title_ru: 3ds Max 2016
+                value: '3ds_max:2016'
+              - title_en: 3ds Max 2017
+                title_ru: 3ds Max 2017
+                value: '3ds_max:2017'
+            title_en: Model format
+            title_ru: Формат файла
+          - order: 2
+            key: renderers
+            type: checkbox
+            querystring_alias: r
+            value_delimeter: ':'
+            values:
+              - title_en: Arnold
+                title_ru: Arnold
+                value: arnold
+              - title_en: Blender Cycles
+                title_ru: Blender Cycles
+                value: cycles
+              - title_en: Corona Renderer
+                title_ru: Corona Renderer
+                value: corona
+              - title_en: Redshift 2.6
+                title_ru: Redshift 2.6
+                value: 'redshift:2.6'
+              - title_en: V-Ray 5
+                title_ru: V-Ray 5
+                value: 'v-ray:5'
+              - title_en: Unity
+                title_ru: Unity
+                value: unity
+              - title_en: Unreal Engine 4
+                title_ru: Unreal Engine 4
+                value: 'unreal_engine:4'
+            title_en: Render engine
+            title_ru: Движок рендеринга
+          - order: 3
+            key: polys
+            type: radio
+            querystring_alias: ps
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любое
+                value: all
+              - title_en: Lesser than 1500
+                title_ru: До 1500
+                value: low-poly
+              - title_en: From 1500 to 20000
+                title_ru: От 1500 до 20000
+                value: mid-poly
+              - title_en: From 20000
+                title_ru: От 20000
+                value: hi-poly
+            title_en: Polygons count
+            title_ru: Число полигонов
+          - order: 4
+            key: mature_content
+            type: radio
+            querystring_alias: mature
+            value_delimeter: null
+            values:
+              - title_en: 'Yes'
+                title_ru: Да
+                value: 'true'
+              - title_en: 'No'
+                title_ru: Нет
+                value: 'false'
+            title_en: Mature content
+            title_ru: Контент для взрослых
+          - order: 5
+            key: hair_system
+            type: radio
+            querystring_alias: hs
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любая
+                value: all
+              - title_en: Standard
+                title_ru: Standard
+                value: standard
+              - title_en: Hairfarm
+                title_ru: Hairfarm
+                value: hairfarm
+              - title_en: Ornatrix
+                title_ru: Ornatrix
+                value: ornatrix
+              - title_en: XGen
+                title_ru: XGen
+                value: xgen
+              - title_en: Yeti
+                title_ru: Yeti
+                value: yeti
+            title_en: Hair system
+            title_ru: Система волос
+          - order: 6
+            key: rig
+            type: radio
+            querystring_alias: rig
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любой
+                value: all
+              - title_en: Bones system
+                title_ru: Система костей
+                value: bones
+              - title_en: Autodesk CAT
+                title_ru: Autodesk CAT
+                value: autodesk_cat
+            title_en: Rigging
+            title_ru: Риггинг
+          - order: 7
+            key: textures
+            type: radio
+            querystring_alias: tx
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любые
+                value: all
+              - title_en: Procedural
+                title_ru: Процедурные
+                value: procedural
+              - title_en: PBR
+                title_ru: PBR
+                value: pbr
+              - title_en: NPR
+                title_ru: NPR
+                value: npr
+            title_en: Textures
+            title_ru: Текстуры
+          - order: 8
+            key: uv
+            type: radio
+            querystring_alias: uv
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любые
+                value: all
+              - title_en: Procedural
+                title_ru: Процедурные
+                value: generated
+              - title_en: Unwrap UVW
+                title_ru: Unwrap UVW
+                value: unwrap_uvw
+              - title_en: UDIM
+                title_ru: UDIM
+                value: udim
+              - title_en: UV-Tile
+                title_ru: UV-Tile
+                value: uvtile
+            title_en: Unwrapping
+            title_ru: Развертка
+          - id: 1
+            order: 1
+            key: height
+            type: range
+            querystring_alias: height
+            value_delimeter: null
+            values:
+              - min: 140
+                max: 190
+            title_en: Height
+            title_ru: Рост
+          - id: 2
+            order: 2
+            key: body_type
+            type: checkbox
+            querystring_alias: body_type
+            value_delimeter: null
+            values:
+              - title_en: Athletic
+                title_ru: Атлетичное
+                value: athletic
+              - title_en: Average
+                title_ru: Обычное
+                value: average
+              - title_en: Chubby
+                title_ru: Пухлое
+                value: chubby
+              - title_en: Muscular
+                title_ru: Мускулистое
+                value: muscular
+              - title_en: Overweight
+                title_ru: Избыточный вес
+                value: overweight
+              - title_en: Slim
+                title_ru: Стройное
+                value: slim
+              - title_en: Anorexic
+                title_ru: Анорексичное
+                value: underweight
+            title_en: Body type
+            title_ru: Телосложение
+          - id: 3
+            order: 3
+            key: skin_color
+            type: checkbox-color
+            querystring_alias: skin_color
+            value_delimeter: null
+            values:
+              - title_en: White
+                title_ru: Белый
+                value: white
+                color: deb19e
+              - title_en: Black
+                title_ru: Афро
+                value: black
+                color: 5e453d
+              - title_en: Violet
+                title_ru: Фиолетовый
+                value: violet
+                color: 9975bd
+              - title_en: Green
+                title_ru: Зеленый
+                value: green
+                color: 7dc478
+              - title_en: Light pink
+                title_ru: Светло-розовый
+                value: light-pink
+                color: e7b2e8
+            title_en: Skin color
+            title_ru: Цвет кожи
+          - id: 4
+            order: 4
+            key: hair_color
+            type: checkbox-color
+            querystring_alias: hair_color
+            value_delimeter: null
+            values:
+              - title_en: Blonde
+                title_ru: Блондин
+                value: blonde
+                color: d9cd9e
+              - title_en: Brunette
+                title_ru: Брюнет
+                value: brunette
+                color: 3b2d22
+              - title_en: Ginger
+                title_ru: Рыжий
+                value: ginger
+                color: db7633
+              - title_en: Red
+                title_ru: Красный
+                value: red
+                color: d92525
+              - title_en: Green
+                title_ru: Зеленый
+                value: green
+                color: 3bd471
+              - title_en: Grey
+                title_ru: Серый
+                value: grey
+                color: d4cdd4
+              - title_en: Chatain
+                title_ru: Шатен
+                value: chatain
+                color: 6b3820
+            title_en: Hair color
+            title_ru: Цвет волос
+          - id: 5
+            order: 5
+            key: breast_size
+            type: range
+            querystring_alias: breast_size
+            value_delimeter: null
+            values:
+              - min: 0
+                max: 6
+            title_en: Breast size (females)
+            title_ru: Размер груди (женск.)
+      examples:
+        - - order: 1
+            key: formats
+            type: checkbox
+            querystring_alias: f
+            value_delimeter: ':'
+            values:
+              - title_en: 3ds Max 2016
+                title_ru: 3ds Max 2016
+                value: '3ds_max:2016'
+              - title_en: 3ds Max 2017
+                title_ru: 3ds Max 2017
+                value: '3ds_max:2017'
+            title_en: Model format
+            title_ru: Формат файла
+          - order: 2
+            key: renderers
+            type: checkbox
+            querystring_alias: r
+            value_delimeter: ':'
+            values:
+              - title_en: Arnold
+                title_ru: Arnold
+                value: arnold
+              - title_en: Blender Cycles
+                title_ru: Blender Cycles
+                value: cycles
+              - title_en: Corona Renderer
+                title_ru: Corona Renderer
+                value: corona
+              - title_en: Redshift 2.6
+                title_ru: Redshift 2.6
+                value: 'redshift:2.6'
+              - title_en: V-Ray 5
+                title_ru: V-Ray 5
+                value: 'v-ray:5'
+              - title_en: Unity
+                title_ru: Unity
+                value: unity
+              - title_en: Unreal Engine 4
+                title_ru: Unreal Engine 4
+                value: 'unreal_engine:4'
+            title_en: Render engine
+            title_ru: Движок рендеринга
+          - order: 3
+            key: polys
+            type: radio
+            querystring_alias: ps
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любое
+                value: all
+              - title_en: Lesser than 1500
+                title_ru: До 1500
+                value: low-poly
+              - title_en: From 1500 to 20000
+                title_ru: От 1500 до 20000
+                value: mid-poly
+              - title_en: From 20000
+                title_ru: От 20000
+                value: hi-poly
+            title_en: Polygons count
+            title_ru: Число полигонов
+          - order: 4
+            key: mature_content
+            type: radio
+            querystring_alias: mature
+            value_delimeter: null
+            values:
+              - title_en: 'Yes'
+                title_ru: Да
+                value: 'true'
+              - title_en: 'No'
+                title_ru: Нет
+                value: 'false'
+            title_en: Mature content
+            title_ru: Контент для взрослых
+          - order: 5
+            key: hair_system
+            type: radio
+            querystring_alias: hs
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любая
+                value: all
+              - title_en: Standard
+                title_ru: Standard
+                value: standard
+              - title_en: Hairfarm
+                title_ru: Hairfarm
+                value: hairfarm
+              - title_en: Ornatrix
+                title_ru: Ornatrix
+                value: ornatrix
+              - title_en: XGen
+                title_ru: XGen
+                value: xgen
+              - title_en: Yeti
+                title_ru: Yeti
+                value: yeti
+            title_en: Hair system
+            title_ru: Система волос
+          - order: 6
+            key: rig
+            type: radio
+            querystring_alias: rig
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любой
+                value: all
+              - title_en: Bones system
+                title_ru: Система костей
+                value: bones
+              - title_en: Autodesk CAT
+                title_ru: Autodesk CAT
+                value: autodesk_cat
+            title_en: Rigging
+            title_ru: Риггинг
+          - order: 7
+            key: textures
+            type: radio
+            querystring_alias: tx
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любые
+                value: all
+              - title_en: Procedural
+                title_ru: Процедурные
+                value: procedural
+              - title_en: PBR
+                title_ru: PBR
+                value: pbr
+              - title_en: NPR
+                title_ru: NPR
+                value: npr
+            title_en: Textures
+            title_ru: Текстуры
+          - order: 8
+            key: uv
+            type: radio
+            querystring_alias: uv
+            value_delimeter: null
+            values:
+              - title_en: Any
+                title_ru: Любые
+                value: all
+              - title_en: Procedural
+                title_ru: Процедурные
+                value: generated
+              - title_en: Unwrap UVW
+                title_ru: Unwrap UVW
+                value: unwrap_uvw
+              - title_en: UDIM
+                title_ru: UDIM
+                value: udim
+              - title_en: UV-Tile
+                title_ru: UV-Tile
+                value: uvtile
+            title_en: Unwrapping
+            title_ru: Развертка
+          - id: 1
+            order: 1
+            key: height
+            type: range
+            querystring_alias: height
+            value_delimeter: null
+            values:
+              - min: 140
+                max: 190
+            title_en: Height
+            title_ru: Рост
+          - id: 2
+            order: 2
+            key: body_type
+            type: checkbox
+            querystring_alias: body_type
+            value_delimeter: null
+            values:
+              - title_en: Athletic
+                title_ru: Атлетичное
+                value: athletic
+              - title_en: Average
+                title_ru: Обычное
+                value: average
+              - title_en: Chubby
+                title_ru: Пухлое
+                value: chubby
+              - title_en: Muscular
+                title_ru: Мускулистое
+                value: muscular
+              - title_en: Overweight
+                title_ru: Избыточный вес
+                value: overweight
+              - title_en: Slim
+                title_ru: Стройное
+                value: slim
+              - title_en: Anorexic
+                title_ru: Анорексичное
+                value: underweight
+            title_en: Body type
+            title_ru: Телосложение
+          - id: 3
+            order: 3
+            key: skin_color
+            type: checkbox-color
+            querystring_alias: skin_color
+            value_delimeter: null
+            values:
+              - title_en: White
+                title_ru: Белый
+                value: white
+                color: deb19e
+              - title_en: Black
+                title_ru: Афро
+                value: black
+                color: 5e453d
+              - title_en: Violet
+                title_ru: Фиолетовый
+                value: violet
+                color: 9975bd
+              - title_en: Green
+                title_ru: Зеленый
+                value: green
+                color: 7dc478
+              - title_en: Light pink
+                title_ru: Светло-розовый
+                value: light-pink
+                color: e7b2e8
+            title_en: Skin color
+            title_ru: Цвет кожи
+          - id: 4
+            order: 4
+            key: hair_color
+            type: checkbox-color
+            querystring_alias: hair_color
+            value_delimeter: null
+            values:
+              - title_en: Blonde
+                title_ru: Блондин
+                value: blonde
+                color: d9cd9e
+              - title_en: Brunette
+                title_ru: Брюнет
+                value: brunette
+                color: 3b2d22
+              - title_en: Ginger
+                title_ru: Рыжий
+                value: ginger
+                color: db7633
+              - title_en: Red
+                title_ru: Красный
+                value: red
+                color: d92525
+              - title_en: Green
+                title_ru: Зеленый
+                value: green
+                color: 3bd471
+              - title_en: Grey
+                title_ru: Серый
+                value: grey
+                color: d4cdd4
+              - title_en: Chatain
+                title_ru: Шатен
+                value: chatain
+                color: 6b3820
+            title_en: Hair color
+            title_ru: Цвет волос
+          - id: 5
+            order: 5
+            key: breast_size
+            type: range
+            querystring_alias: breast_size
+            value_delimeter: null
+            values:
+              - min: 0
+                max: 6
+            title_en: Breast size (females)
+            title_ru: Размер груди (женск.)
+      items:
+        type: object
+        properties:
+          id:
+            type:
+              - number
+              - 'null'
+          order:
+            type: number
+          key:
+            type: string
+            minLength: 1
+          type:
+            type: string
+            minLength: 1
+            enum:
+              - checkbox
+              - radio
+              - checkbox-color
+              - range
+          querystring_alias:
+            type: string
+            minLength: 1
+          value_delimeter:
+            type:
+              - string
+              - 'null'
+          values:
+            type: array
+            uniqueItems: true
+            minItems: 1
+            items:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+                title_en:
+                  type: string
+                title_ru:
+                  type: string
+                value:
+                  type: string
+                color:
+                  type: string
+          title_en:
+            type: string
+            minLength: 1
+          title_ru:
+            type: string
+            minLength: 1
+        required:
+          - id
+          - order
+          - key
+          - type
+          - querystring_alias
+          - values
+          - title_en
+          - title_ru
   securitySchemes:
     api-key:
       type: http
@@ -2127,6 +2804,12 @@ components:
                 hair_system: ornatrix
                 textures: pbr
                 uv: udim
+                filters:
+                  height: '175'
+                  body_type: average
+                  skin_color: white
+                  hair_color: blonde
+                  breast_size: '5'
     Model-collection-response:
       description: Example response
       content:
@@ -2196,6 +2879,298 @@ components:
                       - 1
                     title_en: Test model 2
                     title_ru: Test model 2
+    Category-filters-response:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category-Filter'
+          examples:
+            Example:
+              value:
+                - order: 1
+                  key: formats
+                  type: checkbox
+                  querystring_alias: f
+                  value_delimeter: ':'
+                  values:
+                    - title_en: 3ds Max 2016
+                      title_ru: 3ds Max 2016
+                      value: '3ds_max:2016'
+                    - title_en: 3ds Max 2017
+                      title_ru: 3ds Max 2017
+                      value: '3ds_max:2017'
+                  title_en: Model format
+                  title_ru: Формат файла
+                - order: 2
+                  key: renderers
+                  type: checkbox
+                  querystring_alias: r
+                  value_delimeter: ':'
+                  values:
+                    - title_en: Arnold
+                      title_ru: Arnold
+                      value: arnold
+                    - title_en: Blender Cycles
+                      title_ru: Blender Cycles
+                      value: cycles
+                    - title_en: Corona Renderer
+                      title_ru: Corona Renderer
+                      value: corona
+                    - title_en: Redshift 2.6
+                      title_ru: Redshift 2.6
+                      value: 'redshift:2.6'
+                    - title_en: V-Ray 5
+                      title_ru: V-Ray 5
+                      value: 'v-ray:5'
+                    - title_en: Unity
+                      title_ru: Unity
+                      value: unity
+                    - title_en: Unreal Engine 4
+                      title_ru: Unreal Engine 4
+                      value: 'unreal_engine:4'
+                  title_en: Render engine
+                  title_ru: Движок рендеринга
+                - order: 3
+                  key: polys
+                  type: radio
+                  querystring_alias: ps
+                  value_delimeter: null
+                  values:
+                    - title_en: Any
+                      title_ru: Любое
+                      value: all
+                    - title_en: Lesser than 1500
+                      title_ru: До 1500
+                      value: low-poly
+                    - title_en: From 1500 to 20000
+                      title_ru: От 1500 до 20000
+                      value: mid-poly
+                    - title_en: From 20000
+                      title_ru: От 20000
+                      value: hi-poly
+                  title_en: Polygons count
+                  title_ru: Число полигонов
+                - order: 4
+                  key: mature_content
+                  type: radio
+                  querystring_alias: mature
+                  value_delimeter: null
+                  values:
+                    - title_en: 'Yes'
+                      title_ru: Да
+                      value: 'true'
+                    - title_en: 'No'
+                      title_ru: Нет
+                      value: 'false'
+                  title_en: Mature content
+                  title_ru: Контент для взрослых
+                - order: 5
+                  key: hair_system
+                  type: radio
+                  querystring_alias: hs
+                  value_delimeter: null
+                  values:
+                    - title_en: Any
+                      title_ru: Любая
+                      value: all
+                    - title_en: Standard
+                      title_ru: Standard
+                      value: standard
+                    - title_en: Hairfarm
+                      title_ru: Hairfarm
+                      value: hairfarm
+                    - title_en: Ornatrix
+                      title_ru: Ornatrix
+                      value: ornatrix
+                    - title_en: XGen
+                      title_ru: XGen
+                      value: xgen
+                    - title_en: Yeti
+                      title_ru: Yeti
+                      value: yeti
+                  title_en: Hair system
+                  title_ru: Система волос
+                - order: 6
+                  key: rig
+                  type: radio
+                  querystring_alias: rig
+                  value_delimeter: null
+                  values:
+                    - title_en: Any
+                      title_ru: Любой
+                      value: all
+                    - title_en: Bones system
+                      title_ru: Система костей
+                      value: bones
+                    - title_en: Autodesk CAT
+                      title_ru: Autodesk CAT
+                      value: autodesk_cat
+                  title_en: Rigging
+                  title_ru: Риггинг
+                - order: 7
+                  key: textures
+                  type: radio
+                  querystring_alias: tx
+                  value_delimeter: null
+                  values:
+                    - title_en: Any
+                      title_ru: Любые
+                      value: all
+                    - title_en: Procedural
+                      title_ru: Процедурные
+                      value: procedural
+                    - title_en: PBR
+                      title_ru: PBR
+                      value: pbr
+                    - title_en: NPR
+                      title_ru: NPR
+                      value: npr
+                  title_en: Textures
+                  title_ru: Текстуры
+                - order: 8
+                  key: uv
+                  type: radio
+                  querystring_alias: uv
+                  value_delimeter: null
+                  values:
+                    - title_en: Any
+                      title_ru: Любые
+                      value: all
+                    - title_en: Procedural
+                      title_ru: Процедурные
+                      value: generated
+                    - title_en: Unwrap UVW
+                      title_ru: Unwrap UVW
+                      value: unwrap_uvw
+                    - title_en: UDIM
+                      title_ru: UDIM
+                      value: udim
+                    - title_en: UV-Tile
+                      title_ru: UV-Tile
+                      value: uvtile
+                  title_en: Unwrapping
+                  title_ru: Развертка
+                - id: 1
+                  order: 1
+                  key: height
+                  type: range
+                  querystring_alias: height
+                  value_delimeter: null
+                  values:
+                    - min: 140
+                      max: 190
+                  title_en: Height
+                  title_ru: Рост
+                - id: 2
+                  order: 2
+                  key: body_type
+                  type: checkbox
+                  querystring_alias: body_type
+                  value_delimeter: null
+                  values:
+                    - title_en: Athletic
+                      title_ru: Атлетичное
+                      value: athletic
+                    - title_en: Average
+                      title_ru: Обычное
+                      value: average
+                    - title_en: Chubby
+                      title_ru: Пухлое
+                      value: chubby
+                    - title_en: Muscular
+                      title_ru: Мускулистое
+                      value: muscular
+                    - title_en: Overweight
+                      title_ru: Избыточный вес
+                      value: overweight
+                    - title_en: Slim
+                      title_ru: Стройное
+                      value: slim
+                    - title_en: Anorexic
+                      title_ru: Анорексичное
+                      value: underweight
+                  title_en: Body type
+                  title_ru: Телосложение
+                - id: 3
+                  order: 3
+                  key: skin_color
+                  type: checkbox-color
+                  querystring_alias: skin_color
+                  value_delimeter: null
+                  values:
+                    - title_en: White
+                      title_ru: Белый
+                      value: white
+                      color: deb19e
+                    - title_en: Black
+                      title_ru: Афро
+                      value: black
+                      color: 5e453d
+                    - title_en: Violet
+                      title_ru: Фиолетовый
+                      value: violet
+                      color: 9975bd
+                    - title_en: Green
+                      title_ru: Зеленый
+                      value: green
+                      color: 7dc478
+                    - title_en: Light pink
+                      title_ru: Светло-розовый
+                      value: light-pink
+                      color: e7b2e8
+                  title_en: Skin color
+                  title_ru: Цвет кожи
+                - id: 4
+                  order: 4
+                  key: hair_color
+                  type: checkbox-color
+                  querystring_alias: hair_color
+                  value_delimeter: null
+                  values:
+                    - title_en: Blonde
+                      title_ru: Блондин
+                      value: blonde
+                      color: d9cd9e
+                    - title_en: Brunette
+                      title_ru: Брюнет
+                      value: brunette
+                      color: 3b2d22
+                    - title_en: Ginger
+                      title_ru: Рыжий
+                      value: ginger
+                      color: db7633
+                    - title_en: Red
+                      title_ru: Красный
+                      value: red
+                      color: d92525
+                    - title_en: Green
+                      title_ru: Зеленый
+                      value: green
+                      color: 3bd471
+                    - title_en: Grey
+                      title_ru: Серый
+                      value: grey
+                      color: d4cdd4
+                    - title_en: Chatain
+                      title_ru: Шатен
+                      value: chatain
+                      color: 6b3820
+                  title_en: Hair color
+                  title_ru: Цвет волос
+                - id: 5
+                  order: 5
+                  key: breast_size
+                  type: range
+                  querystring_alias: breast_size
+                  value_delimeter: null
+                  values:
+                    - min: 0
+                      max: 6
+                  title_en: Breast size (females)
+                  title_ru: Размер груди (женск.)
   parameters:
     Language:
       name: x-meshhouse-language
@@ -2304,6 +3279,24 @@ components:
                 type: number
               query:
                 type: string
+              custom_filters:
+                type: object
+                properties:
+                  '[id]':
+                    type:
+                      - array
+                      - string
+                    items:
+                      oneOf:
+                        - properties: {}
+                      type:
+                        - string
+                        - number
+                        - boolean
+              categories:
+                type: array
+                items:
+                  type: number
             required:
               - filters
               - page
@@ -2329,6 +3322,13 @@ components:
                   uv: udim
                 page: 1
                 count: 48
+                query: Test
+                categories: []
+                custom_filters:
+                  '1':
+                    - 1
+                    - 2
+                    - 3
 tags:
   - name: Categories
   - name: Dynamic blocks

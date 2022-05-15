@@ -1,4 +1,8 @@
+import { recursiveFindObject } from '@/functions/helpers'
+
 import type {
+  Category,
+  CategoryFilter,
   CategoryTreeItem
 } from '@/types/api/categories'
 
@@ -35,6 +39,7 @@ type ApplicationStore = {
   modalVisible: boolean,
   user: User,
   notifications: Notification[]
+  categoryFilters: CategoryFilter[]
 }
 
 export function state (): ApplicationStore {
@@ -59,7 +64,8 @@ export function state (): ApplicationStore {
       created_at: '',
       updated_at: ''
     },
-    notifications: []
+    notifications: [],
+    categoryFilters: []
   }
 }
 
@@ -106,10 +112,16 @@ export const mutations = {
   },
   removeNotification (state: ApplicationStore, idx: number) {
     state.notifications.splice(idx, 1)
+  },
+  setSharedCategoryFilters (state: ApplicationStore, payload: CategoryFilter[]) {
+    state.categoryFilters = payload
   }
 }
 
 export const actions = {
+  findCategoryBySlug ({ state }: { state: ApplicationStore }, slug: string) {
+    return recursiveFindObject<Category>(state.categories, 'slug', 'childrens', slug)
+  },
   addNotification ({ state, commit }: { state: ApplicationStore, commit: Function }, payload: Notification) {
     commit('addNotification', payload)
 
@@ -145,6 +157,11 @@ export const actions = {
           method: 'GET',
           url: 'blocks/site_supporters',
           headers: context.$generateAuthHeader('blocks/site_supporters', 'GET')
+        }),
+        context.$api({
+          method: 'GET',
+          url: 'categories/null/filters',
+          headers: context.$generateAuthHeader('categories/null/filters', 'GET')
         })
       ])
 
@@ -173,6 +190,7 @@ export const actions = {
       commit('setLicenses', responses[1].data)
       commit('setPatronSupporters', responses[2]?.data?.content ?? [])
       commit('setPatronTopSupporters', responses[3]?.data?.content ?? [])
+      commit('setSharedCategoryFilters', responses[4]?.data ?? [])
     } catch (err) {
       console.log(err)
     }

@@ -122,6 +122,11 @@
           />
         </div>
         <model-specifications :model="model" />
+        <model-custom-specifications
+          v-if="categoryFilters.length > 0"
+          :model="model"
+          :filters="categoryFilters"
+        />
       </aside>
     </main>
     <div class="grid-container">
@@ -256,6 +261,7 @@ import VueAlert from '@/components/Alert/Alert.vue'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue'
 import LicenseBlock from '@/components/License/License.vue'
 import ModelSpecifications from '@/components/ModelSpecifications/ModelSpecifications.vue'
+import ModelCustomSpecifications from '@/components/ModelSpecifications/ModelCustomSpecifications.vue'
 
 import type {
   ModelFull
@@ -269,10 +275,19 @@ import type {
   CollectionWithModels
 } from '@/types/api/collections'
 
+import type {
+  CategoryFilter
+} from '@/types/api/categories'
+
 import type { NuxtApp } from '@nuxt/types/app'
 
 import { format } from 'date-fns'
-import { getDccName, getRendererName, getStringedArray, getReadableFileSizeString } from '@/functions/helpers'
+import {
+  getDccName,
+  getRendererName,
+  getStringedArray,
+  getReadableFileSizeString
+} from '@/functions/helpers'
 
 @Component<ModelSinglePage>({
   components: {
@@ -282,6 +297,7 @@ import { getDccName, getRendererName, getStringedArray, getReadableFileSizeStrin
     ModelCard,
     ModelSlider,
     ModelSpecifications,
+    ModelCustomSpecifications,
     VueAlert,
     VueTag,
     LicenseBlock
@@ -347,12 +363,15 @@ export default class ModelSinglePage extends Vue {
       models: ''
     },
     licenses: [],
-    collections: []
+    collections: [],
+    filters: {}
   }
 
   currentLicenses: License[] = []
 
   currentCollections: CollectionWithModels[] = []
+
+  categoryFilters: CategoryFilter[] = []
 
   async asyncData ({ app, route, store, error }: { app: NuxtApp, route: any, store: any, error: any }): Promise<any> {
     try {
@@ -373,6 +392,14 @@ export default class ModelSinglePage extends Vue {
         headers: app.$generateAuthHeader('models/collection', 'POST')
       })).data
 
+      const categoryFilters = (await app.$api.request<CategoryFilter[]>({
+        method: 'GET',
+        url: `categories/${data.category.id}/filters`,
+        headers: {
+          ...app.$generateAuthHeader(`categories/${data.category.id}/filters`, 'GET')
+        }
+      })).data
+
       const currentCollections = data.collections.map((collection) => {
         return {
           ...collection,
@@ -383,7 +410,8 @@ export default class ModelSinglePage extends Vue {
       return {
         model: data,
         currentLicenses,
-        currentCollections
+        currentCollections,
+        categoryFilters: categoryFilters.filter(filter => filter.id)
       }
     } catch (err) {
       console.log(err)

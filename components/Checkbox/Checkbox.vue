@@ -13,6 +13,11 @@
     <span class="checkbox__label">
       <slot />
     </span>
+    <span
+      v-if="color !== ''"
+      :style="`--sign-color: #${color}`"
+      class="checkbox__color-sign"
+    />
   </label>
 </template>
 

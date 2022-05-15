@@ -33,7 +33,8 @@ export type ModelFile = {
 }
 
 export type ModelSimple = {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | string[];
+  available_formats: string[];
   id: number;
   slug: string;
   mature_content: boolean;
@@ -77,4 +78,7 @@ export type ModelFull = {
   hair_system: ModelHairSystem | boolean;
   textures: ModelTextures | boolean;
   uv: ModelTexturesWrapping | boolean;
+  filters: {
+    [key: string]: any;
+  }
 }

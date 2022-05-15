@@ -36,6 +36,7 @@
           {{ $t('pages.how-to-use-models.blocks.max.xrefText2') }}
         </p>
       </div>
+    <!--
       <div id="maya" class="howto__block">
         <h3 class="display-text display-text--h3">
           <span>Maya</span>
@@ -128,7 +129,7 @@
         <h3 class="display-text display-text--h3">
           <span>Unreal Engine</span>
         </h3>
-      </div>
+      </div>--->
     </div>
   </div>
 </template>
@@ -166,7 +167,7 @@
             "titleXref": "Variant 2 - Reference",
             "mergeList": "<li>+ Full control on model and materials</li><li>- Changes in original model need to import again in current scene</li>",
             "mergeText": "For merge model with scene you need to click 'File' -> 'Append', select file and after that select object.",
-            "xrefList": "<li>+ Меньший размер сцены</li><li>+ Возможно использовать прокси для увеличения частоты кадров</li><li>+ Изменения в ссылке сихронизируются со всеми сценами</li>",
+            "xrefList": "<li>+ Smaller scene size</li><li>+ Can use proxy to improve FPS</li><li>+ Changes in Reference syncs with all scenes</li>",
             "xrefText1": "For import model as reference you need to click 'File' -> 'Link', select file and after that select object."
           },
           "cinema4d": {

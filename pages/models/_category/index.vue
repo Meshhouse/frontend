@@ -31,132 +31,51 @@
     </div>
     <aside class="models-filters">
       <accordion
+        v-for="categoryFilter in categoryFilters"
+        :key="categoryFilter.key"
         class="mb-2"
-        :counter="selectedFileFormats.length"
+        :selected="checkSelectedAccordion(categoryFilter, selectedFilters[categoryFilter.key])"
       >
         <template slot="header">
-          {{ $t('filters.file.title') }}
+          {{ categoryFilter[`title_${$i18n.locale}`] }}
         </template>
-        <checkbox
-          v-for="format in availableFileFormats"
-          :key="format.value"
-          v-model="selectedFileFormats"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </checkbox>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :counter="selectedRenderers.length"
-      >
-        <template slot="header">
-          {{ $t('filters.renderer.title') }}
+        <template v-if="categoryFilter.type === 'radio'">
+          <radio-button
+            v-for="filterValue in categoryFilter.values"
+            :key="filterValue.value"
+            v-model="selectedFilters[categoryFilter.key]"
+            :value="filterValue.value"
+          >
+            {{ filterValue[`title_${$i18n.locale}`] }}
+          </radio-button>
         </template>
-        <checkbox
-          v-for="format in availableRenderers"
-          :key="format.value"
-          v-model="selectedRenderers"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </checkbox>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="selectedPolyFilter !== 'all'"
-      >
-        <template slot="header">
-          {{ $t('filters.poly.title') }}
+        <template v-if="categoryFilter.type === 'checkbox'">
+          <checkbox
+            v-for="filterValue in categoryFilter.values"
+            :key="filterValue.value"
+            v-model="selectedFilters[categoryFilter.key]"
+            :value="filterValue.value"
+          >
+            {{ filterValue[`title_${$i18n.locale}`] }}
+          </checkbox>
         </template>
-        <radio-button
-          v-for="format in polygonsFilter"
-          :key="format.value"
-          v-model="selectedPolyFilter"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </radio-button>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="matureContent !== 'true'"
-      >
-        <template slot="header">
-          {{ $t('filters.mature-content.title') }}
+        <template v-if="categoryFilter.type === 'checkbox-color'">
+          <checkbox
+            v-for="filterValue in categoryFilter.values"
+            :key="filterValue.value"
+            v-model="selectedFilters[categoryFilter.key]"
+            :value="filterValue.value"
+            :color="filterValue.color"
+          >
+            {{ filterValue[`title_${$i18n.locale}`] }}
+          </checkbox>
         </template>
-        <radio-button
-          v-for="format in matureContentFilter"
-          :key="format.value"
-          v-model="matureContent"
-          :value="String(format.value)"
-        >
-          {{ format.text }}
-        </radio-button>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="selectedHairFilter !== 'all'"
-      >
-        <template slot="header">
-          {{ $t('filters.hair.title') }}
+        <template v-if="categoryFilter.type === 'range'">
+          <range-input
+            v-model="selectedFilters[categoryFilter.key]"
+            :ranges="categoryFilter.values[0]"
+          />
         </template>
-        <radio-button
-          v-for="format in hairFilter"
-          :key="format.value"
-          v-model="selectedHairFilter"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </radio-button>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="selectedRiggingFilter !== 'all'"
-      >
-        <template slot="header">
-          {{ $t('filters.rigging.title') }}
-        </template>
-        <radio-button
-          v-for="format in riggingFilter"
-          :key="format.value"
-          v-model="selectedRiggingFilter"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </radio-button>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="selectedTexturesFilter !== 'all'"
-      >
-        <template slot="header">
-          {{ $t('filters.textures.title') }}
-        </template>
-        <radio-button
-          v-for="format in texturesFilter"
-          :key="format.value"
-          v-model="selectedTexturesFilter"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </radio-button>
-      </accordion>
-      <accordion
-        class="mb-2"
-        :selected="selectedUVFilter !== 'all'"
-      >
-        <template slot="header">
-          {{ $t('filters.uv.title') }}
-        </template>
-        <radio-button
-          v-for="format in texturesUVFilter"
-          :key="format.value"
-          v-model="selectedUVFilter"
-          :value="format.value"
-        >
-          {{ format.text }}
-        </radio-button>
       </accordion>
       <v-button
         color="primary"
@@ -174,82 +93,12 @@
   "en": {
     "models-count": "0 models | 1 model | {n} models",
     "filters": {
-      "file": {
-        "title": "Model format"
-      },
-      "renderer": {
-        "title": "Render engine"
-      },
-      "poly": {
-        "title": "Polygons count",
-        "any": "Any",
-        "lowpoly": "Lesser than 1500",
-        "midpoly": "From 1500 to 20000",
-        "hipoly": "From 20000"
-      },
-      "mature-content": {
-        "title": "Mature content",
-        "true": "Yes",
-        "false": "No"
-      },
-      "hair": {
-        "title": "Hair system",
-        "any": "Any"
-      },
-      "rigging": {
-        "title": "Rigging",
-        "any": "Any",
-        "bones": "Bones system"
-      },
-      "textures": {
-        "title": "Textures",
-        "any": "Any",
-        "procedural": "Procedural"
-      },
-      "uv": {
-        "title": "Unwrapping"
-      },
       "submit": "Submit"
     }
   },
   "ru": {
     "models-count": "0 моделей | {n} модель | {n} модели | {n} моделей",
     "filters": {
-      "file": {
-        "title": "Формат файла"
-      },
-      "renderer": {
-        "title": "Движок рендеринга"
-      },
-      "poly": {
-        "title": "Число полигонов",
-        "any": "Любое",
-        "lowpoly": "До 1500",
-        "midpoly": "От 1500 до 20000",
-        "hipoly": "От 20000"
-      },
-      "mature-content": {
-        "title": "Контент для взрослых",
-        "true": "Да",
-        "false": "Нет"
-      },
-      "hair": {
-        "title": "Система волос",
-        "any": "Любая"
-      },
-      "rigging": {
-        "title": "Риггинг",
-        "any": "Любой",
-        "bones": "Система костей"
-      },
-      "textures": {
-        "title": "Текстуры",
-        "any": "Любые",
-        "procedural": "Процедурные"
-      },
-      "uv": {
-        "title": "Развертка"
-      },
       "submit": "Отправить"
     }
   }
@@ -264,23 +113,21 @@ import ModelCard from '@/components/ModelCard/ModelCard.vue'
 import Accordion from '@/components/Accordion/Accordion.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import Checkbox from '@/components/Checkbox/Checkbox.vue'
+import RangeInput from '@/components/RangeInput/RangeInput.vue'
 import RadioButton from '@/components/RadioButton/RadioButton.vue'
 
 import { AxiosRequestConfig } from 'axios'
 import type { Route } from 'vue-router'
 
 import {
-  FORMAT_FILTERS,
-  RENDERER_FILTERS,
-  prepareFilters
+  prepareFilters,
+  prepareCustomFilters,
+  recursiveFindObject
 } from '@/functions/helpers'
 
 import type {
-  CheckboxMultiSelect
-} from '@/types'
-
-import type {
-  Category
+  CategoryTreeItem,
+  CategoryFilter
 } from '@/types/api/categories'
 
 import type {
@@ -305,6 +152,7 @@ type ModelCatalogCurrentCategory = {
     Checkbox,
     ModelCard,
     Pagination,
+    RangeInput,
     RadioButton
   },
   head () {
@@ -324,21 +172,25 @@ export default class ModelCatalog extends Vue {
 
   loading = false
 
-  selectedFileFormats: string[] = []
-  selectedRenderers: string[] = []
-  selectedPolyFilter: string = 'all'
-  selectedHairFilter: string = 'all'
-  selectedRiggingFilter: string = 'all'
-  selectedTexturesFilter: string = 'all'
-  selectedUVFilter: string = 'all'
-  matureContent: string | boolean = 'true'
+  categoryFilters: CategoryFilter[] = []
+  selectedFilters: any = {
+    formats: [],
+    renderers: [],
+    polys: 'all',
+    hair: 'all',
+    rig: 'all',
+    textures: 'all',
+    uv: 'all',
+    mature_content: 'false'
+  }
 
-  async asyncData ({ app, route }: { app: NuxtApp, route: Route }): Promise<any> {
+  async asyncData ({ store, app, route }: { store: any, app: NuxtApp, route: Route }): Promise<any> {
     try {
+      const categories: number[] = []
       const querystring = route.fullPath.split('?')[1]
       const query = qs.parse(querystring)
 
-      const matureContent = query.mature ?? true
+      const matureContent = query.mature ?? false
       const selectedFileFormats: string [] = (query.f as string[]) || []
       const selectedRenderers: string [] = (query.r as string[]) || []
       const selectedPolyFilter: string = (query.ps as string) || 'all'
@@ -347,45 +199,86 @@ export default class ModelCatalog extends Vue {
       const selectedTexturesFilter: string = (query.tx as string) || 'all'
       const selectedUVFilter: string = (query.uv as string) || 'all'
 
-      const filters = prepareFilters(
-        selectedFileFormats,
-        selectedRenderers,
-        selectedPolyFilter,
-        selectedHairFilter,
-        selectedRiggingFilter,
-        selectedTexturesFilter,
-        selectedUVFilter
-      ).original
+      const filters = prepareFilters({
+        formats: selectedFileFormats,
+        renderers: selectedRenderers,
+        polys: selectedPolyFilter,
+        hair: selectedHairFilter,
+        rig: selectedRiggingFilter,
+        textures: selectedTexturesFilter,
+        uv: selectedUVFilter,
+        mature_content: matureContent
+      }, store.state.categoryFilters).original
 
-      const params: AxiosRequestConfig = {
-        method: 'POST',
-        url: 'models',
-        data: {
-          filters,
-          page: 1,
-          count: 48,
-          query: route.query.q
-        },
-        headers: {
-          ...app.$generateAuthHeader('models', 'POST'),
-          'x-meshhouse-mature-content': !matureContent
+      const category: CategoryTreeItem | undefined = await store.dispatch('findCategoryBySlug', route.params.category)
+      if (category) {
+        categories.push(category.id)
+        if (category.childrens) {
+          for (const child of category.childrens) {
+            categories.push(child.id)
+          }
         }
       }
 
+      const promises = await Promise.all([
+        app.$api.request<WithPagination<ModelSimple[]>>({
+          method: 'POST',
+          url: 'models',
+          data: {
+            filters,
+            page: 1,
+            count: 48,
+            categories,
+            query: route.query.q
+          },
+          headers: {
+            ...app.$generateAuthHeader('models', 'POST'),
+            'x-meshhouse-mature-content': matureContent
+          }
+        }),
+        app.$api.request<CategoryFilter[]>({
+          method: 'GET',
+          url: `categories/${category?.id || null}/filters`,
+          headers: {
+            ...app.$generateAuthHeader(`categories/${category?.id || null}/filters`, 'GET')
+          }
+        })
+      ])
 
-      const data: WithPagination<ModelSimple[]> = (await app.$api(params)).data
+      const data = promises[0].data
+      const categoryFilters = promises[1].data
+
+      const selectedFilters: any = {
+        formats: selectedFileFormats,
+        renderers: selectedRenderers,
+        polys: selectedPolyFilter,
+        hair: selectedHairFilter,
+        rig: selectedRiggingFilter,
+        textures: selectedTexturesFilter,
+        uv: selectedUVFilter,
+        mature_content: matureContent ? 'true' : 'false'
+      }
+
+      // eslint-disable-next-line array-callback-return
+      categoryFilters.map((filter) => {
+        if (selectedFilters[filter.key] !== undefined) {
+          return false
+        }
+
+        if (filter.type !== 'radio' && filter.type !== 'range') {
+          selectedFilters[filter.key] = []
+        } else if (filter.type === 'radio') {
+          selectedFilters[filter.key] = 'all'
+        } else if (filter.type === 'range') {
+          selectedFilters[filter.key] = [filter.values[0].min, filter.values[0].max]
+        }
+      })
 
       return {
         items: data.items,
         pagination: data.pagination,
-        selectedFileFormats,
-        selectedRenderers,
-        selectedPolyFilter,
-        selectedHairFilter,
-        selectedRiggingFilter,
-        selectedTexturesFilter,
-        selectedUVFilter,
-        matureContent: !matureContent ? 'true' : 'false'
+        selectedFilters,
+        categoryFilters
       }
     } catch (err) {
       console.log(err)
@@ -400,140 +293,6 @@ export default class ModelCatalog extends Vue {
     }
   }
 
-  get availableFileFormats (): CheckboxMultiSelect[] {
-    return FORMAT_FILTERS
-  }
-
-  get availableRenderers (): CheckboxMultiSelect[] {
-    return RENDERER_FILTERS
-  }
-
-  get polygonsFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.poly.any').toString(),
-        value: 'all'
-      },
-      {
-        text: this.$t('filters.poly.lowpoly').toString(),
-        value: 'low-poly'
-      },
-      {
-        text: this.$t('filters.poly.midpoly').toString(),
-        value: 'mid-poly'
-      },
-      {
-        text: this.$t('filters.poly.hipoly').toString(),
-        value: 'hi-poly'
-      }
-    ]
-  }
-
-  get matureContentFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.mature-content.true').toString(),
-        value: true
-      },
-      {
-        text: this.$t('filters.mature-content.false').toString(),
-        value: false
-      }
-    ]
-  }
-
-  get hairFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.hair.any').toString(),
-        value: 'all'
-      },
-      {
-        text: 'Standard',
-        value: 'standard'
-      },
-      {
-        text: 'Hairfarm',
-        value: 'hairfarm'
-      },
-      {
-        text: 'Ornatrix',
-        value: 'ornatrix'
-      },
-      {
-        text: 'XGen',
-        value: 'xgen'
-      },
-      {
-        text: 'Yeti',
-        value: 'yeti'
-      }
-    ]
-  }
-
-  get riggingFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.rigging.any').toString(),
-        value: 'all'
-      },
-      {
-        text: this.$t('filters.rigging.bones').toString(),
-        value: 'bones'
-      },
-      {
-        text: 'Autodesk CAT',
-        value: 'autodesk_cat'
-      }
-    ]
-  }
-
-  get texturesFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.textures.any').toString(),
-        value: 'all'
-      },
-      {
-        text: this.$t('filters.textures.procedural').toString(),
-        value: 'procedural'
-      },
-      {
-        text: 'PBR',
-        value: 'pbr'
-      },
-      {
-        text: 'NPR',
-        value: 'npr'
-      }
-    ]
-  }
-
-  get texturesUVFilter (): CheckboxMultiSelect[] {
-    return [
-      {
-        text: this.$t('filters.textures.any').toString(),
-        value: 'all'
-      },
-      {
-        text: this.$t('filters.textures.procedural').toString(),
-        value: 'generated'
-      },
-      {
-        text: 'Unwrap UVW',
-        value: 'unwrap_uvw'
-      },
-      {
-        text: 'UDIM',
-        value: 'udim'
-      },
-      {
-        text: 'UV-Tile',
-        value: 'uvtile'
-      }
-    ]
-  }
-
   get currentCategory (): ModelCatalogCurrentCategory {
     if (this.$route.query.tag !== undefined) {
       return {
@@ -542,24 +301,57 @@ export default class ModelCatalog extends Vue {
       }
     }
 
-    return this.$store.state.categories.find((item: Category) => item.slug === this.$route.params.category) ?? {
+    if (this.$route.query.q !== undefined) {
+      return {
+        title_en: `Search results for '${this.$route.query.q}'`,
+        title_ru: `Результаты по запросу '${this.$route.query.q}'`
+      }
+    }
+
+    return recursiveFindObject(this.$store.state.categories, 'slug', 'childrens', this.$route.params.category) ?? {
       title_en: 'All models',
       title_ru: 'Все модели'
     }
   }
 
+  checkSelectedAccordion (filter: CategoryFilter, value: any) {
+    if (filter.type === 'checkbox' || filter.type === 'checkbox-color') {
+      return value.length > 0
+    }
+    if (filter.type === 'radio') {
+      return filter.key !== 'mature_content'
+        ? value !== 'all'
+        : value !== 'false'
+    }
+    if (filter.type === 'range') {
+      return value[0] !== filter.values[0].min || value[1] !== filter.values[0].max
+    }
+
+    return false
+  }
+
   @Watch('$route.query')
+  queryWatcher (query: any, oldQuery: any) {
+    if (query.q !== oldQuery.q) {
+      this.handleSubmit()
+    }
+  }
+
   async handleSubmit (): Promise<void> {
-    const prepared = prepareFilters(
-      this.selectedFileFormats,
-      this.selectedRenderers,
-      this.selectedPolyFilter,
-      this.selectedHairFilter,
-      this.selectedRiggingFilter,
-      this.selectedTexturesFilter,
-      this.selectedUVFilter
-    )
+    const categories: number[] = []
+    const prepared = prepareFilters(this.selectedFilters, this.categoryFilters)
+    const customFilters = prepareCustomFilters(this.selectedFilters, this.categoryFilters)
     const filters = prepared.original
+
+    const category: CategoryTreeItem | undefined = await this.$store.dispatch('findCategoryBySlug', this.$route.params.category)
+    if (category) {
+      categories.push(category.id)
+      if (category.childrens) {
+        for (const child of category.childrens) {
+          categories.push(child.id)
+        }
+      }
+    }
 
     try {
       this.loading = true
@@ -569,13 +361,15 @@ export default class ModelCatalog extends Vue {
         url: 'models',
         data: {
           filters,
+          custom_filters: customFilters.original,
           page: this.pagination.current_page,
           count: 48,
+          categories,
           query: this.$route.query.q
         },
         headers: {
           ...this.$generateAuthHeader('models', 'POST'),
-          'x-meshhouse-mature-content': this.matureContent
+          'x-meshhouse-mature-content': this.selectedFilters.mature_content
         }
       }
 
@@ -585,7 +379,7 @@ export default class ModelCatalog extends Vue {
       const querystring = qs.stringify({
         page: this.pagination.current_page > 1 ? this.pagination.current_page : undefined,
         ...prepared.simplified,
-        mature: this.matureContent === 'false' ? false : undefined,
+        mature: this.selectedFilters.mature_content === 'true' ? true : undefined,
         q: this.$route.query.q ? this.$route.query.q : undefined
       }, { encode: false })
 

@@ -37,7 +37,6 @@
           <font-awesome-icon icon="venus" />
         </div>
       </div>
-      <!--
       <div class="model-card__programs">
         <div
           v-for="(program, idx) in item.available_formats"
@@ -50,7 +49,6 @@
           >
         </div>
       </div>
-      -->
     </div>
     <div class="model-card__actions">
       <v-button
@@ -84,7 +82,6 @@
         <font-awesome-icon icon="calendar-alt" />
         {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
-      <!--
       <div class="model-card__programs">
         <div
           v-for="(program, idx) in item.available_formats"
@@ -97,7 +94,6 @@
           >
         </div>
       </div>
-      -->
     </div>
   </nuxt-link>
 </template>

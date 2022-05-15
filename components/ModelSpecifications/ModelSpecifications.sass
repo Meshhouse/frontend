@@ -5,10 +5,10 @@
   background: var(--block-color)
   display: flex
   flex-direction: column
+  margin-bottom: $grid-gap-large
 
 .specification
   display: flex
-  justify-content: space-between
   align-items: center
   font-size: 1.05rem
   padding: $grid-gap 0
@@ -17,8 +17,16 @@
   &:last-child
     border-bottom: none
   &__value
+    margin-left: auto
     .icon
       &--danger
         color: $danger
       &--success
         color: $success
+  &__color
+    background-color: var(--specification-color)
+    width: 1.5rem
+    height: 1.5rem
+    border-radius: 50%
+    border: $border-width solid var(--text-color)
+    margin-left: $grid-gap-large

@@ -50,7 +50,17 @@ export default class SearchBox extends mixins(clickaway) {
 
   onKeypress (event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      this.$router.push(this.localePath(`/models/?q=${this.search}`))
+      if (!this.$route.name?.includes('models-category')) {
+        this.$router.push(this.localePath(`/models/?q=${this.search}`))
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            ...this.$route.query,
+            q: this.search
+          }
+        })
+      }
     }
   }
 

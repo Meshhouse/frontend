@@ -25,6 +25,20 @@
 a
   color: $primary
 
+ul.list
+  margin-left: $grid-gap-large
+  margin-bottom: $grid-gap-large
+  li
+    margin-bottom: $grid-gap
+    &:before
+      content: ''
+      display: inline-block
+      background-color: $primary
+      width: 0.5rem
+      height: 0.5rem
+      border-radius: 50%
+      margin-right: $grid-gap
+
 @media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
   .display-text
     &--h1
