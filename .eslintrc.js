@@ -14,6 +14,8 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-multiple-empty-lines': 'off',
-    'vue/no-v-html': 'off'
+    'vue/no-v-html': 'off',
+    'vue/multi-word-component-names': 'off',
+    'no-use-before-define': 'off'
   }
 }

@@ -4,43 +4,43 @@
     <model-slider :model="model" />
     <header class="grid-container grid-container--model-header">
       <h1 class="display-text display-text--h3">
-        <span>{{ model[`title_${$i18n.locale}`] }}</span>
+        <span>{{ model.title }}</span>
       </h1>
       <div class="button-group">
         <v-button
-          :class="{ 'button--favorite-active': isInFavorite }"
           color="primary"
           icon
           size="lg"
-          @click="$store.commit('changeFavorite', model.id)"
+          :active="isInFavorite"
+          @click="$store.dispatch('changeFavorite', model.id)"
         >
           <font-awesome-icon icon="heart" />
         </v-button>
-        <dropdown-button
+        <v-dropdown-button
           prepend-icon="share-alt"
-          :title="$t('pages.model-single.buttons.share')"
+          :title="$t('models.buttons.share')"
           :width="300"
           icon-only
           no-caret
         >
           <template slot="content">
             <p class="dropdown__header">
-              {{ $t('pages.model-single.buttons.share_content.link') }}
+              {{ $t('models.buttons.share_content.link') }}
             </p>
             <p class="dropdown__item">
               <input class="input" type="text" :value="embedLink" readonly>
             </p>
             <p class="dropdown__header">
-              {{ $t('pages.model-single.buttons.share_content.iframe') }}
+              {{ $t('models.buttons.share_content.iframe') }}
             </p>
             <p class="dropdown__item">
               <textarea class="input" type="text" :value="embedCode" readonly />
             </p>
           </template>
-        </dropdown-button>
-        <dropdown-button
+        </v-dropdown-button>
+        <v-dropdown-button
           prepend-icon="cloud-download-alt"
-          :title="$t('pages.model-single.buttons.model')"
+          :title="$t('models.buttons.model')"
           :width="300"
           :disabled="model.files.length === 0"
           icon-only
@@ -48,17 +48,17 @@
         >
           <template slot="content">
             <p class="dropdown__header">
-              {{ $t('pages.model-single.buttons.textures_title') }}
+              {{ $t('models.buttons.textures_title') }}
             </p>
             <a
               class="dropdown__item"
               :href="model.textures_link"
               :disabled="model.textures_link === ''"
             >
-              {{ $t('pages.model-single.buttons.textures') }} ({{ getReadableFileSizeString(model.textures_link_size || 0) }})
+              {{ $t('models.buttons.textures') }} ({{ getReadableFileSizeString(model.textures_link_size || 0) }})
             </a>
             <p class="dropdown__header">
-              {{ $t('pages.model-single.buttons.model_title') }}
+              {{ $t('models.buttons.model_title') }}
             </p>
             <a
               v-for="(file, idx) in model.files"
@@ -69,26 +69,14 @@
               {{ getDccName(file.program) }} {{ file.program_version }} - {{ getRendererName(file.renderer) }} {{ file.renderer_version }} ({{ getReadableFileSizeString(file.size || 0) }})
             </a>
           </template>
-        </dropdown-button>
+        </v-dropdown-button>
         <a
           v-if="model.files.length > 0"
           class="button button--primary"
           :href="`meshhouse://install/meshhouse/MSH-${model.id}`"
         >
-          {{ $t('pages.model-single.buttons.install') }}
+          {{ $t('models.buttons.install') }}
         </a>
-
-        <!--<dropdown-button
-          prepend-icon="donate"
-          :width="300"
-        >
-          {{ $t('pages.model-single.buttons.donate') }}
-          <template slot="content">
-            <a href="https://commerce.coinbase.com/checkout/99ac55b7-2eb1-445a-90af-90359332b7ad" class="dropdown__item">
-              {{ $t('pages.model-single.buttons.donate_content.coinbase') }}
-            </a>
-          </template>
-        </dropdown-button>-->
       </div>
     </header>
     <main class="grid-container grid-container--model-description">
@@ -96,21 +84,21 @@
         <vue-alert
           v-if="model.brands.length > 0"
           type="warning"
-          :title="$t('pages.model-single.alerts.legal_notice.title')"
+          :title="$t('models.alerts.legal_notice.title')"
         >
-          {{ $t('pages.model-single.alerts.legal_notice.text', { brand: getStringedArray(model.brands) }) }}
+          {{ $t('models.alerts.legal_notice.text', { brand: getStringedArray(model.brands) }) }}
         </vue-alert>
         <vue-alert
           v-if="model.is_mature_content"
           type="onlyfans"
-          :title="$t('pages.model-single.alerts.mature_content.title')"
+          :title="$t('license.matureContent')"
         >
-          {{ $t('pages.model-single.alerts.mature_content.text') }}
+          {{ $t('models.alerts.mature_content.title') }}
         </vue-alert>
         <div
-          v-if="model[`description_${$i18n.locale}`] !== ''"
+          v-if="model.description !== ''"
           class="description"
-          v-html="model[`description_${$i18n.locale}`]"
+          v-html="model.description"
         />
       </div>
       <aside>
@@ -130,15 +118,15 @@
       </aside>
     </main>
     <div class="grid-container">
-      <div v-if="model[`tags_${$i18n.locale}`].length > 0">
+      <div v-if="model.tags.length > 0">
         <h3 class="display-text display-text--h3">
           <span>
-            {{ $t('pages.model-single.information.tags') }}
+            {{ $t('models.information.tags') }}
           </span>
         </h3>
         <div class="tag-group">
           <vue-tag
-            v-for="(tag, idx) in model[`tags_${$i18n.locale}`]"
+            v-for="(tag, idx) in model.tags"
             :key="`tag-${idx}`"
             :tag="tag"
           />
@@ -152,7 +140,7 @@
           class="display-text display-text--h3"
           style="margin-top: 1rem"
         >
-          <span>{{ collection[`title_${$i18n.locale}`] }}</span>
+          <span>{{ collection.title }}</span>
         </h3>
         <div class="grid-container grid-container--model-collection">
           <model-card
@@ -167,95 +155,18 @@
   </div>
 </template>
 
-<i18n>
-{
-  "en": {
-    "pages": {
-      "model-single": {
-        "information": {
-          "title": "Model information",
-          "description": "Description",
-          "tags": "Tags",
-          "related_items": "Related models",
-          "similar_items": "Similar models"
-        },
-        "buttons": {
-          "install": "Install via Meshhouse",
-          "share": "Share",
-          "share_content": {
-            "link": "Embed link",
-            "iframe": "Embed card"
-          },
-          "donate": "Donate",
-          "donate_content": {
-            "coinbase": "Donate via Coinbase"
-          },
-          "textures": "Download textures",
-          "textures_title": "Textures:",
-          "model_title": "Models:",
-          "model": "Download model"
-        },
-        "alerts": {
-          "legal_notice": {
-            "title": "Legal notice",
-            "text": "The intellectual property depicted in this model, including the brand {brand}, is not affiliated with or endorsed by the original rights holders."
-          },
-          "mature_content": {
-            "title": "Mature content",
-            "text": "Images of the model, description, as well as the model itself may contain content that is not suitable for persons under the age of 18."
-          }
-        }
-      }
-    }
-  },
-  "ru": {
-    "pages": {
-      "model-single": {
-        "information": {
-          "title": "Информация о модели",
-          "description": "Описание",
-          "tags": "Теги",
-          "related_items": "Связанные модели",
-          "similar_items": "Похожие модели"
-        },
-        "buttons": {
-          "install": "Установить через Meshhouse",
-          "share": "Поделиться",
-          "share_content": {
-            "link": "Встроить ссылку",
-            "iframe": "Встроить карточку"
-          },
-          "donate": "Пожертвовать",
-          "donate_content": {
-            "coinbase": "Пожертвовать через Coinbase"
-          },
-          "textures": "Скачать текстуры",
-          "textures_title": "Текстуры:",
-          "model_title": "Модели:",
-          "model": "Скачать модель"
-        },
-        "alerts": {
-          "legal_notice": {
-            "title": "Информация о правообладателях",
-            "text": "Интеллектуальная собственность, изображенная в этой модели, включая торговую марку {brand}, не связана с первоначальными правообладателями и не одобрена ими."
-          },
-          "mature_content": {
-            "title": "Контент для взрослых",
-            "text": "Изображения модели, описание, а также сама модель может содержать контент, не подходящий лицам, не достигшим 18 лет."
-          }
-        }
-      }
-    }
-  }
-}
-</i18n>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import LazyHydrate from 'vue-lazy-hydration'
-import DropdownButton from '@/components/DropdownButton/DropdownButton.vue'
+import type {
+  ModelFull,
+  License,
+  CategoryFilter
+} from '@meshhouse/types'
+import type { NuxtApp } from '@nuxt/types/app'
+import { format } from 'date-fns'
 import ModelCard from '@/components/ModelCard/ModelCard.vue'
-import VueTag from '@/components/Tag/Tag.vue'
+import VueTag from '@/components/common/Tag/Tag.vue'
 import ModelSlider from '@/components/ModelSlider/ModelSlider.vue'
 import VueAlert from '@/components/Alert/Alert.vue'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue'
@@ -264,24 +175,9 @@ import ModelSpecifications from '@/components/ModelSpecifications/ModelSpecifica
 import ModelCustomSpecifications from '@/components/ModelSpecifications/ModelCustomSpecifications.vue'
 
 import type {
-  ModelFull
-} from '@/types/api/models'
-
-import type {
-  License
-} from '@/types/api/licenses'
-
-import type {
   CollectionWithModels
-} from '@/types/api/collections'
+} from '@/types'
 
-import type {
-  CategoryFilter
-} from '@/types/api/categories'
-
-import type { NuxtApp } from '@nuxt/types/app'
-
-import { format } from 'date-fns'
 import {
   getDccName,
   getRendererName,
@@ -292,7 +188,6 @@ import {
 @Component<ModelSinglePage>({
   components: {
     Breadcrumbs,
-    DropdownButton,
     LazyHydrate,
     ModelCard,
     ModelSlider,
@@ -303,8 +198,22 @@ import {
     LicenseBlock
   },
   head () {
+    const ogMetas = []
+
+    for (const key in this.tags.og) {
+      ogMetas.push({ content: this.tags.og[key], property: key })
+    }
+
     return {
-      title: this.model[`title_${this.$i18n.locale}`]
+      title: this.tags.title,
+      description: this.tags.description,
+      meta: [
+        ...ogMetas,
+        { content: this.tags.meta.name, itemprop: 'name' },
+        { content: this.tags.meta.description, itemprop: 'description' },
+        { content: this.tags.meta.image, itemprop: 'image' },
+        { content: this.tags.meta.sku, itemprop: 'sku' }
+      ]
     }
   },
   methods: {
@@ -367,6 +276,29 @@ export default class ModelSinglePage extends Vue {
     filters: {}
   }
 
+  tags: any = {
+    og: {
+      'og:title': '',
+      'og:type': 'product',
+      'og:description': '',
+      'og:image': '',
+      'og:image:width': '',
+      'og:image:height': '',
+      'og:site_name': 'MeshHouse',
+      'og:availability': 'instock',
+      'product:price:amount': '0',
+      'product:price:currency': 'USD'
+    },
+    meta: {
+      name: '',
+      description: '',
+      image: '',
+      sku: ''
+    },
+    title: '',
+    description: ''
+  }
+
   currentLicenses: License[] = []
 
   currentCollections: CollectionWithModels[] = []
@@ -400,21 +332,40 @@ export default class ModelSinglePage extends Vue {
         }
       })).data
 
-      const currentCollections = data.collections.map((collection) => {
-        return {
-          ...collection,
-          items: modelsCollections[collection.id]
+      const SEO = (await app.$api.request<any>({
+        method: 'GET',
+        url: `seo/models/${route.params.slug}`,
+        headers: {
+          ...app.$generateAuthHeader(`seo/models/${route.params.slug}`, 'GET')
         }
-      })
+      })).data
+
+      const currentCollections = data.collections
+        .filter(collection => Array.isArray(modelsCollections[collection.id]) && modelsCollections[collection.id].length > 0)
+        .map((collection) => {
+          return {
+            ...collection,
+            items: modelsCollections[collection.id]
+          }
+        })
+      // Check for valid category and slug in route params
+      if (route.params.category !== data.category.slug || route.params.slug !== data.slug) {
+        error({
+          statusCode: 404,
+          message: 'Post not found'
+        })
+      }
 
       return {
         model: data,
         currentLicenses,
         currentCollections,
-        categoryFilters: categoryFilters.filter(filter => filter.id)
+        categoryFilters: categoryFilters.filter(filter => filter.id),
+        tags: SEO
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
       error({
         statusCode: 404,
         message: 'Post not found'
@@ -438,19 +389,19 @@ export default class ModelSinglePage extends Vue {
   get breadcrumbsElements (): any[] {
     return [
       {
-        title: this.$t('breadcrumbs.index').toString(),
+        title: this.$t('navigation.home').toString(),
         href: '/'
       },
       {
-        title: this.$t('breadcrumbs.models').toString(),
+        title: this.$t('navigation.modelsCatalog').toString(),
         href: '/models'
       },
       {
-        title: this.model.category.title_en,
+        title: this.model.category.title,
         href: `/models/${this.model.category.slug}`
       },
       {
-        title: this.model.title_en,
+        title: this.model.title,
         href: `/models/category-1/${this.model.slug}`,
         active: true
       }

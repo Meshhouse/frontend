@@ -1,12 +1,12 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable camelcase */
 import type {
+  CategoryFilter,
+  CategoryFilterValueRange
+} from '@meshhouse/types'
+import type {
   PreparedFilter
 } from '@/types'
-
-import type {
-  CategoryFilter
-} from '@/types/api/categories'
 
 export function getDccName (program: string): string {
   const names: any = {
@@ -106,8 +106,10 @@ export function prepareFilters (values: any, filters: CategoryFilter[]): Prepare
         })
       }
     } else {
-      const originalMin = filter.values[0].min
-      const originalMax = filter.values[0].max
+      const values = filter.values[0] as CategoryFilterValueRange
+
+      const originalMin = values.min
+      const originalMax = values.max
 
       if (value[0] !== originalMin || value[1] !== originalMax) {
         original[filter.key] = value
@@ -141,8 +143,10 @@ export function prepareCustomFilters (values: any, filters: CategoryFilter[]): P
         simplified[filter.querystring_alias] = value
       }
     } else {
-      const originalMin = filter.values[0].min
-      const originalMax = filter.values[0].max
+      const values = filter.values[0] as CategoryFilterValueRange
+
+      const originalMin = values.min
+      const originalMax = values.max
 
       if (value[0] !== originalMin || value[1] !== originalMax) {
         original[filter.id] = value

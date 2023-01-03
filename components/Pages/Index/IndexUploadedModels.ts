@@ -1,8 +1,8 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import ModelCard from '@/components/ModelCard/ModelCard.vue'
 import type {
   ModelSimple
-} from '@/types/api/models'
+} from '@meshhouse/types'
+import ModelCard from '@/components/ModelCard/ModelCard.vue'
 
 @Component({
   components: {

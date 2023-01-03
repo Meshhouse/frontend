@@ -26,10 +26,16 @@ a
   color: $primary
 
 ul.list
+  margin: 0
+  padding: 0
   margin-left: $grid-gap-large
   margin-bottom: $grid-gap-large
+  list-style: none
   li
     margin-bottom: $grid-gap
+    ul.list
+      margin-top: $grid-gap-large
+      margin-left: $grid-gap-large * 2
     &:before
       content: ''
       display: inline-block

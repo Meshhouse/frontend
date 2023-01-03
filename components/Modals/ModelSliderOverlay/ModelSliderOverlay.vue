@@ -2,17 +2,28 @@
   <main class="model-slider-overlay">
     <header class="model-slider-overlay__header">
       <h3 class="display-text display-text--h3">
-        <span>{{ model[`title_${$i18n.locale}`] }}</span>
+        <span>{{ model.title }}</span>
       </h3>
-      <button
-        class="overlay-close"
-        @click="$emit('close')"
-      >
-        <font-awesome-icon icon="times" />
-      </button>
+      <div class="header-actions">
+        <button
+          class="overlay-close"
+          @click="handleFullScreen"
+        >
+          <font-awesome-icon :icon="isInFullscreen ? 'compress' : 'expand'" />
+        </button>
+        <button
+          class="overlay-close"
+          @click="$emit('close')"
+        >
+          <font-awesome-icon icon="times" />
+        </button>
+      </div>
     </header>
     <div class="model-slider-overlay__wrapper">
       <client-only>
+        <div class="model-slider-overlay__counter">
+          {{ currentIndex + 1 }} / {{ totalSlides }}
+        </div>
         <swiper
           ref="swiperTop"
           :options="swiperOption"
@@ -27,6 +38,7 @@
               <img
                 class="swiper-lazy slide__image"
                 :data-src="slide.original"
+                :alt="model.title"
               >
             </div>
             <loader-slider hide-background />
@@ -39,7 +51,7 @@
               v-if="viewerVisible"
               class="swiper-lazy model-viewer"
               :model="model.preview"
-              :title="model[`title_${$i18n.locale}`]"
+              :title="model.title"
               :thumbnail="model.thumbnail"
             />
             <loader-slider hide-background />

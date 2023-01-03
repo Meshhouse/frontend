@@ -4,7 +4,7 @@
       <header class="models-header">
         <h1 class="display-text display-text--h2">
           <span>
-            {{ $t('news.title') }}
+            {{ $t('navigation.news') }}
           </span>
         </h1>
       </header>
@@ -26,38 +26,18 @@
   </div>
 </template>
 
-<i18n>
-{
-  "en": {
-    "news": {
-      "title": "News"
-    }
-  },
-  "ru": {
-    "news": {
-      "title": "Новости"
-    }
-  }
-}
-</i18n>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import Paginator from '@/components/Pagination/Pagination.vue'
-import PostCard from '@/components/PostCard/PostCard.vue'
-
-import type {
-  Pagination,
-  WithPagination
-} from '@/types/api/'
-
-import type {
-  BlogSimple
-} from '@/types/api/posts'
-
 import type { NuxtApp } from '@nuxt/types/app'
 import type { Route } from 'vue-router'
 import type { AxiosRequestConfig } from 'axios'
+import type {
+  Pagination,
+  WithPagination,
+  BlogSimple
+} from '@meshhouse/types'
+import Paginator from '@/components/Pagination/Pagination.vue'
+import PostCard from '@/components/PostCard/PostCard.vue'
 
 @Component<NewsList>({
   components: {
@@ -66,7 +46,7 @@ import type { AxiosRequestConfig } from 'axios'
   },
   head () {
     return {
-      title: this.$t('news.title').toString()
+      title: this.$t('navigation.news').toString()
     }
   },
   watchQuery: [
@@ -95,14 +75,15 @@ export default class NewsList extends Vue {
         headers: app.$generateAuthHeader('posts', 'GET')
       }
 
-      const data: WithPagination<BlogSimple[]> = (await app.$api(params)).data
+      const data: WithPagination<BlogSimple> = (await app.$api(params)).data
 
       return {
         posts: data.items,
         pagination: data.pagination
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
       return {
         posts: [],
         pagination: {

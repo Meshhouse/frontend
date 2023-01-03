@@ -1,0 +1,51 @@
+.overlay
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  background-color: rgba(0,0,0,0.4)
+  z-index: 1
+  cursor: pointer
+  &-close
+    position: relative
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    color: var(--text-color)
+    background: none
+    padding: 0.5rem
+    width: 2rem
+    height: 2rem
+    border-radius: 50%
+    cursor: pointer
+    transition: all 0.3s ease
+    &:hover
+      background-color: $primary
+      color: $white
+
+.viewport
+  background-color: var(--block-color)
+  position: absolute
+  top: 0
+  right: 0
+  height: 100vh
+  overflow-y: auto
+  width: 500px
+  box-shadow: 0 0 20px $black
+  display: flex
+  flex-direction: column
+  cursor: default
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 0.5rem
+    border-bottom: 0.125rem solid $primary
+  &__content
+    padding: 0.5rem
+
+@media (max-width: $breakpoint-tablet - 1px)
+  .viewport
+    width: 100vw

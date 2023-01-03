@@ -9,13 +9,13 @@
     >
       <img
         :src="item.thumbnail"
-        :alt="item[`title_${$i18n.locale}`]"
+        :alt="item.title"
         loading="lazy"
       >
     </nuxt-link>
     <div class="post-card__info">
       <h2 class="display-text display-text--h3">
-        <span>{{ item[`title_${$i18n.locale}`] }}</span>
+        <span>{{ item.title }}</span>
       </h2>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
@@ -24,13 +24,13 @@
     </div>
     <div
       class="post-card__content"
-      v-html="item[`excerpt_${$i18n.locale}`]"
+      v-html="item.excerpt"
     />
     <nuxt-link
       class="button button--primary"
       :to="localePath(`/news/${item.slug}`)"
     >
-      {{ $t('news.button') }}
+      {{ $t('common.readMore') }}
     </nuxt-link>
   </article>
   <article
@@ -40,12 +40,12 @@
     <img
       class="image__inner"
       :src="item.thumbnail"
-      :alt="item[`title_${$i18n.locale}`]"
+      :alt="item.title"
       loading="lazy"
     >
     <div class="post-card__info">
       <h2 class="display-text display-text--h3">
-        <span>{{ item[`title_${$i18n.locale}`] }}</span>
+        <span>{{ item.title }}</span>
       </h2>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
@@ -54,25 +54,10 @@
     </div>
     <div
       class="post-card__content"
-      v-html="item[`content_${$i18n.locale}`]"
+      v-html="item.content"
     />
   </article>
 </template>
-
-<i18n>
-{
-  "en": {
-    "news": {
-      "button": "Read more"
-    }
-  },
-  "ru": {
-    "news": {
-      "button": "Читать далее"
-    }
-  }
-}
-</i18n>
 
 <script lang="ts" src="./PostCard.ts" />
 

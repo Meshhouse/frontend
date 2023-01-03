@@ -2,19 +2,46 @@
   height: 100vh
   display: flex
   flex-direction: column
+  background-color: var(--block-color-alt)
   &__header
     padding: $grid-gap-large
-    background-color: $primary
     display: flex
     justify-content: space-between
     align-items: center
-    height: 62px
+    height: 48px
+    margin-bottom: -48px
+    position: relative
+    z-index: 3
+    color: var(--text-color)
+    .header-actions
+      display: flex
+      grid-gap: $grid-gap-large * 1.5
+      align-items: center
     .overlay-close
-      background-color: var(--block-color-alt)
+      background: none
+      color: var(--text-color)
+      padding: 0
+      font-size: 1.25rem
     .display-text
       margin: 0
+      font-size: 1.5rem
+      span
+        color: var(--text-color)
+        box-shadow: none
+        background: none
   &__wrapper
     flex: 1 1 100%
+  &__counter
+    position: absolute
+    right: $grid-gap-large
+    top: 4rem
+    z-index: 2
+    font-weight: 700
+    background-color: $primary
+    padding: $grid-gap-large
+    border-radius: $border-radius
+    pointer-events: none
+    color: $white
   .swiper-slide--model-slide
     height: 100%
     background: none
@@ -23,34 +50,35 @@
       height: 100%
 
   .swiper-container--top
-    max-height: calc(100vh - 100px - 62px)
+    max-height: calc(100vh - 100px)
     height: 100%
     overflow-y: hidden
 
-@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+body.theme-dark
   .model-slider-overlay
     &__header
-      height: 59px
+      .overlay-close
+        filter: drop-shadow(0px 0px 4px #000)
+      .display-text
+        span
+          text-shadow: 0px 0px 4px #000
+
+@media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
+  .model-slider-overlay
     .swiper-container--top
-      max-height: calc(100vh - 82px - 59px)
+      max-height: calc(100vh - 82px)
 
 @media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-large-desktop - 1px)
   .model-slider-overlay
-    &__header
-      height: 54px
     .swiper-container--top
-      max-height: calc(100vh - 82px - 54px)
+      max-height: calc(100vh - 82px)
 
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
   .model-slider-overlay
-    &__header
-      height: 48px
     .swiper-container--top
-      max-height: calc(100vh - 48px)
+      max-height: 100vh
 
 @media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
   .model-slider-overlay
-    &__header
-      height: 48px
     .swiper-container--top
-      max-height: calc(100vh - 48px)
+      max-height: 100vh

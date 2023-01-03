@@ -1,7 +1,7 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import type {
   Pagination
-} from '@/types/api'
+} from '@meshhouse/types'
 
 @Component({})
 

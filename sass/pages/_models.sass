@@ -51,12 +51,27 @@
     display: flex
     align-items: center
     justify-content: space-between
+    &__filters
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      margin-bottom: $grid-gap-large
+      .select
+        max-width: 400px
+      .button
+        margin-left: $grid-gap-large
 
 .model__description
   .description
     p
       margin-bottom: $grid-gap-large
 
+@media (min-width: $breakpoint-desktop)
+  .models
+    &-header
+      &__filters
+        .button
+          display: none
 
 @media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
   .models

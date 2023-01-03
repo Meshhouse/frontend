@@ -163,19 +163,16 @@
 </template>
 
 <script lang="ts">
-import { Component, mixins } from 'nuxt-property-decorator'
+import { Component, mixins, Watch } from 'nuxt-property-decorator'
 import { required, email, requiredIf, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import Overlay from '@/components/Overlay/Overlay.vue'
 import APIKeyCreate from '@/components/Modals/APIKeyCreate/APIKeyCreate.vue'
 import APIKeySuccess from '@/components/Modals/APIKeySuccess/APIKeySuccess.vue'
 import APIKeyBlock from '@/components/APIKeyBlock/APIKeyBlock.vue'
 
 import type {
   APIToken
-} from '@/types/api/users'
-
-import type { NuxtApp } from '@nuxt/types/app'
+} from '@/types'
 
 @Component<UserProfile>({
   middleware: 'auth',
@@ -198,8 +195,7 @@ import type { NuxtApp } from '@nuxt/types/app'
   components: {
     APIKeyCreate,
     APIKeySuccess,
-    APIKeyBlock,
-    Overlay
+    APIKeyBlock
   },
   head () {
     return {
@@ -220,30 +216,34 @@ export default class UserProfile extends mixins(validationMixin) {
 
   apiKeys: APIToken[] = []
 
-  async asyncData ({ app }: { app: NuxtApp }): Promise<any> {
-    try {
-      const response = await app.$api.request<APIToken[]>({
-        method: 'POST',
-        url: 'api-keys',
-        headers: app.$generateAuthHeader('api-keys', 'POST')
-      })
-
-      return {
-        apiKeys: response.data
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   get userData () {
     return this.$store.state.user
   }
 
-  created () {
+  @Watch('$store.state.user')
+  updateProfile () {
     const profile = this.$store.state.user
     this.name = profile.name
     this.email = profile.email
+  }
+
+  async mounted (): Promise<void> {
+    const profile = this.$store.state.user
+    this.name = profile.name
+    this.email = profile.email
+
+    try {
+      const response = await this.$api.request<APIToken[]>({
+        method: 'POST',
+        url: 'api-keys',
+        headers: this.$generateAuthHeader('api-keys', 'POST')
+      })
+
+      this.apiKeys = response.data
+    } catch (err) {
+      this.$sentry.captureException(err)
+      console.error(err)
+    }
   }
 
   openCreate () {
@@ -276,7 +276,8 @@ export default class UserProfile extends mixins(validationMixin) {
 
       this.fetchTokens()
     } catch (err) {
-      console.log(err)
+      this.$sentry.captureException(err)
+      console.error(err)
     }
   }
 
@@ -288,11 +289,10 @@ export default class UserProfile extends mixins(validationMixin) {
         headers: this.$generateAuthHeader('api-keys', 'POST')
       })
 
-      console.log(response.data)
-
       this.apiKeys = response.data
     } catch (err) {
-      console.log(err)
+      this.$sentry.captureException(err)
+      console.error(err)
     }
   }
 
@@ -321,6 +321,7 @@ export default class UserProfile extends mixins(validationMixin) {
           timeout: 5000
         })
       } catch (error) {
+        this.$sentry.captureException(error)
         console.error(error)
         this.$store.dispatch('addNotification', {
           type: 'error',

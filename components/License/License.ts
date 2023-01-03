@@ -1,7 +1,7 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import type {
   License
-} from '@/types/api/licenses'
+} from '@meshhouse/types'
 
 @Component({})
 

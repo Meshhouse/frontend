@@ -1,0 +1,17 @@
+.mobile-categories
+  &__list
+    overflow: auto
+    display: flex
+    flex-direction: column
+    margin-top: 1rem
+    height: calc(100vh - 5rem)
+
+  &__category
+    color: var(--text-color)
+    display: flex
+    align-items: center
+    margin-bottom: 1rem
+    .category__icon
+      margin-right: $grid-gap-large
+    &:hover
+      color: var(--primary)

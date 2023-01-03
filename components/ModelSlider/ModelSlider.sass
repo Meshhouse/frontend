@@ -13,6 +13,8 @@
       object-position: 50%
       position: relative
       z-index: 1
+      &:not(.swiper-lazy-loaded)
+        opacity: 0
     &__background
       display: block
       width: 100%
@@ -21,6 +23,7 @@
       object-position: 50%
       filter: blur(20px) brightness(0.5)
       transform: scale(1.1)
+      position: absolute
 
 .swiper-slide--model-thumbnail
   border: 0.125rem solid rgba(0,0,0,0)
@@ -69,11 +72,6 @@
     justify-content: center
     .swiper-slide
       flex: 0 0 116px
-
-.grid-container
-  &--slider-full-width
-    max-width: calc(100vw - var(--scrollbar-width)) !important
-    overflow: hidden
 
 @media (min-width: $breakpoint-large-desktop) and (max-width: $breakpoint-huge-desktop - 1px)
   .swiper-slide--model-slide

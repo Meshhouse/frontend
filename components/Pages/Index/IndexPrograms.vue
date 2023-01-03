@@ -2,11 +2,11 @@
   <div class="grid-container">
     <h2 class="display-text display-text--h2">
       <span>
-        {{ $t('pages.index.programs.title') }}
+        {{ $t('blocks.programsList.title') }}
       </span>
     </h2>
     <i class="index-programs__description">
-      {{ $t('pages.index.programs.note') }}
+      {{ $t('blocks.programsList.note') }}
     </i>
     <div class="index-programs__container">
       <div class="program program--autodesk">
@@ -19,12 +19,13 @@
           alt="3ds Max logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.max') }}
+          {{ $t('blocks.programsList.max') }}
         </p>
         <ul class="program__list">
-          <li>Redshift 2.6+</li>
+          <li>V-Ray 6</li>
         </ul>
       </div>
+    <!--
       <div class="program program--autodesk">
         <p class="program__count">
           {{ stats.maya }}
@@ -35,7 +36,7 @@
           alt="Maya logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.maya') }}
+          {{ $t('blocks.programsList.maya') }}
         </p>
         <ul class="program__list">
           <li>Redshift 2.6+</li>
@@ -51,7 +52,7 @@
           alt="Blender logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.blender') }}
+          {{ $t('blocks.programsList.blender') }}
         </p>
         <ul class="program__list">
           <li>Cycles</li>
@@ -67,7 +68,7 @@
           alt="Cinema4D logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.cinema4d') }}
+          {{ $t('blocks.programsList.cinema4d') }}
         </p>
         <ul class="program__list">
           <li>Redshift 2.6+</li>
@@ -83,7 +84,7 @@
           alt="Unity logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.unity') }}
+          {{ $t('blocks.programsList.unity') }}
         </p>
       </div>
       <div class="program program--unreal">
@@ -96,9 +97,10 @@
           alt="Unreal Engine logo"
         >
         <p class="program__title">
-          {{ $t('pages.index.programs.unreal') }}
+          {{ $t('blocks.programsList.unreal') }}
         </p>
       </div>
+    -->
     </div>
   </div>
 </template>

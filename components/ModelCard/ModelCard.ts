@@ -1,9 +1,9 @@
 import { format } from 'date-fns'
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import VueTag from '@/components/Tag/Tag.vue'
 import type {
   ModelSimple
-} from '@/types/api/models'
+} from '@meshhouse/types'
+import VueTag from '@/components/common/Tag/Tag.vue'
 
 @Component<ModelCard>({
   components: {

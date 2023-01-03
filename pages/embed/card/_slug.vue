@@ -10,14 +10,14 @@
         <img
           class="image__inner"
           :src="model.thumbnail"
-          :alt="model[`title_${routeLang}`]"
+          :alt="model.title"
           loading="lazy"
         >
       </div>
       <div class="card__aside">
         <div class="card__header">
           <h1 class="title">
-            {{ model[`title_${routeLang}`] }}
+            {{ model.title }}
           </h1>
           <div class="tag-group">
             <div
@@ -28,7 +28,7 @@
               <font-awesome-icon icon="exclamation" />
             </div>
             <div
-              v-if="model.is_mature_content"
+              v-if="model.mature_content"
               class="tag tag--icon tag--onlyfans"
               :title="translations[routeLang].mature"
             >
@@ -39,7 +39,7 @@
         <div class="card__center">
           <div class="tag-group">
             <div
-              v-for="(tag, idx) in model[`tags_${$route.query.lang || 'en'}`]"
+              v-for="(tag, idx) in model.tags"
               :key="`tag-${idx}`"
               class="tag tag--primary"
             >
@@ -48,10 +48,9 @@
           </div>
         </div>
         <div class="card__footer">
-          <!--
           <div class="card__programs">
             <div
-              v-for="(program, idx) in getUniquePrograms(model.model_links)"
+              v-for="(program, idx) in getUniquePrograms(model.files)"
               :key="`program-${idx}`"
             >
               <img
@@ -60,7 +59,7 @@
                 :title="getProgramIcon(program)"
               >
             </div>
-          </div>-->
+          </div>
           <a
             :href="generateLink"
             class="card__button"
@@ -79,7 +78,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 import type {
   ModelFull
-} from '@/types/api/models'
+} from '@meshhouse/types'
 
 import type { NuxtApp } from '@nuxt/types/app'
 import type { Route } from 'vue-router'
@@ -156,7 +155,8 @@ export default class EmbedCard extends Vue {
       title_ru: '',
       description_en: '',
       description_ru: ''
-    }
+    },
+    filters: {}
   }
 
   async asyncData ({ app, route }: { app: NuxtApp, route: Route }): Promise<any> {
@@ -171,7 +171,8 @@ export default class EmbedCard extends Vue {
         model: data
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
     }
   }
 
@@ -183,14 +184,14 @@ export default class EmbedCard extends Vue {
     }
   }
 
-  getUniquePrograms (programs: any[]): string[] {
-    const filteredPrograms = new Set(programs.map((item: any) => item.program))
+  getUniquePrograms (files: ModelFull['files']): string[] {
+    const filteredPrograms = new Set(files.map((item: any) => item.program))
     return [...filteredPrograms]
   }
 
   getProgramIcon (program: string): string {
     switch (program) {
-      case 'autodesk_3ds_max': {
+      case '3ds_max': {
         return '3dsmax'
       }
       case 'unreal_engine': {

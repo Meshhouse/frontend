@@ -4,14 +4,25 @@
       <header class="models-header">
         <h1 class="display-text display-text--h2">
           <span>
-            {{ currentCategory[`title_${$i18n.locale}`] }}
+            {{ currentCategory.title }}
           </span>
         </h1>
         <p class="models-count">
-          {{ $tc('models-count', pagination.total) }}
+          {{ $tc('common["models-count"]', pagination.total) }}
         </p>
       </header>
-      <div class="models-cards">
+      <model-filters-overlay
+        v-model="selectedFilters"
+        :category-filters="categoryFilters"
+        :loading="loading"
+        :sorting.sync="sorting"
+        @update:sorting="handleSubmit"
+        @submit="handleSubmit"
+      />
+      <div
+        v-if="items.length > 0"
+        class="models-cards"
+      >
         <model-card
           v-for="model in items"
           :key="model.id"
@@ -19,6 +30,13 @@
         />
       </div>
       <div
+        v-else
+        class="models-cards--empty"
+      >
+        <font-awesome-icon icon="sad-cry" />
+      </div>
+      <div
+        v-if="items.length > 0"
         class="grid-container models-pagination"
         style="margin-top: auto"
       >
@@ -29,95 +47,32 @@
         />
       </div>
     </div>
-    <aside class="models-filters">
-      <accordion
-        v-for="categoryFilter in categoryFilters"
-        :key="categoryFilter.key"
-        class="mb-2"
-        :selected="checkSelectedAccordion(categoryFilter, selectedFilters[categoryFilter.key])"
-      >
-        <template slot="header">
-          {{ categoryFilter[`title_${$i18n.locale}`] }}
-        </template>
-        <template v-if="categoryFilter.type === 'radio'">
-          <radio-button
-            v-for="filterValue in categoryFilter.values"
-            :key="filterValue.value"
-            v-model="selectedFilters[categoryFilter.key]"
-            :value="filterValue.value"
-          >
-            {{ filterValue[`title_${$i18n.locale}`] }}
-          </radio-button>
-        </template>
-        <template v-if="categoryFilter.type === 'checkbox'">
-          <checkbox
-            v-for="filterValue in categoryFilter.values"
-            :key="filterValue.value"
-            v-model="selectedFilters[categoryFilter.key]"
-            :value="filterValue.value"
-          >
-            {{ filterValue[`title_${$i18n.locale}`] }}
-          </checkbox>
-        </template>
-        <template v-if="categoryFilter.type === 'checkbox-color'">
-          <checkbox
-            v-for="filterValue in categoryFilter.values"
-            :key="filterValue.value"
-            v-model="selectedFilters[categoryFilter.key]"
-            :value="filterValue.value"
-            :color="filterValue.color"
-          >
-            {{ filterValue[`title_${$i18n.locale}`] }}
-          </checkbox>
-        </template>
-        <template v-if="categoryFilter.type === 'range'">
-          <range-input
-            v-model="selectedFilters[categoryFilter.key]"
-            :ranges="categoryFilter.values[0]"
-          />
-        </template>
-      </accordion>
-      <v-button
-        color="primary"
-        :disabled="loading"
-        @click="handleSubmit"
-      >
-        {{ $t('filters.submit') }}
-      </v-button>
-    </aside>
+    <model-filters
+      v-model="selectedFilters"
+      :category-filters="categoryFilters"
+      :loading="loading"
+      @submit="handleSubmit"
+    />
   </main>
 </template>
-
-<i18n>
-{
-  "en": {
-    "models-count": "0 models | 1 model | {n} models",
-    "filters": {
-      "submit": "Submit"
-    }
-  },
-  "ru": {
-    "models-count": "0 моделей | {n} модель | {n} модели | {n} моделей",
-    "filters": {
-      "submit": "Отправить"
-    }
-  }
-}
-</i18n>
 
 <script lang="ts">
 /* eslint-disable camelcase */
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import qs from 'qs'
-import ModelCard from '@/components/ModelCard/ModelCard.vue'
-import Accordion from '@/components/Accordion/Accordion.vue'
-import Pagination from '@/components/Pagination/Pagination.vue'
-import Checkbox from '@/components/Checkbox/Checkbox.vue'
-import RangeInput from '@/components/RangeInput/RangeInput.vue'
-import RadioButton from '@/components/RadioButton/RadioButton.vue'
-
 import { AxiosRequestConfig } from 'axios'
 import type { Route } from 'vue-router'
+import type { NuxtApp } from '@nuxt/types/app'
+import type {
+  CategoryFilter,
+  ModelSimple,
+  WithPagination,
+  CategoryFilterValueRange
+} from '@meshhouse/types'
+import ModelCard from '@/components/ModelCard/ModelCard.vue'
+import Pagination from '@/components/Pagination/Pagination.vue'
+import ModelFilters from '@/components/Model/ModelFilters/ModelFilters.vue'
+import ModelFiltersOverlay from '@/components/Model/ModelFiltersOverlay/ModelFiltersOverlay.vue'
 
 import {
   prepareFilters,
@@ -126,38 +81,24 @@ import {
 } from '@/functions/helpers'
 
 import type {
-  CategoryTreeItem,
-  CategoryFilter
-} from '@/types/api/categories'
+  CategoryTreeItem
+} from '@/types'
 
-import type {
-  ModelSimple
-} from '@/types/api/models'
-
-import type {
-  WithPagination
-} from '@/types/api'
-
-import type { NuxtApp } from '@nuxt/types/app'
 
 type ModelCatalogCurrentCategory = {
-  [key: string]: string;
-  title_en: string;
-  title_ru: string;
+  title: string;
 }
 
 @Component<ModelCatalog>({
   components: {
-    Accordion,
-    Checkbox,
     ModelCard,
     Pagination,
-    RangeInput,
-    RadioButton
+    ModelFilters,
+    ModelFiltersOverlay
   },
   head () {
     return {
-      title: this.currentCategory[`title_${this.$i18n.locale}`]
+      title: this.currentCategory.title
     }
   }
 })
@@ -183,6 +124,8 @@ export default class ModelCatalog extends Vue {
     uv: 'all',
     mature_content: 'false'
   }
+
+  sorting = 'created_at:desc'
 
   async asyncData ({ store, app, route }: { store: any, app: NuxtApp, route: Route }): Promise<any> {
     try {
@@ -221,7 +164,7 @@ export default class ModelCatalog extends Vue {
       }
 
       const promises = await Promise.all([
-        app.$api.request<WithPagination<ModelSimple[]>>({
+        app.$api.request<WithPagination<ModelSimple>>({
           method: 'POST',
           url: 'models',
           data: {
@@ -229,7 +172,12 @@ export default class ModelCatalog extends Vue {
             page: 1,
             count: 48,
             categories,
-            query: route.query.q
+            query: route.query.q,
+            tags: route.query.tag ? [route.query.tag] : undefined,
+            sort: {
+              field: 'created_at',
+              direction: 'desc'
+            }
           },
           headers: {
             ...app.$generateAuthHeader('models', 'POST'),
@@ -246,7 +194,7 @@ export default class ModelCatalog extends Vue {
       ])
 
       const data = promises[0].data
-      const categoryFilters = promises[1].data
+      const categoryFilters = promises[1].data.filter(filter => filter.visible === undefined || filter.visible === true)
 
       const selectedFilters: any = {
         formats: selectedFileFormats,
@@ -270,7 +218,8 @@ export default class ModelCatalog extends Vue {
         } else if (filter.type === 'radio') {
           selectedFilters[filter.key] = 'all'
         } else if (filter.type === 'range') {
-          selectedFilters[filter.key] = [filter.values[0].min, filter.values[0].max]
+          const values = filter.values[0] as CategoryFilterValueRange
+          selectedFilters[filter.key] = [values.min, values.max]
         }
       })
 
@@ -281,7 +230,8 @@ export default class ModelCatalog extends Vue {
         categoryFilters
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
       return {
         items: [],
         pagination: {
@@ -295,39 +245,30 @@ export default class ModelCatalog extends Vue {
 
   get currentCategory (): ModelCatalogCurrentCategory {
     if (this.$route.query.tag !== undefined) {
-      return {
+      const titles: any = {
         title_en: `Models with tag '${this.$route.query.tag}'`,
         title_ru: `Модели с тегом '${this.$route.query.tag}'`
       }
+      return { title: titles[`title_${this.$i18n.locale}`] }
     }
 
     if (this.$route.query.q !== undefined) {
-      return {
+      const titles: any = {
         title_en: `Search results for '${this.$route.query.q}'`,
         title_ru: `Результаты по запросу '${this.$route.query.q}'`
       }
+
+      return { title: titles[`title_${this.$i18n.locale}`] }
     }
 
-    return recursiveFindObject(this.$store.state.categories, 'slug', 'childrens', this.$route.params.category) ?? {
+    const titles: any = {
       title_en: 'All models',
       title_ru: 'Все модели'
     }
-  }
 
-  checkSelectedAccordion (filter: CategoryFilter, value: any) {
-    if (filter.type === 'checkbox' || filter.type === 'checkbox-color') {
-      return value.length > 0
+    return recursiveFindObject(this.$store.state.categories, 'slug', 'childrens', this.$route.params.category) ?? {
+      title: titles[`title_${this.$i18n.locale}`]
     }
-    if (filter.type === 'radio') {
-      return filter.key !== 'mature_content'
-        ? value !== 'all'
-        : value !== 'false'
-    }
-    if (filter.type === 'range') {
-      return value[0] !== filter.values[0].min || value[1] !== filter.values[0].max
-    }
-
-    return false
   }
 
   @Watch('$route.query')
@@ -353,6 +294,8 @@ export default class ModelCatalog extends Vue {
       }
     }
 
+    const sortingArr = this.sorting.split(':')
+
     try {
       this.loading = true
 
@@ -365,7 +308,12 @@ export default class ModelCatalog extends Vue {
           page: this.pagination.current_page,
           count: 48,
           categories,
-          query: this.$route.query.q
+          query: this.$route.query.q,
+          tags: this.$route.query.tag ? [this.$route.query.tag] : undefined,
+          sort: {
+            field: sortingArr[0],
+            direction: sortingArr[1]
+          }
         },
         headers: {
           ...this.$generateAuthHeader('models', 'POST'),
@@ -374,13 +322,14 @@ export default class ModelCatalog extends Vue {
       }
 
 
-      const data: WithPagination<ModelSimple[]> = (await this.$api(params)).data
+      const data: WithPagination<ModelSimple> = (await this.$api(params)).data
 
       const querystring = qs.stringify({
         page: this.pagination.current_page > 1 ? this.pagination.current_page : undefined,
         ...prepared.simplified,
         mature: this.selectedFilters.mature_content === 'true' ? true : undefined,
-        q: this.$route.query.q ? this.$route.query.q : undefined
+        q: this.$route.query.q ? this.$route.query.q : undefined,
+        tag: this.$route.query.tag ? this.$route.query.tag : undefined
       }, { encode: false })
 
       this.items = data.items
@@ -388,7 +337,8 @@ export default class ModelCatalog extends Vue {
 
       this.$router.push(`${this.$route.path}?${querystring}`)
     } catch (err) {
-      console.log(err)
+      this.$sentry.captureException(err)
+      console.error(err)
     } finally {
       this.loading = false
     }

@@ -1,5 +1,5 @@
 FROM node:14-alpine
-WORKDIR /usr/src/app
+WORKDIR /home/meshhouse/frontend
 
 # run application
 ENV NPM_CONFIG_LOGLEVEL verbose

@@ -1,11 +1,13 @@
 <template>
-  <div class="loading__container" :class="loading ? 'loading__container--visible' : ''">
-    <div class="spinner">
-      <div class="rect1" />
-      <div class="rect2" />
-      <div class="rect3" />
-      <div class="rect4" />
-      <div class="rect5" />
+  <div class="loading__container" :class="loading || !init ? 'loading__container--visible' : ''">
+    <div class="spinner-wrapper">
+      <div class="spinner-logo">
+        <img
+          src="/icons/logo-icon.svg"
+          alt="MeshHouse"
+        >
+      </div>
+      <div class="spinner" />
     </div>
   </div>
 </template>

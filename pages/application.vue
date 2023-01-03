@@ -191,101 +191,17 @@
   </div>
 </template>
 
-<i18n>
-{
-  "en": {
-    "application": {
-      "title": "Meshhouse application",
-      "jumbotron": {
-        "title": "Handle your model library with ease",
-        "text": "with our cross-platform open-sourced application."
-      },
-      "download": {
-        "windows": "Download for Windows 7-10 x64 ({version})",
-        "mac": "Download for MacOS 10.10 - 10.15 ({version})",
-        "linux": "Download for Linux AppImage ({version})"
-      },
-      "blocks": {
-        "1": {
-          "title": "All models in one place",
-          "text": "Our completely free and open source application allows you to conveniently organize, sort and catalog your model library. The application currently supports common DCC file formats as well as 3DCoat and Substance Painter",
-          "note": "DCC is a digital content creation program. These include 3dsMax, Maya, Blender, Cinema4D, etc."
-        },
-        "2": {
-          "title": "Unlimited catalogs and categories",
-          "text": "Want to make a directory for every folder you have? No problem! Multiple directories are enough for you, but need to be more organized? Create a category in the catalog! Want a category in a category? This is also possible!",
-          "note": "Although it is not recommended to make a separate directory per folder within the parent directory, it can be done."
-        },
-        "3": {
-          "title": "Install any model",
-          "text": "Thanks to integrations with third-party sites, you have the ability to install third-party models from the Internet. Before installing, you can view screenshots, read comments and general information about the model.*",
-          "note": "* - may not be available for the selected integration"
-        }
-      },
-      "integrations": "Available integrations",
-      "integrations__table": {
-        "auth": "Authentication",
-        "filters": "Custom filters",
-        "download": "Download models",
-        "install": "Custom installation",
-        "purchase": "Purchase models"
-      }
-    }
-  },
-  "ru": {
-    "application": {
-      "title": "Приложение Meshhouse",
-      "jumbotron": {
-        "title": "Управляйте вашей библиотекой моделей с легкостью",
-        "text": "с нашей программой с открытым исходным кодом."
-      },
-      "download": {
-        "windows": "Скачать для Windows 7-10 x64 ({version})",
-        "mac": "Скачать для MacOS 10.10 - 10.15 ({version})",
-        "linux": "Скачать для Linux AppImage ({version})"
-      },
-      "blocks": {
-        "1": {
-          "title": "Все модели в одном месте",
-          "text": "Наше абсолютно бесплатное приложение с открытым исходным кодом позволяет удобно организовывать, сортировать и каталогизировать библиотеку моделей. На данный момент приложение поддерживает распространенные форматы файлов DCC, а также 3DCoat и Substance Painter",
-          "note": "DCC - программа создания цифрового контента. В их число входят 3dsMax, Maya, Blender, Cinema4D и т.д"
-        },
-        "2": {
-          "title": "Неограниченное число каталогов и категорий",
-          "text": "Хотите сделать каталог на каждую папку, что у вас есть? Не проблема! Вам хватает нескольких каталогов, но нужно точнее организовывать? Создайте в каталоге категорию! Хотите категорию в категории? Это тоже можно!",
-          "note": "Несмотря на то, что не рекомендуется делать отдельный каталог на папку внутри родительского каталога, это можно сделать."
-        },
-        "3": {
-          "title": "Устанавливайте любые модели",
-          "text": "Благодаря интеграциям со сторонними сайтами, у вас есть возможность установки сторонних моделей с интернета. Перед установкой вы можете посмотреть скриншоты, прочитать комментарии и общую информацию о модели.*",
-          "note": "* - может быть недоступно для выбранной интеграции"
-        }
-      },
-      "integrations": "Доступные интеграции",
-      "integrations__table": {
-        "auth": "Аутентификация",
-        "filters": "Расширенные фильтры",
-        "download": "Скачивание моделей",
-        "install": "Расширенная установка моделей",
-        "purchase": "Покупка моделей"
-      }
-    }
-  }
-}
-</i18n>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import LazyHydrate from 'vue-lazy-hydration'
 import type {
-  ApplicationRelease
-} from '@/types/api'
-
-import type {
-  IntegrationDynamicBlock
-} from '@/types/api/blocks'
-
+  DynamicBlock,
+  Integration
+} from '@meshhouse/types'
 import type { NuxtApp } from '@nuxt/types/app'
+import type {
+  ApplicationRelease
+} from '@/types'
 
 @Component({
   components: {
@@ -293,7 +209,7 @@ import type { NuxtApp } from '@nuxt/types/app'
   },
   head () {
     return {
-      title: this.$i18n.t('application.title').toString()
+      title: this.$i18n.t('navigation.application').toString()
     }
   }
 })
@@ -317,7 +233,7 @@ export default class IndexPage extends Vue {
     }
   }
 
-  integrations: IntegrationDynamicBlock = {
+  integrations: DynamicBlock<Integration> = {
     id: -1,
     type: 'integrations',
     content: [],
@@ -328,12 +244,12 @@ export default class IndexPage extends Vue {
   async asyncData ({ app }: { app: NuxtApp }): Promise<any> {
     try {
       const responses = await Promise.all([
-        app.$api({
+        app.$api.request({
           method: 'GET',
           url: 'pages/application',
           headers: app.$generateAuthHeader('pages/application', 'GET')
         }),
-        app.$api({
+        app.$api.request<DynamicBlock<Integration>>({
           method: 'GET',
           url: 'blocks/integrations',
           headers: app.$generateAuthHeader('blocks/integrations', 'GET')
@@ -346,7 +262,8 @@ export default class IndexPage extends Vue {
         integrations: responses[1].data
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
     }
   }
 }

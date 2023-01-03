@@ -1,0 +1,81 @@
+.dropdown
+  position: relative
+  &__container
+    position: absolute
+    background-color: var(--block-color)
+    padding: $grid-gap-large
+    min-width: 160px
+    display: none
+    flex-direction: column
+    border-radius: $border-radius
+    border: $border-width solid var(--primary)
+    box-shadow: 0 1px 1rem rgba(0,0,0,0.25)
+    z-index: 2
+    white-space: nowrap
+    &--active
+      display: flex
+    &--align
+      &-right
+        right: calc(-100% - #{$grid-gap-large} - #{$border-width})
+        top: calc(0px - #{$grid-gap-large} - #{$border-width})
+      &-left
+        right: calc(100% - #{$grid-gap-large} - #{$border-width})
+        top: calc(0px - #{$grid-gap-large} - #{$border-width})
+      &-top
+        right: 0
+        top: calc(-100% - #{$grid-gap-large} - #{$border-width})
+      &-bottom
+        right: 0
+        top: calc(100% + #{$grid-gap-large} + #{$border-width})
+
+  &__header
+    padding: $grid-gap-large
+    font-weight: 700
+  &__item
+    display: flex
+    align-items: center
+    color: var(--text-color)
+    margin-bottom: 0.125rem
+    padding: $grid-gap-large
+    border: none
+    background: none
+    &:hover, &.dropdown--active
+      background-color: var(--primary)
+      color: var(--light)
+      .button
+        background: none
+        color: $white
+    .item
+      &__icon
+        display: block
+        width: 1rem
+        margin-right: 0.25rem
+    .switch
+      margin-left: auto
+    .button
+      padding: 0
+      border-radius: 0
+      min-height: 0
+      flex: 1 1 auto
+      background: none
+      justify-content: space-between
+      color: var(--text-color)
+      transition: none
+      &:hover
+        background: none
+        color: $white
+
+    &[disabled="disabled"]
+      background-color: var(--block-color-alt)
+      cursor: not-allowed
+      &:hover
+        background-color: var(--block-color-alt)
+        color: var(--text-color)
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .dropdown
+    &__container
+      left: 0
+      right: auto
+      min-width: calc(100vw - #{$padding-mobile * 2}) !important
+      max-width: calc(100vw - #{$padding-mobile * 2}) !important

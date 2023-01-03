@@ -1,11 +1,21 @@
 import { Middleware } from '@nuxt/types'
+import { isLoggedIn } from 'axios-jwt'
 
-const auth: Middleware = (context) => {
-  const session = context.$cookies.get('adonis-session')
-  const logged = context.$cookies.get('logged')
+const auth: Middleware = async (context) => {
+  if (process.client && isLoggedIn()) {
+    try {
+      const profile = (await context.$api({
+        method: 'GET',
+        url: 'profile',
+        headers: context.$generateAuthHeader('profile', 'GET')
+      })).data
 
-  if (context.store.state.user.id === -1 || !session || !logged) {
-    return context.redirect(context.app.localePath('/'))
+      context.store.commit('setUser', profile)
+    } catch (err) {
+      context.$sentry.captureException(err)
+      console.error(err)
+      return context.redirect(context.app.localePath('/'))
+    }
   }
 }
 

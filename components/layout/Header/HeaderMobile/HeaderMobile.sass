@@ -1,0 +1,48 @@
+.header-mobile
+  .dropdown__container
+    top: calc(100% + 0.5rem)
+    left: 0
+    right: auto
+    min-width: calc(100vw - 2rem) !important
+    max-width: calc(100vw - 2rem) !important
+  &__wrapper
+    margin-top: 1rem
+    height: calc(100vh - 4rem)
+    overflow: auto
+    padding-bottom: 3rem
+  &__user
+    border-bottom: $border-width solid $primary
+    .user-box
+      &__actions
+        border-top: none
+  &__catalog-button
+    margin-bottom: $grid-gap
+    .button
+      width: 100%
+      .svg-inline--fa
+        margin-left: auto
+  &__search
+    margin: 0.5rem 0
+    .search-box
+      margin-left: 0
+      &__input
+        border-radius: $border-radius
+  &__settings
+    margin-top: 0.5rem
+    padding-top: 0.5rem
+    border-top: $border-width solid $primary
+  &__socials
+    margin-top: 0.5rem
+    padding-top: 0.5rem
+    border-top: $border-width solid $primary
+    display: flex
+    align-items: center
+    .nav-item
+      margin-right: 0
+      .nav-link
+        svg.svg-inline--fa
+          width: 1.5rem
+          height: 1.5rem
+          object-fit: cover
+          path
+            fill: var(--text-color)

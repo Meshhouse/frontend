@@ -1,10 +1,11 @@
 import type { Inject } from '@nuxt/types/app'
 import type { NuxtAxiosInstance } from '@nuxtjs/axios'
+import { IAuthTokens, TokenRefreshRequest, applyAuthTokenInterceptor, clearAuthTokens } from 'axios-jwt'
 import { generateAuthHeader } from '@/functions/axios'
 
-export default function ({ $axios, isDev }: { $axios: NuxtAxiosInstance, isDev: boolean }, inject: Inject) {
-  const baseBrowserUrl = isDev ? 'http://localhost:3333/req' : 'https://meshhouse.art/req'
-  const baseUrl = isDev ? 'http://backend:3333/req' : 'https://meshhouse.art/req'
+export default function ({ $axios, app }: { $axios: NuxtAxiosInstance, app: any }, inject: Inject) {
+  const baseBrowserUrl = process.env.BROWSER_API_URL || ''
+  const baseUrl = process.env.SSR_API_URL || ''
   const axiosInstance = $axios.create({})
 
   if (process.client) {
@@ -19,6 +20,36 @@ export default function ({ $axios, isDev }: { $axios: NuxtAxiosInstance, isDev: 
   axiosInstance.onRequest((config) => {
     config.withCredentials = true
   })
+
+  axiosInstance.setHeader('x-meshhouse-language', app.i18n.locale)
+
+  app.i18n.onLanguageSwitched = (_oldLocale: string, newLocale: string) => {
+    axiosInstance.setHeader('x-meshhouse-language', newLocale)
+
+    app.store.dispatch('updateServerInit')
+  }
+
+  const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<IAuthTokens | string> => {
+    if (refreshToken) {
+      try {
+        const response = await $axios.post(`${process.env.BROWSER_API_URL}/refresh`, { refresh_token: refreshToken })
+
+        return {
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token
+        }
+      } catch (error) {
+        clearAuthTokens()
+        return ''
+      }
+    }
+
+    return ''
+  }
+
+  if (process.client) {
+    applyAuthTokenInterceptor(axiosInstance, { requestRefresh })
+  }
 
   inject('api', axiosInstance)
   inject('generateAuthHeader', generateAuthHeader)

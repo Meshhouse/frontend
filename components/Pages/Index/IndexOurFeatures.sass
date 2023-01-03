@@ -1,29 +1,22 @@
-.our-features
-  &__block
-    margin-bottom: 3rem
-    font-size: 1.125rem
-    &--right
-      text-align: right
-  &__image
-    display: block
-    width: 100%
-    height: 300px
-    object-fit: contain
-    object-position: 50%
-    margin-bottom: 1rem
+.our-feature
+  &__icon
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    border: $border-width-large solid $primary
+    background: var(--block-color)
+    aspect-ratio: 1 / 1
+    font-size: 9rem
+    margin: 2rem
+    max-width: 18rem
 
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
-  .our-features
-    &__block
-      margin-bottom: 1rem
-      font-size: 1rem
-    &__image
-      height: 150px
+  .our-feature
+    &__icon
+      font-size: 5rem
 
 @media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
-  .our-features
-    &__block
-      margin-bottom: 1rem
-      font-size: 1rem
-    &__image
-      height: 150px
+  .our-feature
+    &__icon
+      margin: 2rem auto

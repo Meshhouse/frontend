@@ -1,12 +1,10 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
 import type {
-  ModelFull
-} from '@/types/api/models'
-
-import type {
-  CategoryFilter
-} from '@/types/api/categories'
+  ModelFull,
+  CategoryFilter,
+  CategoryFilterValueBasic,
+  CategoryFilterValueColor
+} from '@meshhouse/types'
 
 @Component<ModelCustomSpecifications>({
 })
@@ -16,7 +14,7 @@ export default class ModelCustomSpecifications extends Vue {
   @Prop({ type: Array, required: true }) readonly filters!: CategoryFilter[]
 
 
-  get specificationList() : any[] {
+  get specificationList () : any[] {
     const arr: any[] = []
 
     this.filters.forEach((filter) => {
@@ -24,15 +22,19 @@ export default class ModelCustomSpecifications extends Vue {
         let value: any = ''
         let color = ''
         if (filter.type !== 'range') {
-          const localizedValue = filter.values.find(val => val.value === this.model.filters[filter.key])
-          value = localizedValue[`title_${this.$i18n.locale}`]
-          color = localizedValue.color || ''
+          const values = filter.values as CategoryFilterValueBasic[] | CategoryFilterValueColor[]
+
+          const localizedValue = values.find(val => val.value === this.model.filters[filter.key])
+          if (localizedValue) {
+            value = localizedValue.title || ''
+            color = (localizedValue as CategoryFilterValueColor).color || ''
+          }
         } else {
           value = this.model.filters[filter.key]
         }
 
         arr.push({
-          title: filter[`title_${this.$i18n.locale}`],
+          title: filter.title,
           value,
           key: filter.key,
           color

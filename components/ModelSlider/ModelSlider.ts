@@ -1,15 +1,13 @@
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import LoaderSlider from '@/components/Loader/LoaderSlider.vue'
-import Overlay from '@/components/Overlay/Overlay.vue'
-import ModelSliderOverlay from '@/components/Modals/ModelSliderOverlay/ModelSliderOverlay.vue'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 import { hydrateWhenVisible } from 'vue-lazy-hydration'
-
 import type {
   ModelFull
-} from '@/types/api/models'
+} from '@meshhouse/types'
+import LoaderSlider from '@/components/Loader/LoaderSlider.vue'
+import ModelSliderOverlay from '@/components/Modals/ModelSliderOverlay/ModelSliderOverlay.vue'
+
 @Component({
   components: {
-    Overlay,
     ModelSliderOverlay,
     LoaderSlider,
     VueModelViewer: hydrateWhenVisible(
@@ -43,7 +41,9 @@ export default class ModelSlider extends Vue {
   swiperOption = {
     slidesPerView: 1,
     lazy: {
-      preloaderClass: 'loading__container--slide'
+      preloaderClass: 'loading__container--slide',
+      checkInView: true,
+      loadOnTransitionStart: true
     },
     grabCursor: true,
     navigation: {
@@ -84,5 +84,12 @@ export default class ModelSlider extends Vue {
         })
       }
     })
+  }
+
+  @Watch('lightboxSlide')
+  updateSlider (idx: number) {
+    const swiperTop = (this.$refs.swiperTop as any).$swiper
+
+    swiperTop.slideTo(idx)
   }
 }

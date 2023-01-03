@@ -1,5 +1,5 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import type { FeaturedCategory } from '@/types/api/blocks'
+import type { FeaturedCategory } from '@meshhouse/types'
 @Component({})
 
 export default class FeaturedCategories extends Vue {

@@ -1,0 +1,57 @@
+.stepper
+  &__header
+    display: flex
+    align-items: center
+  &__footer
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 1rem 0
+    border-top: 0.125rem solid var(--block-color)
+  &__tab
+    padding: 1rem 0
+
+.step
+  display: flex
+  flex: 1 1 100%
+  flex-direction: column
+  align-items: center
+  &__avatar
+    position: relative
+    z-index: 1
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 1.5rem
+    width: 4rem
+    height: 4rem
+    border-radius: 50%
+    background-color: var(--block-color)
+    border: 0.25rem solid $white
+  &__title
+    text-align: center
+    font-weight: 700
+    margin-top: 1rem
+    font-size: 1.25rem
+  &:after
+    content: ''
+    display: block
+    height: 0.25rem
+    background-color: #000
+    position: relative
+    top: 2rem
+    width: 100%
+    left: 50%
+    order: -1
+  &:last-child
+    &:after
+      display: none
+  &--active
+    .step
+      &__avatar
+        background-color: var(--primary)
+        color: $white
+      &__title
+        color: var(--primary)
+    &:after
+      background-color: var(--primary)

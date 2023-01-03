@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 
 import type {
   APIToken
-} from '@/types/api/users'
+} from '@/types'
 
 @Component<APIKeyBlock>({
   methods: {

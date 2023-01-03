@@ -1,64 +1,40 @@
 <template>
   <div class="grid-container grid-container--our-features">
     <div class="row">
-      <div class="column">
-        <img
-          class="our-features__image"
-          src="/images/index/timemanagement.svg"
-          alt="Time management"
-        >
-        <a href="https://www.freepik.com/vectors/work">Work vector created by stories - www.freepik.com</a>
-      </div>
-      <div class="column">
-        <div class="our-features__block our-features__block--right">
-          <h2 class="display-text display-text--h2">
-            <span>
-              {{ $t('pages.index.features.readytouse.title') }}
-            </span>
-          </h2>
-          <p>{{ $t('pages.index.features.readytouse.text') }}</p>
-          <i>{{ $t('pages.index.features.readytouse.note') }}</i>
+      <div class="column our-feature">
+        <h4 class="display-text display-text--h4">
+          <span>
+            {{ $t('blocks.ourFeatures.readytouse.title') }}
+          </span>
+        </h4>
+        <div class="our-feature__icon">
+          <font-awesome-icon icon="draw-polygon" />
         </div>
+        <p>{{ $t('blocks.ourFeatures.readytouse.text') }}</p>
+        <i>{{ $t('blocks.ourFeatures.readytouse.note') }}</i>
       </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        <div class="our-features__block">
-          <h2 class="display-text display-text--h2">
-            <span>
-              {{ $t('pages.index.features.free.title') }}
-            </span>
-          </h2>
-          <p>{{ $t('pages.index.features.free.text') }}</p>
+      <div class="column our-feature">
+        <h4 class="display-text display-text--h4">
+          <span>
+            {{ $t('blocks.ourFeatures.free.title') }}
+          </span>
+        </h4>
+        <div class="our-feature__icon">
+          <font-awesome-icon icon="donate" />
         </div>
+        <p>{{ $t('blocks.ourFeatures.free.text') }}</p>
+        <i>{{ $t('blocks.ourFeatures.free.note') }}</i>
       </div>
-      <div class="column">
-        <img
-          class="our-features__image"
-          src="/images/index/moneysavings.svg"
-          alt="Money savings"
-        >
-        <a href="https://www.freepik.com/vectors/money">Money vector created by stories - www.freepik.com</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        <img
-          class="our-features__image"
-          src="/images/index/opensource.svg"
-          alt="Pair programming"
-        >
-        <a href="https://www.freepik.com/vectors/technology">Technology vector created by stories - www.freepik.com</a>
-      </div>
-      <div class="column">
-        <div class="our-features__block our-features__block--right">
-          <h2 class="display-text display-text--h2">
-            <span>
-              {{ $t('pages.index.features.opensource.title') }}
-            </span>
-          </h2>
-          <p>{{ $t('pages.index.features.opensource.text') }}</p>
+      <div class="column our-feature">
+        <h4 class="display-text display-text--h4">
+          <span>
+            {{ $t('blocks.ourFeatures.opensource.title') }}
+          </span>
+        </h4>
+        <div class="our-feature__icon">
+          <font-awesome-icon :icon="[ 'fab', 'github' ]" />
         </div>
+        <p>{{ $t('blocks.ourFeatures.opensource.text') }}</p>
       </div>
     </div>
   </div>

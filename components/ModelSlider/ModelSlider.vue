@@ -6,7 +6,7 @@
         :options="swiperOption"
         class="swiper-container--top"
       >
-        <a
+        <div
           v-for="(slide, idx) in model.images"
           :key="`slide-${idx}`"
           class="swiper-slide swiper-slide--model-slide"
@@ -15,13 +15,15 @@
           <img
             class="swiper-lazy slide__background"
             :data-src="slide.thumbnail"
+            :alt="model.title"
           >
           <img
             class="swiper-lazy slide__image"
             :data-src="slide.slide"
+            :alt="model.title"
           >
           <loader-slider />
-        </a>
+        </div>
         <div
           v-if="model.preview !== null"
           class="swiper-slide swiper-slide--model-slide swiper-no-swiping"
@@ -53,11 +55,13 @@
             <img
               class="slide__background"
               :src="slide.thumbnail"
+              :alt="model.title"
               loading="lazy"
             >
             <img
               class="slide__image"
               :src="slide.original"
+              :alt="model.title"
               loading="lazy"
             >
           </div>
@@ -80,6 +84,7 @@
               <img
                 class="slide__image"
                 :src="slide.thumbnail"
+                :alt="model.title"
                 loading="lazy"
               >
             </div>
@@ -102,6 +107,7 @@
                 <img
                   class="slide__image"
                   :src="slide.original"
+                  :alt="model.title"
                   loading="lazy"
                 >
               </div>
@@ -117,6 +123,7 @@
       <model-slider-overlay
         :model="model"
         :default-slide="lightboxSlide"
+        @change-slide="lightboxSlide = $event"
         @close="overlayVisible = false"
       />
     </overlay>

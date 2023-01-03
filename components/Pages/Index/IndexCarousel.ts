@@ -1,11 +1,11 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import type {
-  Courtesy
-} from '@/types/api/blocks'
+  IndexPageCourtesySlide
+} from '@meshhouse/types'
 @Component({})
 
 export default class IndexCarousel extends Vue {
-  @Prop({ type: Array, required: true, default: () => [] }) readonly slides!: Courtesy[]
+  @Prop({ type: Array, required: true, default: () => [] }) readonly slides!: IndexPageCourtesySlide[]
 
   swiperOption = {
     autoplay: {

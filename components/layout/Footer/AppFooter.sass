@@ -1,0 +1,83 @@
+.footer
+  background-color: var(--block-color)
+  border-top: 0.125rem solid var(--block-color-alt)
+  font-size: 18px
+  &-top, &-bottom
+    margin: 0 auto
+  &-top
+    padding: 2rem 0rem
+    &__wrapper
+      display: grid
+      grid-template-columns: 1.5fr repeat(3, 1fr)
+      grid-gap: 1rem 2rem
+  &-bottom
+    padding: 1rem 0rem
+    background: var(--block-color-alt)
+    &__wrapper
+      display: flex
+      align-items: center
+      justify-content: space-between
+      grid-gap: 1rem 0
+
+  &-column
+    &__title
+      display: block
+      text-transform: uppercase
+      font-weight: 700
+      line-height: 1.15
+      font-family: $fontDisplay
+      margin-bottom: $grid-gap-large
+    &__links
+      padding: 0
+      display: flex
+      flex-direction: column
+      margin: 0
+      list-style: none
+
+  &-brand
+    margin: 0
+    display: flex
+    align-items: center
+    padding: 0
+    margin-bottom: 1rem
+    p
+      color: var(--text-color)
+
+  &-socials
+    svg, img
+      width: 1.5rem
+      height: 1.5rem
+      object-fit: cover
+      path
+        fill: var(--text-color)
+  a
+    color: var(--text-color)
+    &:hover
+      text-decoration: none
+
+  &--models
+    border: none
+    margin: 0
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
+  .footer
+    .brand
+      &__image
+        height: 2rem
+      &__title
+        display: inline
+        margin-bottom: -0.125rem
+        font-size: 2.825rem
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .footer
+    .brand
+      &__image
+        height: 2rem
+      &__title
+        display: inline
+        margin-bottom: -0.125rem
+        font-size: 2.825rem
+    &-top
+      &__wrapper
+        grid-template-columns: repeat(1, 1fr)

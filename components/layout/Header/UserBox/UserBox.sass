@@ -1,0 +1,67 @@
+.user-box
+  &__actions
+    display: flex
+    align-items: center
+    justify-content: space-between
+    border-top: $border-width-large solid $primary
+  &__profile
+    display: flex
+    align-items: center
+    grid-gap: $grid-gap
+  &__subscriptions
+    display: flex
+    flex-direction: column
+    grid-gap: $grid-gap
+    padding: $grid-gap-large 0
+  .dropdown__container
+    min-width: 250px
+  .profile
+    &-avatar
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 3rem
+      width: 3rem
+      flex: 0 0 3rem
+      border-radius: 50%
+      font-size: 1.5rem
+      font-weight: 700
+      color: $white
+      background-color: $primary
+      border: $border-width-large solid $primary
+      .avatar
+        img
+          display: block
+          width: 100%
+          height: 100%
+          object-fit: cover
+          object-position: 50%
+          border-radius: 50%
+    &-info
+      flex: 1 1 100%
+      display: flex
+      flex-direction: column
+      text-align: right
+
+  .subscription
+    display: flex
+    align-items: center
+    justify-content: space-between
+    border-radius: $border-radius
+    padding: $grid-gap
+    color: $white
+    &-logo
+      display: flex
+      align-items: center
+      .svg-inline--fa
+        width: 1.5rem
+        height: 1.5rem
+    &-info
+      display: flex
+      align-items: center
+      .title
+        margin-right: $grid-gap
+    &--patreon
+      background-color: $patreon-brand-color
+    &--boosty
+      background-color: $boosty-brand-color

@@ -1,0 +1,65 @@
+.search-box
+  position: relative
+  width: 100%
+  margin-left: -0.125rem
+  &__icon
+    position: absolute
+    left: 1rem
+    top: 50%
+    height: 1rem
+    transform: translateY(-50%)
+  &__input
+    width: 100%
+    border: 0.125rem solid var(--text-color)
+    border-radius: 0 $border-radius $border-radius 0
+    padding: 0.625rem 0.5rem
+    padding-left: 2.5rem
+    color: var(--text-color)
+    &:focus
+      border-color: var(--primary)
+      outline: none
+  &__results
+    position: absolute
+    z-index: 10
+    top: 100%
+    left: 0
+    width: 100%
+    display: none
+    flex-direction: column
+    background: var(--block-color)
+    border: 0.125rem solid var(--primary)
+    border-radius: 0 0 $border-radius $border-radius
+    box-shadow: 0 1px 1rem rgba(0,0,0,0.25)
+    &.is-visible
+      display: flex
+    .model-card
+      &--row
+        border-radius: 0
+        .image
+          &__inner
+            aspect-ratio: auto
+            max-height: 130px
+            img
+              object-position: top
+              width: 65%
+              border-radius: 0
+              mask-image: linear-gradient(to right, rgba(0,0,0,1.0) 60%, transparent 100%)
+              -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1.0) 60%, transparent 100%)
+            &:before
+              background: linear-gradient(to right, var(--block-color-glass) 0%, var(--block-color) 100%)
+        &:hover
+          .image
+            &__inner
+              &:before
+                background: $primary
+
+.result
+  position: relative
+  display: flex
+  align-items: center
+  padding: 0.5rem
+  color: var(--text-color)
+  &:hover
+    text-decoration: none
+    background: var(--primary)
+    color: var(--light)

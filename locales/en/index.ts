@@ -1,63 +1,31 @@
-import form from './form'
+import type { NuxtApp } from '@nuxt/types/app'
 import validations from './validations'
-import breadcrumbs from './breadcrumbs'
+import { generateAuthHeader } from '@/functions/axios'
 
-export default {
-  breadcrumbs,
-  form,
-  validations,
-  common: {
-    language: 'Language',
-    true: 'Yes',
-    false: 'No',
-    save: 'Save'
-  },
-  navigation: {
-    home: 'Home',
-    modelsCatalog: 'Models catalog',
-    modelsAll: 'All models',
-    howto: 'How to use models',
-    'embed-models': 'Embed models',
-    tos: 'Terms of service',
-    dmca: 'DMCA policy',
-    privacyPolicy: 'Privacy policy',
-    application: 'Application',
-    licensing: 'Models licensing',
-    news: 'News'
-  },
-  pages: {
-    index: {
-      meta: {
-        title: 'Meshhouse - free 3D models for commercial use'
-      },
-      features: {
-        readytouse: {
-          title: 'Ready to use models',
-          text: "In order to use our models, you don't need to put in a lot of effort to clear unnecessary objects from the scene. Just download the model in the required format, download the textures (if necessary), and insert into the scene.",
-          note: 'Some models should be adapted to your model, such as clothing.'
-        },
-        free: {
-          title: 'Completely free',
-          text: 'All models distributed on our website are completely free. Including for commercial use (films, games, etc.)'
-        },
-        opensource: {
-          title: 'Open source',
-          text: 'We provide sources of this site and also sources of our application in our GitHub repository. This means that anyone can check for tracking scripts and other backdoors.'
-        }
-      },
-      thematicBlock: {
-        title: 'Thematic selections'
-      },
-      programs: {
-        title: 'Available extensions',
-        note: 'Some models can be presented only in one of the presented formats - this is due to the fact that the models are laid out gradually, as well as the need to convert between formats.',
-        max: '3ds Max 2016 and newer',
-        maya: 'Maya 2016 and newer',
-        blender: 'Blender 2.8 and newer',
-        cinema4d: 'Cinema4D R20 and newer',
-        unity: 'Unity 2019.3 and newer',
-        unreal: 'Unreal Engine 4.20 and newer'
-      }
-    }
+export default async function (context: NuxtApp, locale: string) {
+  const url = process.client
+    ? `${process.env.BROWSER_API_URL}/localization`
+    : `${process.env.SSR_API_URL}/localization`
+
+  const headers = {
+    ...generateAuthHeader('localization', 'GET')
+  }
+
+  if (process.server) {
+    headers['user-agent'] = 'Meshhouse SSR 1.0'
+  }
+
+  const response = await context.$axios({
+    method: 'GET',
+    url,
+    params: {
+      language: locale
+    },
+    headers
+  })
+
+  return {
+    validations,
+    ...response.data
   }
 }

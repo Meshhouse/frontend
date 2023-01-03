@@ -9,13 +9,13 @@
     >
       <img
         :src="item.thumbnail"
-        :alt="item[`title_${$i18n.locale}`]"
+        :alt="item.title"
         loading="lazy"
       >
     </nuxt-link>
     <div class="model-card__info">
       <p class="title">
-        {{ item[`title_${$i18n.locale}`] }}
+        {{ item.title }}
       </p>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
@@ -23,16 +23,16 @@
       </p>
       <div class="tag-group model-card__tags">
         <div
-          v-if="item.is_copyrighted_content"
+          v-if="item.copyrighted_content"
           class="tag tag--icon tag--warning"
-          :title="$t('brands')"
+          :title="$t('license.copyright')"
         >
           <font-awesome-icon icon="exclamation" />
         </div>
         <div
-          v-if="item.is_mature_content"
+          v-if="item.mature_content"
           class="tag tag--icon tag--onlyfans"
-          :title="$t('mature')"
+          :title="$t('license.matureContent')"
         >
           <font-awesome-icon icon="venus" />
         </div>
@@ -50,17 +50,18 @@
         </div>
       </div>
     </div>
+    <!--
     <div class="model-card__actions">
       <v-button
-        :class="{ 'button--favorite-active': isInFavorite }"
         color="primary"
         icon
         size="lg"
-        @click="$store.commit('changeFavorite', item.id)"
+        :active="isInFavorite"
+        @click="$store.dispatch('changeFavorite', item.id)"
       >
         <font-awesome-icon icon="heart" />
       </v-button>
-    </div>
+    </div>-->
   </article>
   <nuxt-link
     v-else
@@ -70,13 +71,13 @@
     <div class="image__inner">
       <img
         :src="item.thumbnail"
-        :alt="item[`title_${$i18n.locale}`]"
+        :alt="item.title"
         loading="lazy"
       >
     </div>
     <div class="model-card__info">
       <p class="title">
-        {{ item[`title_${$i18n.locale}`] }}
+        {{ item.title }}
       </p>
       <p class="time">
         <font-awesome-icon icon="calendar-alt" />
@@ -97,19 +98,6 @@
     </div>
   </nuxt-link>
 </template>
-
-<i18n>
-{
-  "en": {
-    "brands": "To use the content you need permission from the copyright holders",
-    "mature": "Mature content"
-  },
-  "ru": {
-    "brands": "Для использования контента необходимо разрешение от правообладателей",
-    "mature": "Контент для взрослых"
-  }
-}
-</i18n>
 
 <script lang="ts" src="./ModelCard.ts" />
 

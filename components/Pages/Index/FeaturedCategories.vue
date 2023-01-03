@@ -2,7 +2,7 @@
   <div class="grid-container">
     <h2 class="display-text display-text--h2">
       <span>
-        {{ $t('pages.index.thematicBlock.title') }}
+        {{ $t('blocks.thematicBlock.title') }}
       </span>
     </h2>
     <div v-if="categories.length === 4" class="featured-categories">

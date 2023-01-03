@@ -3,12 +3,14 @@
     class="loading__container loading__container--slide loading__container--visible"
     :class="loaderClass"
   >
-    <div class="spinner">
-      <div class="rect1" />
-      <div class="rect2" />
-      <div class="rect3" />
-      <div class="rect4" />
-      <div class="rect5" />
+    <div class="spinner-wrapper">
+      <div class="spinner-logo">
+        <img
+          src="/icons/logo-icon.svg"
+          alt="MeshHouse"
+        >
+      </div>
+      <div class="spinner" />
     </div>
   </div>
 </template>

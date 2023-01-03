@@ -11,14 +11,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import PostCard from '@/components/PostCard/PostCard.vue'
 import type {
   BlogFull
-} from '@/types/api/posts'
-
+} from '@meshhouse/types'
 import type { NuxtApp } from '@nuxt/types/app'
 import type { Route } from 'vue-router'
 import type { AxiosRequestConfig } from 'axios'
+import PostCard from '@/components/PostCard/PostCard.vue'
 
 @Component<NewsSingle>({
   components: {
@@ -26,7 +25,7 @@ import type { AxiosRequestConfig } from 'axios'
   },
   head () {
     return {
-      title: this.post[`title_${this.$i18n.locale}`]?.toString()
+      title: this.post.title?.toString()
     }
   }
 })
@@ -60,7 +59,8 @@ export default class NewsSingle extends Vue {
         post: data
       }
     } catch (err) {
-      console.log(err)
+      app.$sentry.captureException(err)
+      console.error(err)
       return {
         post: {
           id: -1,

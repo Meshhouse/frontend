@@ -5,7 +5,7 @@
     hdri="/images/hdri/colorful_studio_1k.hdr"
     :modeltitle="title"
     author="MeshHouse Team"
-    authorlink="https://longsightedfilms.com"
+    authorlink="https://meshhouse.art"
     :autohide="true"
     :thumbnail="thumbnail"
   >

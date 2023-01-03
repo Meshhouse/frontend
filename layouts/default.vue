@@ -27,16 +27,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import AppHeader from '@/components/AppHeader/AppHeader.vue'
-import AppFooter from '@/components/AppFooter/AppFooter.vue'
-import FooterTopSupporters from '@/components/Footer/FooterTopSupporters.vue'
-import FooterPatrons from '@/components/Footer/FooterPatrons.vue'
-import NotificationContainer from '@/components/Notification/NotificationContainer.vue'
-
+import { isLoggedIn } from 'axios-jwt'
 import type {
   SiteSupporter,
   SitePatron
-} from '@/types/api/blocks'
+} from '@meshhouse/types'
+import AppHeader from '@/components/layout/Header/AppHeader.vue'
+import AppFooter from '@/components/layout/Footer/AppFooter.vue'
+import FooterTopSupporters from '@/components/layout/Footer/FooterTopSupporters/FooterTopSupporters.vue'
+import FooterPatrons from '@/components/layout/Footer/FooterPatrons/FooterPatrons.vue'
+import NotificationContainer from '@/components/Notification/NotificationContainer.vue'
 
 @Component<DefaultLayout>({
   components: {
@@ -56,6 +56,23 @@ import type {
 })
 
 export default class DefaultLayout extends Vue {
+  async created (): Promise<void> {
+    if (process.client && isLoggedIn()) {
+      try {
+        const profile = (await this.$api({
+          method: 'GET',
+          url: 'profile',
+          headers: this.$generateAuthHeader('profile', 'GET')
+        })).data
+
+        this.$store.commit('setUser', profile)
+      } catch (err) {
+        this.$sentry.captureException(err)
+        console.error(err)
+      }
+    }
+  }
+
   mounted (): void {
     document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px')
   }
@@ -78,6 +95,12 @@ export default class DefaultLayout extends Vue {
 
   get footerTopSupporters (): SiteSupporter[] {
     return this.$store.state.topSupporters
+  }
+
+  errorCaptured (this: DefaultLayout, err: Error, vm: Vue, info: string) {
+    this.$sentry.captureException(err)
+    console.error('error handled in layout', err, vm, info)
+    return false
   }
 }
 </script>

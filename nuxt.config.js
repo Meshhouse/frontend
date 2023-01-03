@@ -1,7 +1,9 @@
 module.exports = {
   env: {
     isDev: process.env.NODE_ENV === 'development',
-    apiKey: process.env.API_SECRET_KEY
+    apiKey: process.env.API_SECRET_KEY,
+    BROWSER_API_URL: process.env.BROWSER_API_URL,
+    SSR_API_URL: process.env.SSR_API_URL
   },
   server: {
     port: process.env.PORT || 3000,
@@ -58,19 +60,7 @@ module.exports = {
         }
       }
     },
-    /*
-    ** Run ESLint on save
-    */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    postcss: false
   },
   render: {
     resourceHints: true,
@@ -107,19 +97,14 @@ module.exports = {
   ],
   buildModules: [
     '@nuxtjs/style-resources',
-    '@nuxt/typescript-build'
+    '@nuxt/typescript-build',
+    'nuxt-webpack-optimisations'
   ],
   modules: [
-    '@nuxtjs/axios',
-    'cookie-universal-nuxt',
-    'portal-vue/nuxt',
-    ['nuxt-i18n', {
+    ['@nuxtjs/i18n', {
       vueI18nLoader: true,
       defaultLocale: 'en',
-      detectBrowserLanguage: {
-        useCookie: true,
-        alwaysRedirect: false
-      },
+      detectBrowserLanguage: false,
       locales: [
         {
           code: 'en',
@@ -136,7 +121,11 @@ module.exports = {
       langDir: 'locales/',
       seo: true,
       vueI18n: '~/plugins/i18n.ts'
-    }]
+    }],
+    '@nuxtjs/axios',
+    'cookie-universal-nuxt',
+    'portal-vue/nuxt',
+    '@nuxtjs/sentry'
   ],
   router: {
     prefetchLinks: false,
@@ -146,6 +135,34 @@ module.exports = {
         path: '/models',
         component: resolve(__dirname, 'pages/models/_category/index.vue')
       })
+    }
+  },
+  webpackOptimisations: {
+    features: {
+      postcssNoPolyfills: true,
+      esbuildLoader: false,
+      esbuildMinifier: true,
+      imageFileLoader: true,
+      webpackOptimisations: true,
+      cacheLoader: false,
+      hardSourcePlugin: false,
+      parallelPlugin: false
+    },
+    debug: true
+  },
+  sentry: {
+    dsn: 'https://053b9ad3c1164a59941d31b6c6edfbeb@o1322428.ingest.sentry.io/6579508',
+    tracing: {
+      tracesSampleRate: 1.0,
+      vueOptions: {
+        tracing: true,
+        tracingOptions: {
+          hooks: ['mount', 'update'],
+          timeout: 2000,
+          trackComponents: true
+        }
+      },
+      browserOptions: {}
     }
   }
 }

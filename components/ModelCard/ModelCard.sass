@@ -129,6 +129,19 @@
 
 @media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
   .model-card
+    &--lite
+      .model-card
+        &__info
+          padding: $grid-gap
+          .title
+            font-size: 1.125rem
+          .time
+            font-size: 0.875rem
+        &__actions
+          display: none
+        &__programs
+          top: $grid-gap
+          right: $grid-gap
     &--related
       .image
         &__outer

@@ -26,14 +26,21 @@ import {
   faAngleDoubleRight,
   faCube,
   faShareAlt,
-  faHeart
+  faHeart,
+  faFilter,
+  faSortAlphaDown,
+  faCompress,
+  faExpand,
+  faDrawPolygon,
+  faSadCry
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
   faApple,
   faLinux,
   faWindows,
-  faPatreon
+  faPatreon,
+  faGithub
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -67,7 +74,14 @@ library.add(
   faApple,
   faLinux,
   faWindows,
-  faPatreon
+  faPatreon,
+  faFilter,
+  faGithub,
+  faSortAlphaDown,
+  faCompress,
+  faExpand,
+  faDrawPolygon,
+  faSadCry
 )
 
 // eslint-disable-next-line vue/component-definition-name-casing

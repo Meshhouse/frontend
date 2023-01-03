@@ -1,0 +1,121 @@
+.modal
+  background-color: var(--block-color)
+  position: absolute
+  top: 50%
+  left: 50%
+  height: auto
+  cursor: default
+  transform: translate(-50%, -50%)
+  border-radius: $border-radius
+  overflow: hidden
+  &-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    &__title
+      font-size: 1.5rem
+      font-weight: 700
+  &__content
+    padding: 1rem
+    .content
+      display: flex
+      flex-direction: column
+    .content__actions
+      margin-top: auto
+      display: flex
+      flex-direction: column
+    .content__form
+      margin-top: 1rem
+      display: flex
+      flex-direction: column
+    &--center
+      .content__form
+        align-items: center
+
+.modal
+  &--small
+    width: 400px
+  &--medium
+    width: 600px
+  &--large
+    width: 960px
+  &--full-page
+    height: 100vh
+    width: 100vw
+    top: 0
+    left: 0
+    transform: none
+    border-radius: 0
+    .modal__content
+      height: 100vh
+      max-height: 100%
+      .content
+        padding: 2rem 0
+        height: calc(100vh - 4rem)
+        overflow: auto
+        .button
+          width: 100%
+  &--two-columns
+    background-color: var(--block-color)
+    position: absolute
+    top: 50%
+    left: 50%
+    min-height: 600px
+    width: 1100px
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 1rem
+    cursor: default
+    transform: translate(-50%, -50%)
+    border-radius: $border-radius
+    overflow: hidden
+    .modal
+      &__aside, &__content
+        min-height: 600px
+      &__aside
+        img
+          display: block
+          width: 100%
+          height: 100%
+          object-fit: cover
+          object-position: 50%
+      &__content
+        padding: 1rem
+        padding-left: 0
+        .content
+          min-height: 600px - 48px - 32px
+        .content__form
+          align-items: center
+
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-large-desktop - 1px)
+  .modal
+    &--two-columns
+      width: 90vw
+
+@media (min-width: $breakpoint-tablet)
+  .modal
+    &--full-page
+      width: 40vw
+      max-width: 400px
+      left: auto
+      right: 0
+
+@media (max-width: $breakpoint-tablet - 1px)
+  .modal
+    &-header
+      &__title
+        font-size: 1.125rem
+    &--two-columns
+      width: 100vw
+      height: 100vh
+      display: block
+      .modal
+        &__aside
+          display: none
+        &__content
+          padding: 0.5rem 1rem
+          .content
+            overflow: scroll
+            height: calc(100vh - 44px)
+          .content__actions
+            padding: 2rem 0

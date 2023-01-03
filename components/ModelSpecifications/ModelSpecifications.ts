@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 
 import type {
   ModelFull
-} from '@/types/api/models'
+} from '@meshhouse/types'
 
 @Component<ModelSpecifications>({
   methods: {
