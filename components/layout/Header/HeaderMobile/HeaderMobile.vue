@@ -87,7 +87,6 @@
       </div>
       <div class="header-mobile__settings">
         <language-selector />
-        <theme-selector />
       </div>
       <div class="header-mobile__socials">
         <div class="nav-item">

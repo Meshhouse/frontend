@@ -5,10 +5,11 @@ import NavbarButtons from '@/components/layout/Header/NavbarButtons/NavbarButton
 
 import AuthLogin from '@/components/Modals/Login/Login.vue'
 import AuthRegister from '@/components/Modals/Register/Register.vue'
+import AuthResetPassword from '@/components/Modals/ResetPassword/ResetPassword.vue'
 import HeaderMobile from '@/components/layout/Header/HeaderMobile/HeaderMobile.vue'
 import HeaderMobileCategories from '@/components/layout/Header/HeaderMobile/HeaderMobileCategories.vue'
 
-type SwitchableModals = 'AuthLogin' | 'AuthRegister' | 'AuthRestorePassword' | 'AuthConfirmRestore' | 'HeaderMobileCategories' | 'HeaderMobile'
+type SwitchableModals = 'AuthLogin' | 'AuthRegister' | 'AuthRestorePassword' | 'AuthConfirmRestore' | 'HeaderMobileCategories' | 'HeaderMobile' | 'AuthResetPassword'
 @Component<AppHeader>({
   components: {
     HeaderCategories,
@@ -17,7 +18,8 @@ type SwitchableModals = 'AuthLogin' | 'AuthRegister' | 'AuthRestorePassword' | '
     AuthLogin,
     AuthRegister,
     HeaderMobile,
-    HeaderMobileCategories
+    HeaderMobileCategories,
+    AuthResetPassword
   }
 })
 export default class AppHeader extends Vue {

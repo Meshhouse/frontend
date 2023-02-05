@@ -92,7 +92,6 @@
       </a>
     </footer>
     <language-selector v-if="!compact" />
-    <theme-selector v-if="!compact" />
   </div>
 </template>
 

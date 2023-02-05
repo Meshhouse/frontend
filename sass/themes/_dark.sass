@@ -1,23 +1,26 @@
-body.theme-dark
-  background-color: $darkGrayAlt
-  color: var(--text-color)
-  --text-color: #{$white}
-  --block-color: #{$darkGray}
-  --block-color-gradient: #{transparentize($darkGray, 0.5)}
-  --block-color-glass: #{transparentize($darkGray, 0.8)}
-  --block-color-alt: #{$darkGrayAlt}
-  --block-color-lighter: #{$darkGrayLighter}
-  --theme-color: #{$lightThemeColor}
-  --theme-color-alt: #{$lightThemeColorAlt}
-  --primary: #19b5fe
-  --light: #f8f9fa
-  --header-text-color: #f8f9fa
-  .search-box
-    &__input
-      border-color: var(--light)
-      background: $darkGrayAlt
-      &:focus
-        border-color: var(--primary)
-  .api-docs
-    .sl-bg-canvas
-      background-color: $darkGrayAlt
+@media (prefers-color-scheme: dark)
+  html
+    color-scheme: dark
+  body
+    background-color: $darkGrayAlt
+    color: var(--text-color)
+    --text-color: #{$white}
+    --block-color: #{$darkGray}
+    --block-color-gradient: #{transparentize($darkGray, 0.5)}
+    --block-color-glass: #{transparentize($darkGray, 0.8)}
+    --block-color-alt: #{$darkGrayAlt}
+    --block-color-lighter: #{$darkGrayLighter}
+    --theme-color: #{$lightThemeColor}
+    --theme-color-alt: #{$lightThemeColorAlt}
+    --primary: #19b5fe
+    --light: #f8f9fa
+    --header-text-color: #f8f9fa
+    .search-box
+      &__input
+        border-color: var(--light)
+        background: $darkGrayAlt
+        &:focus
+          border-color: var(--primary)
+    .api-docs
+      .sl-bg-canvas
+        background-color: $darkGrayAlt

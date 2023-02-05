@@ -2,6 +2,8 @@
   <article
     v-if="!row"
     class="model-card model-card--lite"
+    @mouseenter="handleShowPreview"
+    @mouseleave="removeTimeout"
   >
     <nuxt-link
       class="image__inner"
@@ -13,6 +15,24 @@
         loading="lazy"
       >
     </nuxt-link>
+    <div class="model-card__tags">
+      <div
+        v-if="item.mature_content"
+        class="model-tag model-tag--mature-content"
+        :title="$t('license.matureContent')"
+      >
+        <font-awesome-icon icon="1" />
+        <font-awesome-icon icon="8" />
+        <font-awesome-icon icon="plus" />
+      </div>
+      <div
+        v-if="item.copyrighted_content"
+        class="model-tag model-tag--copyright"
+        :title="$t('license.copyright')"
+      >
+        <font-awesome-icon :icon="['regular', 'copyright']" />
+      </div>
+    </div>
     <div class="model-card__info">
       <p class="title">
         {{ item.title }}
@@ -21,20 +41,18 @@
         <font-awesome-icon icon="calendar-alt" />
         {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
-      <div class="tag-group model-card__tags">
-        <div
-          v-if="item.copyrighted_content"
-          class="tag tag--icon tag--warning"
-          :title="$t('license.copyright')"
-        >
-          <font-awesome-icon icon="exclamation" />
+      <div class="model-card__statistics">
+        <div class="statistic">
+          <font-awesome-icon icon="thumbs-up" />
+          {{ item.statistics.likes }}
         </div>
-        <div
-          v-if="item.mature_content"
-          class="tag tag--icon tag--onlyfans"
-          :title="$t('license.matureContent')"
-        >
-          <font-awesome-icon icon="venus" />
+        <div class="statistic">
+          <font-awesome-icon icon="chart-line" />
+          {{ item.statistics.views }}
+        </div>
+        <div class="statistic">
+          <font-awesome-icon icon="cloud-arrow-down" />
+          {{ item.statistics.downloads }}
         </div>
       </div>
       <div class="model-card__programs">
@@ -50,6 +68,11 @@
         </div>
       </div>
     </div>
+    <model-card-preview
+      v-if="showPreview"
+      :item="item"
+      :position="position"
+    />
     <!--
     <div class="model-card__actions">
       <v-button

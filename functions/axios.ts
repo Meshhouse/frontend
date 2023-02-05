@@ -1,6 +1,6 @@
 import { HmacSHA512, enc } from 'crypto-js'
 
-export function generateAuthHeader (requestUrl: string, requestMethod: string): any {
+export function generateAuthHeader (requestUrl: string, requestMethod: string): Record<string, string> {
   let userAgent = ''
   if (process.server) {
     userAgent = 'Meshhouse SSR 1.0'

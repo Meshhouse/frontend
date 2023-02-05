@@ -70,20 +70,24 @@ export default class ModelSlider extends Vue {
   }
 
   mounted (): void {
-    this.$nextTick(() => {
-      if (this.$refs.swiperTop !== undefined && this.$refs.swiperThumbs !== undefined) {
-        const swiperTop = (this.$refs.swiperTop as any).$swiper
-        const swiperThumbs = (this.$refs.swiperThumbs as any).$swiper
-        swiperTop.controller.control = swiperThumbs
-        swiperThumbs.controller.control = swiperTop
+    this.initSliderControls()
+  }
 
-        swiperTop.on('slideChange', () => {
-          if (swiperTop.activeIndex === this.model.images.length) {
-            this.viewerVisible = true
-          }
-        })
-      }
-    })
+  initSliderControls (): void {
+    if (this.$refs.swiperTop !== undefined && this.$refs.swiperThumbs !== undefined) {
+      const swiperTop = (this.$refs.swiperTop as any).$swiper
+      const swiperThumbs = (this.$refs.swiperThumbs as any).$swiper
+      swiperTop.controller.control = swiperThumbs
+      swiperThumbs.controller.control = swiperTop
+
+      swiperTop.on('slideChange', () => {
+        if (swiperTop.activeIndex === this.model.images.length) {
+          this.viewerVisible = true
+        }
+      })
+    } else {
+      setTimeout(() => this.initSliderControls(), 100)
+    }
   }
 
   @Watch('lightboxSlide')

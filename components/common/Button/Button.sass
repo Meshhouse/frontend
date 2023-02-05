@@ -94,6 +94,9 @@
     .svg-inline--fa
       margin: 0
       max-height: none
+    &:has(span)
+      .svg-inline--fa
+        margin-right: $grid-gap-large
   &--active
     .svg-inline--fa
       path
@@ -120,7 +123,8 @@
   align-items: center
   grid-gap: $grid-gap-large
 
-body.theme-dark
+
+@media (prefers-color-scheme: dark)
   .button
     &--secondary
       background-color: $darkGray

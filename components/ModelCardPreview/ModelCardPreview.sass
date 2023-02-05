@@ -1,0 +1,64 @@
+.model-card-preview
+  position: fixed
+  top: 0
+  left: 0
+  background-color: var(--block-color)
+  width: 600px
+  z-index: 100
+  box-shadow: $box-shadow
+  border-radius: $border-radius
+  border: $border-width solid $primary
+  overflow: hidden
+  animation: preview-fade-in 0.3s ease
+  &__wrapper
+    display: flex
+    flex-direction: column
+    position: relative
+  &__info
+    display: flex
+    align-items: center
+    padding: $grid-gap-large
+    .model-card__statistics
+      margin-left: auto
+  &__tags
+    padding: $grid-gap-large
+    position: absolute
+    left: 0
+    top: 0
+    z-index: 2
+  &__formats
+    padding: $grid-gap-large
+    position: absolute
+    right: 0
+    top: 0
+    z-index: 2
+    max-width: 598px
+    .format
+      position: relative
+      margin-bottom: 0.5rem
+    .icon
+      width: 3rem
+      height: 3rem
+    .badge
+      position: absolute
+      bottom: -0.25rem
+      right: 0
+      background-color: var(--primary)
+      padding: 0.125rem 0.25rem
+  .grid-container
+    margin: 0
+  .grid-container--slider-full-width
+    max-width: 598px !important
+    max-height: 598px !important
+  .swiper-slide--model-slide
+    height: 598px
+    width: 598px
+    .slide__image
+      object-fit: cover
+
+
+@keyframes preview-fade-in
+  0%
+    opacity: 0
+  100%
+    opacity: 1

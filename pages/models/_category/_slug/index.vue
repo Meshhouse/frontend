@@ -11,6 +11,19 @@
           color="primary"
           icon
           size="lg"
+          :active="statistics.user_liked"
+          :disabled="!$isLogged()"
+          @click="likeModel"
+        >
+          <font-awesome-icon icon="thumbs-up" />
+          <span>
+            Recommend ({{ statistics.likes }})
+          </span>
+        </v-button>
+        <v-button
+          color="primary"
+          icon
+          size="lg"
           :active="isInFavorite"
           @click="$store.dispatch('changeFavorite', model.id)"
         >
@@ -65,18 +78,28 @@
               :key="`model-${idx}`"
               class="dropdown__item"
               :href="file.url"
+              @click="$store.dispatch('downloadModelEvent', { id: model.id, fileId: file.id })"
             >
               {{ getDccName(file.program) }} {{ file.program_version }} - {{ getRendererName(file.renderer) }} {{ file.renderer_version }} ({{ getReadableFileSizeString(file.size || 0) }})
+              <span class="badge badge--primary" style="margin-left: 0.5rem">
+                <font-awesome-icon icon="chart-line" />
+                {{ statistics.downloads[file.id] || 0 }}
+              </span>
             </a>
           </template>
         </v-dropdown-button>
-        <a
+        <v-button
           v-if="model.files.length > 0"
-          class="button button--primary"
           :href="`meshhouse://install/meshhouse/MSH-${model.id}`"
+          color="primary"
+          size="lg"
+          icon
         >
-          {{ $t('models.buttons.install') }}
-        </a>
+          <img src="/icons/logo-icon.svg" alt="Meshhouse" class="svg-inline--fa fa-meshhouse">
+          <span>
+            {{ $t('models.buttons.install') }}
+          </span>
+        </v-button>
       </div>
     </header>
     <main class="grid-container grid-container--model-description">
@@ -226,9 +249,6 @@ import {
 })
 
 export default class ModelSinglePage extends Vue {
-  overlayVisible = false
-  selectedLicense = 'default'
-
   model: ModelFull = {
     id: -1,
     title_en: 'string',
@@ -276,7 +296,7 @@ export default class ModelSinglePage extends Vue {
     filters: {}
   }
 
-  tags: any = {
+  tags: { [key: string]: any } = {
     og: {
       'og:title': '',
       'og:type': 'product',
@@ -299,6 +319,13 @@ export default class ModelSinglePage extends Vue {
     description: ''
   }
 
+  statistics: Record<string, number | boolean | Record<string, number>> = {
+    views: 0,
+    likes: 0,
+    user_liked: false,
+    downloads: {}
+  }
+
   currentLicenses: License[] = []
 
   currentCollections: CollectionWithModels[] = []
@@ -315,30 +342,45 @@ export default class ModelSinglePage extends Vue {
 
       const currentLicenses: License[] = store.state.licenses.filter((license: License) => data.licenses.includes(license.id))
 
-      const modelsCollections = (await app.$api({
-        method: 'POST',
-        url: 'models/collection',
-        data: {
-          ids: data.collections.map(collection => collection.id)
-        },
-        headers: app.$generateAuthHeader('models/collection', 'POST')
-      })).data
-
-      const categoryFilters = (await app.$api.request<CategoryFilter[]>({
-        method: 'GET',
-        url: `categories/${data.category.id}/filters`,
-        headers: {
-          ...app.$generateAuthHeader(`categories/${data.category.id}/filters`, 'GET')
-        }
-      })).data
-
-      const SEO = (await app.$api.request<any>({
-        method: 'GET',
-        url: `seo/models/${route.params.slug}`,
-        headers: {
-          ...app.$generateAuthHeader(`seo/models/${route.params.slug}`, 'GET')
-        }
-      })).data
+      const [
+        modelsCollections,
+        categoryFilters,
+        SEO,
+        statistics
+      ] = await Promise.all([
+        app.$api({
+          method: 'POST',
+          url: 'models/collection',
+          data: {
+            ids: data.collections.map(collection => collection.id)
+          },
+          headers: app.$generateAuthHeader('models/collection', 'POST')
+        }).then(res => res.data),
+        app.$api.request<CategoryFilter[]>({
+          method: 'GET',
+          url: `categories/${data.category.id}/filters`,
+          headers: {
+            ...app.$generateAuthHeader(`categories/${data.category.id}/filters`, 'GET')
+          }
+        }).then(res => res.data),
+        app.$api.request<any>({
+          method: 'GET',
+          url: `seo/models/${route.params.slug}`,
+          headers: {
+            ...app.$generateAuthHeader(`seo/models/${route.params.slug}`, 'GET')
+          }
+        }).then(res => res.data),
+        app.$api.request<any>({
+          method: 'POST',
+          url: 'statistics/model-single',
+          data: {
+            ids: [data.id]
+          },
+          headers: {
+            ...app.$generateAuthHeader('statistics/model-single', 'POST')
+          }
+        }).then(res => res.data)
+      ])
 
       const currentCollections = data.collections
         .filter(collection => Array.isArray(modelsCollections[collection.id]) && modelsCollections[collection.id].length > 0)
@@ -361,7 +403,8 @@ export default class ModelSinglePage extends Vue {
         currentLicenses,
         currentCollections,
         categoryFilters: categoryFilters.filter(filter => filter.id),
-        tags: SEO
+        tags: SEO,
+        statistics
       }
     } catch (err) {
       app.$sentry.captureException(err)
@@ -386,7 +429,7 @@ export default class ModelSinglePage extends Vue {
     return this.$store.state.favorites.find((item: number) => item === this.model.id) !== undefined
   }
 
-  get breadcrumbsElements (): any[] {
+  get breadcrumbsElements (): Record<string, string | boolean>[] {
     return [
       {
         title: this.$t('navigation.home').toString(),
@@ -397,15 +440,38 @@ export default class ModelSinglePage extends Vue {
         href: '/models'
       },
       {
-        title: this.model.category.title,
+        title: this.model.category.title || '',
         href: `/models/${this.model.category.slug}`
       },
       {
-        title: this.model.title,
-        href: `/models/category-1/${this.model.slug}`,
+        title: this.model.title || '',
+        href: `/models/${this.model.category.slug}/${this.model.slug}`,
         active: true
       }
     ]
+  }
+
+  mounted (): void {
+    setTimeout(() => this.$store.dispatch('viewModelEvent', { id: this.model.id }), 3000)
+  }
+
+  async likeModel (): Promise<void> {
+    try {
+      await this.$store.dispatch('likeModelEvent', { id: this.model.id })
+
+      const statistics = (await this.$api.request<any>({
+        method: 'POST',
+        url: 'statistics/model-single',
+        data: {
+          ids: [this.model.id]
+        },
+        headers: {
+          ...this.$generateAuthHeader('statistics/model-single', 'POST')
+        }
+      })).data
+
+      this.statistics = statistics
+    } catch (error) {}
   }
 }
 </script>

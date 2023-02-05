@@ -1,12 +1,15 @@
-body.theme-light
-  --text-color: #{$black}
-  --block-color: #{$lightGray}
-  --block-color-gradient: #{transparentize($lightGray, 0.5)}
-  --block-color-glass: #{transparentize($lightGray, 0.8)}
-  --block-color-alt: #{$lightGrayAlt}
-  --block-color-lighter: #{$lightGrayLighter}
-  --theme-color: #{$lightThemeColor}
-  --theme-color-alt: #{$lightThemeColorAlt}
-  --primary: #19b5fe
-  --light: #f8f9fa
-  --header-text-color: #343a40
+@media (prefers-color-scheme: light)
+  html
+    color-scheme: light
+  body
+    --text-color: #{$black}
+    --block-color: #{$lightGray}
+    --block-color-gradient: #{transparentize($lightGray, 0.5)}
+    --block-color-glass: #{transparentize($lightGray, 0.8)}
+    --block-color-alt: #{$lightGrayAlt}
+    --block-color-lighter: #{$lightGrayLighter}
+    --theme-color: #{$lightThemeColor}
+    --theme-color-alt: #{$lightThemeColorAlt}
+    --primary: #19b5fe
+    --light: #f8f9fa
+    --header-text-color: #343a40

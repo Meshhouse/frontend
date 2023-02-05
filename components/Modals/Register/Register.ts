@@ -1,7 +1,6 @@
 import { Component, mixins } from 'nuxt-property-decorator'
 import { required, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import { setAuthTokens } from 'axios-jwt'
 import Checkbox from '@/components/common/Checkbox/Checkbox.vue'
 import ModalBasic from '@/components/Modals/ModalBasic/ModalBasic.vue'
 
@@ -52,20 +51,11 @@ export default class AuthRegister extends mixins(validationMixin) {
           headers: this.$generateAuthHeader('register', 'POST')
         })
 
-        const response = await this.$api({
-          method: 'POST',
-          url: 'login',
-          data: {
-            email: this.email,
-            password: this.password
-          },
-          headers: this.$generateAuthHeader('login', 'POST')
-        })
-
-        this.$store.commit('setUser', response.data)
-        setAuthTokens({
-          accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token
+        this.$store.dispatch('addNotification', {
+          type: 'primary',
+          title: this.$t('form.registerTitle'),
+          message: this.$t('notifications.register.text'),
+          timeout: 10000
         })
 
         this.$emit('close')

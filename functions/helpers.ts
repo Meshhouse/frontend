@@ -5,6 +5,9 @@ import type {
   CategoryFilterValueRange
 } from '@meshhouse/types'
 import type {
+  AxiosError
+} from 'axios'
+import type {
   PreparedFilter
 } from '@/types'
 
@@ -159,4 +162,11 @@ export function prepareCustomFilters (values: any, filters: CategoryFilter[]): P
     original,
     simplified
   }
+}
+
+export function isAxiosError (candidate: unknown): candidate is AxiosError {
+  if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
+    return true
+  }
+  return false
 }

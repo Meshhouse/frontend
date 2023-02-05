@@ -9,12 +9,12 @@
     >
       <slot name="header" />
       <aside class="header-badge">
-        <span
+        <div
           v-if="counter && counter > 0"
           class="badge"
         >
           {{ counter }}
-        </span>
+        </div>
         <span
           v-if="selected"
           class="badge badge--selected"

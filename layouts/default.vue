@@ -49,7 +49,7 @@ import NotificationContainer from '@/components/Notification/NotificationContain
   head () {
     return {
       bodyAttrs: {
-        class: `theme-${this.$store.state.theme} ${this.$store.state.modalVisible ? 'no-scroll' : ''}`
+        class: `${this.$store.state.modalVisible ? 'no-scroll' : ''}`
       }
     }
   }
@@ -57,6 +57,35 @@ import NotificationContainer from '@/components/Notification/NotificationContain
 
 export default class DefaultLayout extends Vue {
   async created (): Promise<void> {
+    if (process.client) {
+      this.$store.dispatch('generateUniqueId')
+
+      if (this.$route?.query?.signature) {
+        try {
+          const response = await this.$api({
+            method: 'POST',
+            url: 'verify-email',
+            data: {
+              signature: this.$route.query.signature
+            },
+            headers: this.$generateAuthHeader('verify-email', 'POST')
+          })
+
+          if (response.status === 200) {
+            this.$store.dispatch('addNotification', {
+              type: 'primary',
+              title: this.$t('notifications.email_verification.title'),
+              message: this.$t('notifications.email_verification.text'),
+              timeout: 5000
+            })
+          }
+        } catch (err) {
+          this.$sentry.captureException(err)
+          console.error(err)
+        }
+      }
+    }
+
     if (process.client && isLoggedIn()) {
       try {
         const profile = (await this.$api({

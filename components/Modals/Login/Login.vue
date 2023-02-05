@@ -62,7 +62,7 @@
       </a>
       <a
         href="#"
-        @click.prevent="$emit('redirect', 'AuthRegister')"
+        @click.prevent="$emit('redirect', 'AuthResetPassword')"
       >
         {{ $t('form.actions.forgot') }}
       </a>

@@ -11,7 +11,14 @@ export default class Overlay extends mixins(clickaway) {
     this.$store.commit('setModalVisibility', val)
   }
 
-  onClickAway () {
-    this.$emit('close')
+  onClickAway (event: PointerEvent) {
+    const path = event.composedPath()
+    const excludedClassed = [
+      'notification-container'
+    ]
+
+    if (!path.find(val => excludedClassed.includes((val as HTMLDivElement).className))) {
+      this.$emit('close')
+    }
   }
 }

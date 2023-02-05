@@ -34,7 +34,7 @@ import NotificationContainer from '@/components/Notification/NotificationContain
   head () {
     return {
       bodyAttrs: {
-        class: `theme-${this.$store.state.theme} ${this.$store.state.modalVisible ? 'no-scroll' : ''}`
+        class: `${this.$store.state.modalVisible ? 'no-scroll' : ''}`
       }
     }
   }
@@ -42,6 +42,10 @@ import NotificationContainer from '@/components/Notification/NotificationContain
 
 export default class ErrorPage extends Vue {
   async created (): Promise<void> {
+    if (process.client) {
+      this.$store.dispatch('generateUniqueId')
+    }
+
     if (process.client && isLoggedIn()) {
       try {
         const profile = (await this.$api({

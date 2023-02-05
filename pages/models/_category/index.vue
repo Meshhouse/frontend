@@ -223,8 +223,28 @@ export default class ModelCatalog extends Vue {
         }
       })
 
+      const statistics = await app.$api.request<{[key: string]: Record<string, number>}>({
+        method: 'POST',
+        url: 'statistics/models',
+        data: {
+          ids: data.items.map(item => item.id)
+        },
+        headers: app.$generateAuthHeader('statistics/models', 'POST')
+      })
+
+      const items = data.items.map((item) => {
+        return {
+          ...item,
+          statistics: statistics.data[item.id] ?? {
+            views: 0,
+            likes: 0,
+            downloads: 0
+          }
+        }
+      })
+
       return {
-        items: data.items,
+        items,
         pagination: data.pagination,
         selectedFilters,
         categoryFilters
@@ -332,7 +352,27 @@ export default class ModelCatalog extends Vue {
         tag: this.$route.query.tag ? this.$route.query.tag : undefined
       }, { encode: false })
 
-      this.items = data.items
+      const statistics = await this.$api.request<{[key: string]: Record<string, number>}>({
+        method: 'POST',
+        url: 'statistics/models',
+        data: {
+          ids: data.items.map(item => item.id)
+        },
+        headers: this.$generateAuthHeader('statistics/models', 'POST')
+      })
+
+      const items = data.items.map((item) => {
+        return {
+          ...item,
+          statistics: statistics.data[item.id] ?? {
+            views: 0,
+            likes: 0,
+            downloads: 0
+          }
+        }
+      })
+
+      this.items = items
       this.pagination = data.pagination
 
       this.$router.push(`${this.$route.path}?${querystring}`)

@@ -1,4 +1,5 @@
 import { ActionTree, MutationTree } from 'vuex'
+import { uid } from 'uid'
 import type {
   User,
   License,
@@ -29,7 +30,8 @@ type ApplicationStore = {
   modalVisible: boolean,
   user: User,
   notifications: Notification[]
-  categoryFilters: CategoryFilter[]
+  categoryFilters: CategoryFilter[],
+  uid: string
 }
 
 export const state = (): ApplicationStore => ({
@@ -54,7 +56,8 @@ export const state = (): ApplicationStore => ({
     subscriptions: []
   },
   notifications: [],
-  categoryFilters: []
+  categoryFilters: [],
+  uid: ''
 })
 
 export type RootState = ReturnType<typeof state>
@@ -100,6 +103,9 @@ export const mutations: MutationTree<RootState> = {
   },
   setSharedCategoryFilters: (state: ApplicationStore, payload: CategoryFilter[]) => {
     state.categoryFilters = payload
+  },
+  setUid: (state: ApplicationStore, id: string) => {
+    state.uid = id
   }
 }
 
@@ -124,32 +130,99 @@ export const actions: ActionTree<RootState, RootState> = {
       sameSite: 'lax'
     })
   },
+  generateUniqueId ({ commit }) {
+    const cookieId = this.$cookies.get('uid')
+    const localStorageId = window.localStorage.getItem('uid')
+
+    if (!cookieId && !localStorageId) {
+      const id = uid(64)
+      this.$cookies.set('uid', id, {
+        maxAge: 30 * 24 * 60 * 183,
+        path: '/',
+        sameSite: 'lax'
+      })
+      window.localStorage.setItem('uid', id)
+      commit('setUid', id)
+    } else {
+      if (cookieId) {
+        window.localStorage.setItem('uid', cookieId)
+      } else if (localStorageId) {
+        this.$cookies.set('uid', localStorageId, {
+          maxAge: 30 * 24 * 60 * 183,
+          path: '/',
+          sameSite: 'lax'
+        })
+      }
+
+      commit('setUid', cookieId || localStorageId)
+    }
+  },
+  async viewModelEvent ({ state }, { id }: { id: number }) {
+    try {
+      await this.$api({
+        method: 'PUT',
+        url: 'statistics/models/view',
+        data: {
+          model_id: id,
+          uid: state.uid
+        },
+        headers: this.$generateAuthHeader('statistics/models/view', 'PUT')
+      })
+    } catch (error) {}
+  },
+  async likeModelEvent ({ state }, { id }: { id: number }) {
+    try {
+      await this.$api({
+        method: 'PUT',
+        url: 'statistics/models/like',
+        data: {
+          model_id: id,
+          uid: state.uid
+        },
+        headers: this.$generateAuthHeader('statistics/models/like', 'PUT')
+      })
+    } catch (error) {}
+  },
+  async downloadModelEvent ({ state }, { id, fileId }: { id: number, fileId: number }) {
+    try {
+      await this.$api({
+        method: 'PUT',
+        url: 'statistics/models/download',
+        data: {
+          model_id: id,
+          file_id: fileId,
+          uid: state.uid
+        },
+        headers: this.$generateAuthHeader('statistics/models/download', 'PUT')
+      })
+    } catch (error) {}
+  },
   async updateServerInit ({ commit }) {
     const responses = await Promise.all([
-      (this as any).$api({
+      this.$api({
         method: 'GET',
         url: 'category-tree',
-        headers: (this as any).$generateAuthHeader('category-tree', 'GET')
+        headers: this.$generateAuthHeader('category-tree', 'GET')
       }),
-      (this as any).$api({
+      this.$api({
         method: 'GET',
         url: 'licenses',
-        headers: (this as any).$generateAuthHeader('licenses', 'GET')
+        headers: this.$generateAuthHeader('licenses', 'GET')
       }),
-      (this as any).$api({
+      this.$api({
         method: 'GET',
         url: 'blocks/site_patrons',
-        headers: (this as any).$generateAuthHeader('blocks/site_patrons', 'GET')
+        headers: this.$generateAuthHeader('blocks/site_patrons', 'GET')
       }),
-      (this as any).$api({
+      this.$api({
         method: 'GET',
         url: 'blocks/site_supporters',
-        headers: (this as any).$generateAuthHeader('blocks/site_supporters', 'GET')
+        headers: this.$generateAuthHeader('blocks/site_supporters', 'GET')
       }),
-      (this as any).$api({
+      this.$api({
         method: 'GET',
         url: 'categories/null/filters',
-        headers: (this as any).$generateAuthHeader('categories/null/filters', 'GET')
+        headers: this.$generateAuthHeader('categories/null/filters', 'GET')
       })
     ])
 
@@ -161,16 +234,12 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async nuxtServerInit ({ commit, dispatch }, context: NuxtApp) {
     try {
-      const theme = context.$cookies.get('theme')
       const favorites = context.$cookies.get('favorites')
 
       try {
         await dispatch('updateServerInit')
       } catch {}
 
-      if (theme) {
-        commit('setTheme', theme)
-      }
       if (favorites) {
         commit('setFavorites', favorites)
       }

@@ -38,3 +38,18 @@
     margin-right: 0.5rem
     &:last-child
       margin-right: 0
+
+.model-tag
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 3rem
+  height: 3rem
+  filter: drop-shadow(0 0 8px #000)
+  &--mature-content
+    background-color: $danger
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)
+  &--copyright
+    svg
+      width: 2rem
+      height: 2rem

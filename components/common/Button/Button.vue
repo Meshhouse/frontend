@@ -8,6 +8,16 @@
   >
     <slot />
   </button>
+  <a
+    v-else-if="href.includes('://')"
+    class="button"
+    :href="href"
+    :class="buttonClass"
+    v-bind="$attrs"
+    @click="onClick"
+  >
+    <slot />
+  </a>
   <nuxt-link
     v-else
     class="button"

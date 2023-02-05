@@ -8,12 +8,12 @@
       :href="localePath('/account/favorites')"
     >
       <font-awesome-icon icon="heart" />
-      <span
+      <div
         v-if="favoritesCount > 0"
         class="badge badge--primary"
       >
         {{ favoritesString }}
-      </span>
+      </div>
     </v-button>
     <user-box
       :title="$t('navigation.user')"

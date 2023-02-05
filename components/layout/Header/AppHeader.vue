@@ -47,7 +47,7 @@
           </div>
         </div>
         <button
-          class="mobile-only"
+          class="navbar__burger mobile-only"
           @click="openMobileMenu"
         >
           <font-awesome-icon size="2x" icon="bars" />

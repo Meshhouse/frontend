@@ -55,6 +55,17 @@
         &.active, &:hover
           &:before
             transform: scaleX(1)
+  &__burger
+    background: none
+    border: none
+    cursor: pointer
+    svg
+      path
+        transition: all 0.3s ease
+    &:hover
+      svg
+        path
+          fill: var(--primary)
 
 .nav-item
   margin-right: 1rem

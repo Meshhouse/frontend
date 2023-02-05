@@ -1,3 +1,4 @@
+/* eslint-disable vue/component-definition-name-casing */
 import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -12,7 +13,6 @@ import {
   faTimesCircle,
   faInfo,
   faExclamation,
-  faCopyright,
   faUser,
   faPlus,
   faMinus,
@@ -32,8 +32,16 @@ import {
   faCompress,
   faExpand,
   faDrawPolygon,
-  faSadCry
+  faSadCry,
+  faThumbsUp,
+  faChartLine,
+  fa1,
+  fa8
 } from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faCopyright
+} from '@fortawesome/free-regular-svg-icons'
 
 import {
   faApple,
@@ -81,8 +89,11 @@ library.add(
   faCompress,
   faExpand,
   faDrawPolygon,
-  faSadCry
+  faSadCry,
+  faThumbsUp,
+  faChartLine,
+  fa1,
+  fa8
 )
 
-// eslint-disable-next-line vue/component-definition-name-casing
 Vue.component('font-awesome-icon', FontAwesomeIcon)

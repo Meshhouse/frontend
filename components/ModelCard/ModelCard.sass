@@ -28,25 +28,28 @@
       margin: 0
       svg
         width: 1rem
-        margin-right: 0.5rem
+        margin-right: $grid-gap-large
   &__programs
     position: absolute
-    top: 1rem
-    right: 1rem
-    padding: 0.25rem
+    top: $grid-gap-large * 2
+    right: $grid-gap-large * 2
+    padding: $grid-gap
     img
       display: block
       width: 2rem
       height: 2rem
       object-fit: contain
-      margin-right: 0.5rem
+      margin-right: $grid-gap-large
       &:last-child
         margin-right: 0
   &__tags
+    position: absolute
+    top: $grid-gap-large * 2
+    left: $grid-gap-large * 2
     display: flex
     flex-wrap: wrap
     align-items: center
-    margin-top: 0.5rem
+    z-index: 1
     .tag
       margin-right: 0.25rem
       margin-bottom: 0.25rem
@@ -61,6 +64,14 @@
     left: 1rem
     pointer-events: none
     transition: opacity 0.3s ease
+  &__statistics
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    .statistic
+      margin-right: $grid-gap-large
+      &:last-child
+        margin-right: 0
   &--lite
     border: none
     border-radius: 0
@@ -77,15 +88,16 @@
         height: 100%
         pointer-events: none
         background-color: var(--block-color-gradient)
-        transition: transform 0.3s ease
-        transform: translateY(100%)
+        backdrop-filter: blur(20px)
+        transition: opacity 0.3s ease
+        opacity: 0
     &:hover
       .image__inner
         img
           transform: scale(1.1)
       .model-card
         &__info
-          transform: translateY(0)
+          opacity: 1
         &__actions
           opacity: 1
           pointer-events: all

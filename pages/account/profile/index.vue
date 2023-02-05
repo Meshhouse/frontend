@@ -316,8 +316,8 @@ export default class UserProfile extends mixins(validationMixin) {
 
         this.$store.dispatch('addNotification', {
           type: 'primary',
-          title: 'User profile',
-          message: 'User profile saved successful',
+          title: this.$t('notifications.profile.title'),
+          message: this.$t('notifications.profile.text'),
           timeout: 5000
         })
       } catch (error) {
@@ -325,8 +325,8 @@ export default class UserProfile extends mixins(validationMixin) {
         console.error(error)
         this.$store.dispatch('addNotification', {
           type: 'error',
-          title: 'User profile',
-          message: 'Somehow went wrong, open console to see more'
+          title: this.$t('notifications.profile.title'),
+          message: this.$t('notifications.profile.text_error')
         })
       }
     }
