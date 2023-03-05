@@ -1,5 +1,8 @@
 <template>
-  <div class="license">
+  <div
+    class="license"
+    :class="isDisabledLicense ? 'license--disabled' : null"
+  >
     <header class="license__header">
       <b class="title">{{ license.title }}</b>
       <div class="icons">

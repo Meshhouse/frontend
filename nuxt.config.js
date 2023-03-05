@@ -3,7 +3,8 @@ module.exports = {
     isDev: process.env.NODE_ENV === 'development',
     apiKey: process.env.API_SECRET_KEY,
     BROWSER_API_URL: process.env.BROWSER_API_URL,
-    SSR_API_URL: process.env.SSR_API_URL
+    SSR_API_URL: process.env.SSR_API_URL,
+    HCAPTCHA_SITE_KEY: process.env.HCAPTCHA_SITE_KEY
   },
   server: {
     port: process.env.PORT || 3000,

@@ -107,11 +107,23 @@
           {{ $t('validations.agreed') }}
         </small>
       </div>
+      <div class="form-field form-field--input">
+        <VueHcaptcha
+          :sitekey="captchaKey"
+          @verify="onVerify"
+        />
+        <small
+          v-if="$v.token.$error && !$v.token.required"
+          class="form-field__error"
+        >
+          {{ $t('validations.required', { '_field_': '' }) }}
+        </small>
+      </div>
       <button
         class="button button--primary"
         @click.prevent="register"
       >
-        {{ $t('form.register') }}
+        {{ $t('common.submit') }}
       </button>
     </form>
     <div class="content__actions">

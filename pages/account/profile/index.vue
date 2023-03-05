@@ -124,7 +124,7 @@
             <img class="svg-inline--fa" src="/icons/brands/boosty_white.svg">
           </button>
         </div>
-        <header class="models-header">
+        <header class="layout__header-wrapper">
           <h2 class="display-text display-text--h4">
             <span>
               {{ $t('form.apiKeys') }}
@@ -271,7 +271,7 @@ export default class UserProfile extends mixins(validationMixin) {
         data: {
           id
         },
-        headers: this.$generateAuthHeader('api-keys', 'POST')
+        headers: this.$generateAuthHeader('api-keys', 'DELETE')
       })
 
       this.fetchTokens()

@@ -1,13 +1,15 @@
 import { Component, mixins } from 'nuxt-property-decorator'
 import { required, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import Checkbox from '@/components/common/Checkbox/Checkbox.vue'
 import ModalBasic from '@/components/Modals/ModalBasic/ModalBasic.vue'
 
 @Component<AuthRegister>({
   components: {
     Checkbox,
-    ModalBasic
+    ModalBasic,
+    VueHcaptcha
   },
   validations: {
     name: {
@@ -26,6 +28,9 @@ import ModalBasic from '@/components/Modals/ModalBasic/ModalBasic.vue'
     },
     agreed: {
       required
+    },
+    token: {
+      required
     }
   }
 })
@@ -35,6 +40,11 @@ export default class AuthRegister extends mixins(validationMixin) {
   password = ''
   passwordConfirm = ''
   agreed = false
+  token = ''
+
+  get captchaKey (): string {
+    return process.env.HCAPTCHA_SITE_KEY || ''
+  }
 
   async register () {
     this.$v.$touch()
@@ -48,7 +58,10 @@ export default class AuthRegister extends mixins(validationMixin) {
             email: this.email,
             password: this.password
           },
-          headers: this.$generateAuthHeader('register', 'POST')
+          headers: {
+            ...this.$generateAuthHeader('register', 'POST'),
+            'h-captcha-response': this.token
+          }
         })
 
         this.$store.dispatch('addNotification', {
@@ -64,5 +77,9 @@ export default class AuthRegister extends mixins(validationMixin) {
         console.error(err)
       }
     }
+  }
+
+  onVerify (token: string) {
+    this.token = token
   }
 }

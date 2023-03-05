@@ -1,10 +1,10 @@
 <template>
-  <div class="app">
-    <app-header />
+  <div class="app" :class="isMaintenanceMode ? 'app--error' : ''">
+    <app-header v-if="!isMaintenanceMode" />
     <main class="main main--full-height">
       <nuxt />
     </main>
-    <app-footer />
+    <app-footer :simple="isMaintenanceMode" />
     <portal-target name="overlay" />
     <client-only>
       <notification-container />
@@ -41,6 +41,10 @@ import NotificationContainer from '@/components/Notification/NotificationContain
 })
 
 export default class ErrorPage extends Vue {
+  get isMaintenanceMode (): boolean {
+    return (this.$nuxt as any).nuxt.err && (this.$nuxt as any).nuxt.err.statusCode === 503
+  }
+
   async created (): Promise<void> {
     if (process.client) {
       this.$store.dispatch('generateUniqueId')

@@ -3,6 +3,7 @@
   border: $border-width solid $primary
   border-radius: $border-radius
   background: var(--block-color)
+  position: relative
   &__header
     display: flex
     align-items: center
@@ -28,7 +29,9 @@
           color: $success
         &-onlyfans
           color: $matureNotice
-
+  &--disabled
+    cursor: not-allowed
+    opacity: 0.3
 
 .licenses
   .license

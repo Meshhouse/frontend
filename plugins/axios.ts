@@ -3,7 +3,7 @@ import type { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { IAuthTokens, TokenRefreshRequest, applyAuthTokenInterceptor, clearAuthTokens } from 'axios-jwt'
 import { generateAuthHeader } from '@/functions/axios'
 
-export default function ({ $axios, app }: { $axios: NuxtAxiosInstance, app: any }, inject: Inject) {
+export default function ({ $axios, app, error: nuxtError }: { $axios: NuxtAxiosInstance, app: any, error: any }, inject: Inject) {
   const baseBrowserUrl = process.env.BROWSER_API_URL || ''
   const baseUrl = process.env.SSR_API_URL || ''
   const axiosInstance = $axios.create({})
@@ -50,6 +50,19 @@ export default function ({ $axios, app }: { $axios: NuxtAxiosInstance, app: any 
   if (process.client) {
     applyAuthTokenInterceptor(axiosInstance, { requestRefresh })
   }
+
+  axiosInstance.onResponseError((err) => {
+    if (err.isAxiosError && err.response?.status !== 503) {
+      return Promise.reject(err)
+    } else {
+      nuxtError({
+        statusCode: 503,
+        message: 'Maintenance mode'
+      })
+
+      return Promise.resolve()
+    }
+  })
 
   inject('api', axiosInstance)
   inject('generateAuthHeader', generateAuthHeader)

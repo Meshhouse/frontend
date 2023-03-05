@@ -2,11 +2,13 @@ import { Component, mixins } from 'nuxt-property-decorator'
 import { required, email } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import { setAuthTokens } from 'axios-jwt'
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import ModalBasic from '@/components/Modals/ModalBasic/ModalBasic.vue'
 
 @Component<AuthLogin>({
   components: {
-    ModalBasic
+    ModalBasic,
+    VueHcaptcha
   },
   validations: {
     email: {
@@ -15,12 +17,20 @@ import ModalBasic from '@/components/Modals/ModalBasic/ModalBasic.vue'
     },
     password: {
       required
+    },
+    token: {
+      required
     }
   }
 })
 export default class AuthLogin extends mixins(validationMixin) {
   email = ''
   password = ''
+  token = ''
+
+  get captchaKey (): string {
+    return process.env.HCAPTCHA_SITE_KEY || ''
+  }
 
   async login () {
     this.$v.$touch()
@@ -33,7 +43,10 @@ export default class AuthLogin extends mixins(validationMixin) {
             email: this.email,
             password: this.password
           },
-          headers: this.$generateAuthHeader('login', 'POST')
+          headers: {
+            ...this.$generateAuthHeader('login', 'POST'),
+            'h-captcha-response': this.token
+          }
         })
 
         this.$store.commit('setUser', response.data)
@@ -48,5 +61,9 @@ export default class AuthLogin extends mixins(validationMixin) {
         console.error(err)
       }
     }
+  }
+
+  onVerify (token: string) {
+    this.token = token
   }
 }

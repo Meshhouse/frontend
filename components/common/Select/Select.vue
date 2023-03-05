@@ -26,6 +26,8 @@
       <li
         v-for="(item, idx) in items"
         :key="idx"
+        class="item"
+        :class="item.value === value ? 'item--active' : ''"
         @click="onClick(item)"
       >
         {{ item.text }}

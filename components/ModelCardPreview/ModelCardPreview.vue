@@ -66,7 +66,10 @@
         </div>
         <div class="model-card-preview__info">
           <breadcrumbs :elements="breadcrumbsElements" />
-          <div class="model-card__statistics">
+          <div
+            v-if="item.statistics !== undefined"
+            class="model-card__statistics"
+          >
             <div class="statistic">
               <font-awesome-icon icon="thumbs-up" />
               {{ item.statistics.likes }}

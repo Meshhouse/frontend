@@ -1,0 +1,14 @@
+.models-slider
+  overflow: visible
+  .model-card
+    max-width: 250px
+    margin-right: $grid-gap-large
+    &:last-child
+      margin-right: 0
+  &__categories
+    margin-bottom: $grid-gap-large
+
+@media (min-width: $breakpoint-phone) and (max-width: $breakpoint-tablet - 1px)
+  .models-slider
+    .model-card
+      max-width: 14rem

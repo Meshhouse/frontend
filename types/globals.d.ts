@@ -7,6 +7,7 @@ declare module '@nuxt/types' {
     $generateAuthHeader(requestUrl: string, requestMethod: string): Record<string, string>;
     $isLogged(): boolean;
     $isAdmin(): boolean;
+    $shouldWatchBanners(): boolean;
   }
 
   interface NuxtAppOptions {
@@ -14,6 +15,7 @@ declare module '@nuxt/types' {
     $generateAuthHeader(requestUrl: string, requestMethod: string): Record<string, string>;
     $isLogged(): boolean;
     $isAdmin(): boolean;
+    $shouldWatchBanners(): boolean;
   }
 
   interface Configuration {
@@ -21,6 +23,7 @@ declare module '@nuxt/types' {
     $generateAuthHeader(requestUrl: string, requestMethod: string): Record<string, string>;
     $isLogged(): boolean;
     $isAdmin(): boolean;
+    $shouldWatchBanners(): boolean;
   }
 }
 
@@ -30,6 +33,7 @@ declare module 'vue/types/vue' {
     $generateAuthHeader(requestUrl: string, requestMethod: string): Record<string, string>;
     $isLogged(): boolean;
     $isAdmin(): boolean;
+    $shouldWatchBanners(): boolean;
   }
 }
 

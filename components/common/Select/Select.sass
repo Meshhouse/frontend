@@ -12,7 +12,6 @@
     color: var(--text-color)
     cursor: pointer
     user-select: none
-    font-size: 1rem
     padding: 0.6875rem 1rem
   &__prepend-icon
     width: 1rem
@@ -35,12 +34,12 @@
     right: 0
     z-index: 1
     list-style: none
-    li
+    li.item
       color: var(--text-color)
       padding: 0.6875rem 1rem
       cursor: pointer
       user-select: none
-      &:hover
+      &:hover, &--active
         background-color: var(--primary)
 
   &--visible

@@ -59,6 +59,11 @@
     border: none
     margin: 0
 
+  &-warning
+    display: flex
+    align-items: center
+    grid-gap: $grid-gap-large
+
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px)
   .footer
     .brand
@@ -81,3 +86,7 @@
     &-top
       &__wrapper
         grid-template-columns: repeat(1, 1fr)
+    &-bottom
+      &__wrapper
+        flex-direction: column
+        align-items: flex-start

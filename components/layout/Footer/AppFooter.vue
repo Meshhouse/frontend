@@ -1,6 +1,9 @@
 <template>
   <footer class="footer">
-    <div class="footer-top">
+    <div
+      v-if="!simple"
+      class="footer-top"
+    >
       <div class="footer-top__wrapper grid-container">
         <div class="footer-column">
           <nuxt-link
@@ -83,6 +86,19 @@
       <div class="footer-bottom__wrapper grid-container">
         <div class="footer-copy">
           &copy; {{ new Date().getFullYear() }} MeshHouse team
+        </div>
+        <div class="footer-warning">
+          <div title="Can contains content for mature audience">
+            <font-awesome-icon icon="1" />
+            <font-awesome-icon icon="8" />
+            <font-awesome-icon icon="plus" />
+          </div>
+          <div title="Forbidden to use content for teaching generative neural networks. Generative neural networks were not used to create content (such as Stable Diffusion)">
+            <span class="fa-stack">
+              <font-awesome-icon icon="microchip" class="fa-stack-1x" />
+              <font-awesome-icon icon="ban" class="fa-stack-2x" />
+            </span>
+          </div>
         </div>
         <div class="footer-socials">
           <a

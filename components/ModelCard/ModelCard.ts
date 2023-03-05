@@ -18,6 +18,7 @@ import VueTag from '@/components/common/Tag/Tag.vue'
 export default class ModelCard extends Vue {
   @Prop({ type: Object, required: true }) readonly item!: ModelSimple
   @Prop({ type: Boolean, required: false, default: false }) readonly row!: boolean
+  @Prop({ type: Boolean, required: false, default: false }) readonly blurMatureContent!: boolean
 
   showPreview = false
 
@@ -46,8 +47,12 @@ export default class ModelCard extends Vue {
     return this.$store.state.favorites.find((item: number) => item === this.item.id) !== undefined
   }
 
+  get hasBlurMatureContent (): boolean {
+    return this.blurMatureContent && this.item.mature_content
+  }
+
   handleShowPreview () {
-    if (window.matchMedia('(min-width: 1200px)').matches) {
+    if (window.matchMedia('(min-width: 1200px)').matches && !this.hasBlurMatureContent) {
       this.previewTimer = setTimeout(() => {
         const previewSize = 600
         const boundaries = this.$el.getBoundingClientRect()

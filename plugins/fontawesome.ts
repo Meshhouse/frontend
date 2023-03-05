@@ -36,7 +36,9 @@ import {
   faThumbsUp,
   faChartLine,
   fa1,
-  fa8
+  fa8,
+  faMicrochip,
+  faBan
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -93,7 +95,9 @@ library.add(
   faThumbsUp,
   faChartLine,
   fa1,
-  fa8
+  fa8,
+  faMicrochip,
+  faBan
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

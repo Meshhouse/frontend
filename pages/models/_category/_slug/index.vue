@@ -125,6 +125,9 @@
         />
       </div>
       <aside>
+        <h5 class="display-text display-text--h5">
+          <span>Available licenses</span>
+        </h5>
         <div class="licenses">
           <license-block
             v-for="license in currentLicenses"
@@ -132,16 +135,27 @@
             :license="license"
           />
         </div>
+        <h5 class="display-text display-text--h5">
+          <span>Product info</span>
+        </h5>
         <model-specifications :model="model" />
         <model-custom-specifications
           v-if="categoryFilters.length > 0"
           :model="model"
           :filters="categoryFilters"
         />
+        <banner
+          v-if="currentBanner.visible && $shouldWatchBanners()"
+          :type="currentBanner.type"
+          size="model"
+          :href="currentBanner.href"
+          :image-content="currentBanner.image"
+          :script-content="currentBanner.script"
+        />
       </aside>
     </main>
     <div class="grid-container">
-      <div v-if="model.tags.length > 0">
+      <div v-if="Array.isArray(model.tags) && model.tags.length > 0">
         <h3 class="display-text display-text--h3">
           <span>
             {{ $t('models.information.tags') }}
@@ -155,26 +169,23 @@
           />
         </div>
       </div>
-      <div
-        v-for="collection in currentCollections"
-        :key="collection.id"
-      >
-        <h3
-          class="display-text display-text--h3"
-          style="margin-top: 1rem"
-        >
-          <span>{{ collection.title }}</span>
-        </h3>
-        <div class="grid-container grid-container--model-collection">
-          <model-card
-            v-for="item in collection.items"
-            :key="item.id"
-            :item="item"
-            row
-          />
-        </div>
-      </div>
     </div>
+    <ModelsSlider
+      v-for="collection in currentCollections"
+      :key="collection.id"
+      :models="collection.items"
+      :title="collection.title"
+    />
+    <ModelsSlider
+      v-if="similarModels.length > 0"
+      :models="similarModels"
+      :title="$t('models.similar.title', { model: model.title || '' })"
+    />
+    <ModelsSliderByCategory
+      v-if="modelAccessories.categories.length > 0"
+      :accessories="modelAccessories"
+      :title="$t('models.accessories.title')"
+    />
   </div>
 </template>
 
@@ -184,7 +195,9 @@ import LazyHydrate from 'vue-lazy-hydration'
 import type {
   ModelFull,
   License,
-  CategoryFilter
+  CategoryFilter,
+  ModelSimple,
+  ModelAccessories
 } from '@meshhouse/types'
 import type { NuxtApp } from '@nuxt/types/app'
 import { format } from 'date-fns'
@@ -196,6 +209,8 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue'
 import LicenseBlock from '@/components/License/License.vue'
 import ModelSpecifications from '@/components/ModelSpecifications/ModelSpecifications.vue'
 import ModelCustomSpecifications from '@/components/ModelSpecifications/ModelCustomSpecifications.vue'
+import ModelsSlider from '@/components/ModelsSlider/ModelsSlider.vue'
+import ModelsSliderByCategory from '@/components/ModelsSlider/ModelsSliderByCategory.vue'
 
 import type {
   CollectionWithModels
@@ -218,7 +233,9 @@ import {
     ModelCustomSpecifications,
     VueAlert,
     VueTag,
-    LicenseBlock
+    LicenseBlock,
+    ModelsSlider,
+    ModelsSliderByCategory
   },
   head () {
     const ogMetas = []
@@ -319,6 +336,14 @@ export default class ModelSinglePage extends Vue {
     description: ''
   }
 
+  currentBanner: any = {
+    visible: false,
+    type: 'static',
+    href: '#',
+    image: 'https://fakeimg.pl/300x250/',
+    alt: 'Test banner'
+  }
+
   statistics: Record<string, number | boolean | Record<string, number>> = {
     views: 0,
     likes: 0,
@@ -330,7 +355,16 @@ export default class ModelSinglePage extends Vue {
 
   currentCollections: CollectionWithModels[] = []
 
+  similarModels: ModelSimple[] = []
+
+  modelAccessories: ModelAccessories = {
+    categories: [],
+    models: {}
+  }
+
   categoryFilters: CategoryFilter[] = []
+
+  loading = false
 
   async asyncData ({ app, route, store, error }: { app: NuxtApp, route: any, store: any, error: any }): Promise<any> {
     try {
@@ -343,19 +377,10 @@ export default class ModelSinglePage extends Vue {
       const currentLicenses: License[] = store.state.licenses.filter((license: License) => data.licenses.includes(license.id))
 
       const [
-        modelsCollections,
         categoryFilters,
         SEO,
         statistics
       ] = await Promise.all([
-        app.$api({
-          method: 'POST',
-          url: 'models/collection',
-          data: {
-            ids: data.collections.map(collection => collection.id)
-          },
-          headers: app.$generateAuthHeader('models/collection', 'POST')
-        }).then(res => res.data),
         app.$api.request<CategoryFilter[]>({
           method: 'GET',
           url: `categories/${data.category.id}/filters`,
@@ -381,15 +406,6 @@ export default class ModelSinglePage extends Vue {
           }
         }).then(res => res.data)
       ])
-
-      const currentCollections = data.collections
-        .filter(collection => Array.isArray(modelsCollections[collection.id]) && modelsCollections[collection.id].length > 0)
-        .map((collection) => {
-          return {
-            ...collection,
-            items: modelsCollections[collection.id]
-          }
-        })
       // Check for valid category and slug in route params
       if (route.params.category !== data.category.slug || route.params.slug !== data.slug) {
         error({
@@ -401,7 +417,6 @@ export default class ModelSinglePage extends Vue {
       return {
         model: data,
         currentLicenses,
-        currentCollections,
         categoryFilters: categoryFilters.filter(filter => filter.id),
         tags: SEO,
         statistics
@@ -453,6 +468,7 @@ export default class ModelSinglePage extends Vue {
 
   mounted (): void {
     setTimeout(() => this.$store.dispatch('viewModelEvent', { id: this.model.id }), 3000)
+    this.loadModelInfo()
   }
 
   async likeModel (): Promise<void> {
@@ -472,6 +488,64 @@ export default class ModelSinglePage extends Vue {
 
       this.statistics = statistics
     } catch (error) {}
+  }
+
+  async loadModelInfo (): Promise<void> {
+    try {
+      this.loading = true
+      const [
+        modelsCollections,
+        similarModels,
+        modelAccessories
+      ] = await Promise.allSettled([
+        this.$api.request<any>({
+          method: 'POST',
+          url: 'models/collection',
+          data: {
+            ids: this.model.collections.map(collection => collection.id)
+          },
+          headers: this.$generateAuthHeader('models/collection', 'POST')
+        }).then(res => res.data).catch(() => null),
+        this.$api.request<ModelSimple[]>({
+          method: 'GET',
+          url: `models/similar/${this.model.slug}`,
+          headers: {
+            ...this.$generateAuthHeader(`models/similar/${this.model.slug}`, 'GET')
+          }
+        }).then(res => res.data).catch(() => null),
+        this.$api.request<ModelAccessories>({
+          method: 'GET',
+          url: `models/accessories/${this.model.slug}`,
+          headers: {
+            ...this.$generateAuthHeader(`models/accessories/${this.model.slug}`, 'GET')
+          }
+        }).then(res => res.data).catch(() => null)
+      ])
+
+      if (modelsCollections.status === 'fulfilled' && modelsCollections.value) {
+        this.currentCollections = this.model.collections
+          .filter(collection => Array.isArray(modelsCollections.value[collection.id]) && modelsCollections.value[collection.id].length > 0)
+          .map((collection) => {
+            return {
+              ...collection,
+              items: modelsCollections.value[collection.id]
+            }
+          })
+      }
+
+      if (similarModels.status === 'fulfilled' && similarModels.value) {
+        this.similarModels = similarModels.value
+      }
+
+      if (modelAccessories.status === 'fulfilled' && modelAccessories.value) {
+        this.modelAccessories = modelAccessories.value
+      }
+    } catch (err) {
+      this.$sentry.captureException(err)
+      console.error(err)
+    } finally {
+      this.loading = false
+    }
   }
 }
 </script>

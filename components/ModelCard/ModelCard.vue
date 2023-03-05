@@ -2,6 +2,7 @@
   <article
     v-if="!row"
     class="model-card model-card--lite"
+    :class="hasBlurMatureContent ? 'model-card--mature-content' : null"
     @mouseenter="handleShowPreview"
     @mouseleave="removeTimeout"
   >
@@ -41,7 +42,10 @@
         <font-awesome-icon icon="calendar-alt" />
         {{ format(new Date(item.created_at), 'dd.MM.yyyy') }}
       </p>
-      <div class="model-card__statistics">
+      <div
+        v-if="item.statistics !== undefined"
+        class="model-card__statistics"
+      >
         <div class="statistic">
           <font-awesome-icon icon="thumbs-up" />
           {{ item.statistics.likes }}
@@ -68,11 +72,13 @@
         </div>
       </div>
     </div>
-    <model-card-preview
-      v-if="showPreview"
-      :item="item"
-      :position="position"
-    />
+    <portal to="overlay">
+      <model-card-preview
+        v-if="showPreview"
+        :item="item"
+        :position="position"
+      />
+    </portal>
     <!--
     <div class="model-card__actions">
       <v-button

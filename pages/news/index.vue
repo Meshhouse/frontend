@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid-container">
-      <header class="models-header">
+      <header class="layout__header-wrapper">
         <h1 class="display-text display-text--h2">
           <span>
             {{ $t('navigation.news') }}

@@ -1,15 +1,25 @@
 <template>
   <main class="layout layout--models">
     <div class="models-content">
-      <header class="models-header">
-        <h1 class="display-text display-text--h2">
-          <span>
-            {{ currentCategory.title }}
-          </span>
-        </h1>
-        <p class="models-count">
-          {{ $tc('common["models-count"]', pagination.total) }}
-        </p>
+      <header class="layout__header">
+        <banner
+          v-if="currentBanner.visible && $shouldWatchBanners()"
+          :type="currentBanner.type"
+          size="category"
+          :href="currentBanner.href"
+          :image-content="currentBanner.image"
+          :script-content="currentBanner.script"
+        />
+        <div class="layout__header-wrapper">
+          <h1 class="display-text display-text--h2">
+            <span>
+              {{ currentCategory.title }}
+            </span>
+          </h1>
+          <p class="models-count">
+            {{ $tc('common["models-count"]', pagination.total) }}
+          </p>
+        </div>
       </header>
       <model-filters-overlay
         v-model="selectedFilters"
@@ -59,7 +69,10 @@
 <script lang="ts">
 /* eslint-disable camelcase */
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-import qs from 'qs'
+import {
+  parse as qsParse,
+  stringify as qsStringify
+} from 'qs'
 import { AxiosRequestConfig } from 'axios'
 import type { Route } from 'vue-router'
 import type { NuxtApp } from '@nuxt/types/app'
@@ -125,13 +138,21 @@ export default class ModelCatalog extends Vue {
     mature_content: 'false'
   }
 
+  currentBanner: any = {
+    visible: false,
+    type: 'static',
+    href: '#',
+    image: 'https://fakeimg.pl/970x90/',
+    alt: 'Test banner'
+  }
+
   sorting = 'created_at:desc'
 
   async asyncData ({ store, app, route }: { store: any, app: NuxtApp, route: Route }): Promise<any> {
     try {
       const categories: number[] = []
       const querystring = route.fullPath.split('?')[1]
-      const query = qs.parse(querystring)
+      const query = qsParse(querystring)
 
       const matureContent = query.mature ?? false
       const selectedFileFormats: string [] = (query.f as string[]) || []
@@ -344,7 +365,7 @@ export default class ModelCatalog extends Vue {
 
       const data: WithPagination<ModelSimple> = (await this.$api(params)).data
 
-      const querystring = qs.stringify({
+      const querystring = qsStringify({
         page: this.pagination.current_page > 1 ? this.pagination.current_page : undefined,
         ...prepared.simplified,
         mature: this.selectedFilters.mature_content === 'true' ? true : undefined,
@@ -364,11 +385,17 @@ export default class ModelCatalog extends Vue {
       const items = data.items.map((item) => {
         return {
           ...item,
-          statistics: statistics.data[item.id] ?? {
-            views: 0,
-            likes: 0,
-            downloads: 0
-          }
+          statistics: statistics.data[item.id]
+            ? {
+                views: statistics.data[item.id].views,
+                likes: statistics.data[item.id].likes,
+                downloads: statistics.data[item.id].downloads
+              }
+            : {
+                views: 0,
+                likes: 0,
+                downloads: 0
+              }
         }
       })
 

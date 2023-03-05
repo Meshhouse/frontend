@@ -66,6 +66,14 @@ body.no-scroll
 
 
 .layout
+  &__header
+    display: flex
+    flex-direction: column
+    &-wrapper
+      margin-top: 2rem
+      display: flex
+      align-items: center
+      justify-content: space-between
   &--models
     display: grid
     grid-template-columns: 1fr 300px
@@ -236,6 +244,9 @@ body.no-scroll
         display: none
         border-top: 0.125rem solid $primary
         border-left: none
+    &__header
+      margin: 1rem auto
+      flex-direction: column
 
   .grid-container
     &--model-collection

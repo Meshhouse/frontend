@@ -46,6 +46,18 @@
           {{ $t('validations.required', { '_field_': $t('form.password') }) }}
         </small>
       </div>
+      <div class="form-field form-field--input">
+        <VueHcaptcha
+          :sitekey="captchaKey"
+          @verify="onVerify"
+        />
+        <small
+          v-if="$v.token.$error && !$v.token.required"
+          class="form-field__error"
+        >
+          {{ $t('validations.required', { '_field_': '' }) }}
+        </small>
+      </div>
       <button
         class="button button--primary"
         @click.prevent="login"

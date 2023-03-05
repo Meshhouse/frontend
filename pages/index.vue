@@ -7,9 +7,11 @@
       :categories="featuredBlock.content"
     />
     <index-programs :stats="statistics" />
-    <index-uploaded-models
+    <models-slider
       v-if="lastUploadedModels.length > 0"
+      :title="$t('blocks.lastUploadedModels.title')"
       :models="lastUploadedModels"
+      blur-mature-content
     />
   </div>
 </template>
@@ -26,17 +28,17 @@ import type {
 import type { NuxtApp } from '@nuxt/types/app'
 import IndexCarousel from '@/components/Pages/Index/IndexCarousel.vue'
 import IndexPrograms from '@/components/Pages/Index/IndexPrograms.vue'
-import IndexUploadedModels from '@/components/Pages/Index/IndexUploadedModels.vue'
 import FeaturedCategories from '@/components/Pages/Index/FeaturedCategories.vue'
 import IndexOurFeatures from '@/components/Pages/Index/IndexOurFeatures.vue'
+import ModelsSlider from '@/components/ModelsSlider/ModelsSlider.vue'
 
 @Component<IndexPage>({
   components: {
     FeaturedCategories,
     IndexCarousel,
     IndexPrograms,
-    IndexUploadedModels,
-    IndexOurFeatures
+    IndexOurFeatures,
+    ModelsSlider
   },
   head () {
     return {
@@ -95,7 +97,7 @@ export default class IndexPage extends Vue {
           url: 'models',
           data: {
             page: 1,
-            count: 5,
+            count: 10,
             sort: {
               field: 'created_at',
               direction: 'desc'
@@ -103,7 +105,7 @@ export default class IndexPage extends Vue {
           },
           headers: {
             ...app.$generateAuthHeader('models', 'POST'),
-            'x-meshhouse-mature-content': false
+            'x-meshhouse-mature-content': true
           }
         }),
         app.$api.request<any>({
