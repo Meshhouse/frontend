@@ -10,14 +10,15 @@ export function generateAuthHeader (requestUrl: string, requestMethod: string): 
 
   const url = `/req/${requestUrl}`
   const method = requestMethod.toUpperCase() || ''
-  let currentTime = Math.round(Date.now() / 1000)
-  currentTime = Math.round(currentTime / 10) * 10
+  const host = new URL(process.server ? process.env.SSR_API_URL || '' : process.env.BROWSER_API_URL || '').host
+  const timestamp = Math.round(Date.now() / 1000)
 
-  const message = `${userAgent}${url}${method}${currentTime}`
+  const message = `${userAgent}${host}${method}${url}${timestamp}`
 
   const hash = HmacSHA512(message, (process.env.apiKey || '')).toString(enc.Base64url)
 
   return {
-    'x-meshhouse-authentication': hash
+    'x-meshhouse-authentication': hash,
+    'x-meshhouse-ts': timestamp.toString()
   }
 }
