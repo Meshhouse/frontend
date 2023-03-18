@@ -4,7 +4,8 @@ module.exports = {
     apiKey: process.env.API_SECRET_KEY,
     BROWSER_API_URL: process.env.BROWSER_API_URL,
     SSR_API_URL: process.env.SSR_API_URL,
-    HCAPTCHA_SITE_KEY: process.env.HCAPTCHA_SITE_KEY
+    HCAPTCHA_SITE_KEY: process.env.HCAPTCHA_SITE_KEY,
+    BACKEND_URL: process.env.BACKEND_URL
   },
   server: {
     port: process.env.PORT || 3000,

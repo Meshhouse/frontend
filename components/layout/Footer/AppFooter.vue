@@ -74,9 +74,12 @@
               </nuxt-link>
             </li>
             <li>
-              <nuxt-link :to="localePath('/api-docs')">
+              <a
+                :href="apiDocsLink"
+                target="_blank"
+              >
                 API
-              </nuxt-link>
+              </a>
             </li>
           </nav>
         </div>

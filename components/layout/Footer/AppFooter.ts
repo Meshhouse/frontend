@@ -8,4 +8,8 @@ export default class AppFooter extends Vue {
     required: false,
     default: false
   }) readonly simple!: boolean
+
+  get apiDocsLink (): string {
+    return `${process.env.BACKEND_URL}/docs`
+  }
 }
