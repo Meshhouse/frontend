@@ -42,6 +42,8 @@ export default class AuthRegister extends mixins(validationMixin) {
   agreed = false
   token = ''
 
+  loading = false
+
   get captchaKey (): string {
     return process.env.HCAPTCHA_SITE_KEY || ''
   }
@@ -50,6 +52,8 @@ export default class AuthRegister extends mixins(validationMixin) {
     this.$v.$touch()
     if (!this.$v.$invalid && this.agreed) {
       try {
+        this.loading = true
+
         await this.$api({
           method: 'POST',
           url: 'register',
@@ -75,6 +79,8 @@ export default class AuthRegister extends mixins(validationMixin) {
       } catch (err) {
         this.$sentry.captureException(err)
         console.error(err)
+      } finally {
+        this.loading = false
       }
     }
   }

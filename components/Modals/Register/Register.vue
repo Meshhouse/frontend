@@ -119,12 +119,13 @@
           {{ $t('validations.required', { '_field_': '' }) }}
         </small>
       </div>
-      <button
-        class="button button--primary"
+      <v-button
+        color="primary"
+        :disabled="loading"
         @click.prevent="register"
       >
         {{ $t('common.submit') }}
-      </button>
+      </v-button>
     </form>
     <div class="content__actions">
       <a

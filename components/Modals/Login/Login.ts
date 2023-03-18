@@ -28,6 +28,8 @@ export default class AuthLogin extends mixins(validationMixin) {
   password = ''
   token = ''
 
+  loading = false
+
   get captchaKey (): string {
     return process.env.HCAPTCHA_SITE_KEY || ''
   }
@@ -36,6 +38,8 @@ export default class AuthLogin extends mixins(validationMixin) {
     this.$v.$touch()
     if (!this.$v.$invalid) {
       try {
+        this.loading = true
+
         const response = await this.$api({
           method: 'POST',
           url: 'login',
@@ -59,6 +63,8 @@ export default class AuthLogin extends mixins(validationMixin) {
       } catch (err) {
         this.$sentry.captureException(err)
         console.error(err)
+      } finally {
+        this.loading = false
       }
     }
   }

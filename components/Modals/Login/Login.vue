@@ -58,12 +58,13 @@
           {{ $t('validations.required', { '_field_': '' }) }}
         </small>
       </div>
-      <button
-        class="button button--primary"
+      <v-button
+        color="primary"
+        :disabled="loading"
         @click.prevent="login"
       >
         {{ $t('form.login') }}
-      </button>
+      </v-button>
     </form>
     <div class="content__actions">
       <a
